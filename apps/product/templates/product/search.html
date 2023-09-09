@@ -1,0 +1,635 @@
+{% extends 'core/base.html' %}
+
+{% load static %}
+{% block stylesheet %}{% static 'styles/search.css' %}{% endblock %}
+{% load searching %}
+
+{% block content %}
+<section id="main-container">
+  <div class="main-box">
+      <div class="main-head">
+          <h2>Home > search for "{{ product_search_query }}"</h2>
+          <h3>Result for: "{{ product_search_query }}"</h3>
+      </div>
+      <div class="box">
+          <div class="inside-box">
+              <div class="body-row">
+                  <div class="top">
+                      <span class="head">selections<i class="fa fa-caret-down" style="margin-left:10px;"></i></span>
+                      <div class="side side2">
+                          <form method="get" action="{% url 'product_:filter_page' %}">
+                            {% csrf_token %}
+                              <div class="btn-hold">
+                                <button class="submit-list-top">Filter</button>
+                                <input type="hidden" id="list-input-top" name="query">
+                            </div>
+                          </form>
+                        <div class="category block1">
+                            <ul>
+                                <span class="head2">Categories</span>
+                                {% for titles in categories %}
+                                <!--<li><a style="color:var(--darkgrey);" href="{% url "product_:vendor_category" %}">{{ titles }}</a></li>-->
+                                <li class="{% if titles.children.all %} a-parent {% else %} category-list {% endif %}" data-index="{{titles.slug}}">
+                                    <input class="search-input-top category-check-top" data-index="{{ titles.slug }}" type="checkbox" style="font-size:15px;margin-right:11px;">
+                                    <span class="name checkbtn-txt-top" data-index="{{ titles.slug }}">{{ titles }}</span>
+                                    {% if titles.children.all %}
+                                    <i class="fa fa-caret-down" style="font-size:17px;"></i>
+                                    {% endif %}
+                                </li>
+                                <ul class="children" data-parent="{{titles.slug}}" style="display:none;width:100%;">
+                                    {% for children in titles.children.all %}
+                                    <li class="children {% if children.children.all %} a-child {% endif %}" data-index="{{children.slug}}" style="background-color:white">
+                                        <input class="search-input-top category-check-top" data-index="{{ children.slug }}" type="checkbox">
+                                        <span class="name checkbtn-txt-top" data-index="{{children.name}}">{{children.name}}</span>
+                                        {% if children.children.all %}
+                                        <i class="fa fa-caret-down" style="font-size:17px;"></i>
+                                        {% endif %}
+                                    </li>
+                                    <ul class="grand-children" data-parent="{{children.slug}}" style="display:none;width:100%;">
+                                        {% for grand_children in children.children.all %}
+                                        <li class="grand-children {% if grand_children.children.all %} a-grand-child {% endif %}" data-index="{{grand_children.slug}}" style="background-color:white">
+                                            <input class="search-input-top category-check-top" data-index="{{ grand_children.slug }}" type="checkbox">
+                                            <span class="name checkbtn-txt-top" data-index="{{ grand_children.slug }}">{{grand_children.name}}</span>
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                    {% endfor %}
+                                </ul>
+                                {% endfor %}
+                            </ul>
+                        </div>
+
+                          <div class="brand">
+                              <span>Brands</span>
+                              <form method="get" action="{% url 'product_:search_single' %}">
+                                  {% csrf_token %}
+                                  <div class="search-field">
+                                        <button class="icon brand-icon-top"><i class="fa fa-search"></i></button>
+                                        <input type="text" class="input brand-input-top" placeholder="Search" name="query">
+                                    </div>
+
+                                  {% for i in brands %}
+                                  <span class="block" style="font-size:13px;">
+                                      <input class="search-input-top brand-value-top" data-index="{{ i.name }}" type="checkbox" style="font-size:15px;margin-right:11px;">
+                                      <span data-index="{{ i.name }}" class="checkbtn-txt-top" style="font-size:13px;">{{ i.name }}</span>
+                                  </span>
+                                  {% endfor %}
+                              </form>
+                          </div>
+                          <div class="color">
+                              <span>Color</span>
+                              <div class="search-field">
+                                  <!--{{color_input.color}}-->
+                                  <input id="color-input-top" name="color" style="border-radius:20px;height:24px;width:82%;" type="text" class="input" placeholder="  choose color">
+                              </div>
+                          </div>
+                          <div class="size">
+                              <span>Size</span>
+                              <form method="get" action="{% url 'product_:search_single' %}">
+                                    {% csrf_token %}
+                                    <div class="search-field">
+                                        <button class="icon size-icon-top"><i class="fa fa-search"></i></button>
+                                        <input type="text" class="input size-input-top" placeholder="Search" name="sub_query">
+                                    </div>
+
+                                  <span><input type="checkbox" class="search-input-top size-value-top" data-index="S" role="button" style="font-size:15px;margin-right:11px;">
+                                      <span class="checkbtn-txt-top" data-index="S" style="font-size:13px;">S</span></span>
+                                  <span><input type="checkbox" class="search-input-top size-value-top" data-index="M" role="button" style="font-size:15px;margin-right:11px;">
+                                      <span class="checkbtn-txt-top" data-index="M" style="font-size:13px;">M</span></span>
+                                  <span><input type="checkbox" class="search-input-top size-value-top" data-index="L" role="button" style="font-size:15px;margin-right:11px;">
+                                      <span class="checkbtn-txt-top" data-index="L" style="font-size:13px;">L</span></span>
+                                  <span><input type="checkbox" class="search-input-top size-value-top" data-index="X" role="button" style="font-size:15px;margin-right:11px;">
+                                      <span class="checkbtn-txt-top" data-index="X" style="font-size:13px;">X</span></span>
+                                  <span><input type="checkbox" class="search-input-top size-value-top" data-index="XL" role="button" style="font-size:15px;margin-right:11px;">
+                                      <span class="checkbtn-txt-top" data-index="XL" style="font-size:13px;">XL</span></span>
+                                  <span><input type="checkbox" class="search-input-top size-value-top" data-index="XXL" role="button" style="font-size:15px;margin-right:11px;">
+                                      <span class="checkbtn-txt-top" data-index="XXL" style="font-size:13px;">XXL</span></span>
+                              </form>
+                          </div>
+                          <div class="discount">
+                              <span>Discount</span>
+                              <form method="get" action="{% url 'product_:search_single' %}">
+                                    {% csrf_token %}
+                                    <div class="search-field">
+                                        <button class="icon discount-icon-top"><i class="fa fa-search"></i></button>
+                                        <input type="text" class="input discount-input-top" placeholder="Search" name="sub_query">
+                                    </div>
+
+                                  <span><input type="checkbox" class="search-input-top discount-value-top" data-index="< 10%" style="font-size:15px;margin-right:11px;">
+                                      <span class="checkbtn-txt-top" data-index="< 10%"  style="font-size:13px;">1% - 10%</span></span>
+                                  <span><input type="checkbox" class="search-input-top discount-value-top" data-index="< 20%" style="font-size:15px;margin-right:11px;">
+                                      <span class="checkbtn-txt-top" data-index="< 20%"  style="font-size:13px;">10% - 20%</span></span>
+                                  <span><input type="checkbox" class="search-input-top discount-value-top" data-index="< 30%" style="font-size:15px;margin-right:11px;">
+                                      <span class="checkbtn-txt-top" data-index="< 30%"  style="font-size:13px;">20% - 30%</span></span>
+                                  <span><input type="checkbox" class="search-input-top discount-value-top" data-index="< 40%" style="font-size:15px;margin-right:11px;">
+                                      <span class="checkbtn-txt-top" data-index="< 40%"  style="font-size:13px;">30% - 40%</span></span>
+                                  <span><input type="checkbox" class="search-input-top discount-value-top" data-index="< 50%" style="font-size:15px;margin-right:11px;">
+                                      <span class="checkbtn-txt-top" data-index="< 50%"  style="font-size:13px;">40% - 50%</span></span>
+                                  <span><input type="checkbox" class="search-input-top discount-value-top" data-index="< 60%" style="font-size:15px;margin-right:11px;">
+                                      <span class="checkbtn-txt-top" data-index="< 60%"  style="font-size:13px;">50% - 60%</span></span>
+                              </form>
+                          </div>
+                      </div>
+
+                  </div>
+
+                  <div class="main">
+                      <div class="side">
+                           {% csrf_token %}
+                          <form method="get" action="{% url 'product_:filter_page' %}">
+                               {% csrf_token %}
+                            <div class="btn-hold">
+                                <button class="submit-list">Filter</button>
+                                <input type="hidden" id="list-input" name="query">
+                            </div>
+                           </form>
+
+                            <div class="category side2">
+                                <ul>
+                                    <span class="head2" style="padding:7px;">Categories</span>
+                                    {% for titles in categories %}
+                                    <!--<li><a style="color:var(--darkgrey);" href="{% url "product_:vendor_category" %}">{{ titles }}</a></li>-->
+                                    <li class=" {% if titles.children.all %} a-parent {% else %} category-list {% endif %}" data-index="{{titles.slug}}">
+                                        <input class="search-input category-check" data-index="{{ titles.slug }}" type="checkbox">
+                                        <span class="name checkbtn-txt" data-index="{{ titles.slug }}">{{ titles }}</span>
+                                        {% if titles.children.all %}
+                                        <i class="fa fa-caret-down" style="font-size:17px;"></i>
+                                        {% endif %}
+                                    </li>
+                                    <ul class="children" data-parent="{{titles.slug}}" style="display:none;width:100%;">
+                                        {% for children in titles.children.all %}
+                                        <li class="children {% if children.children.all %} a-child {% endif %}" data-index="{{children.slug}}" style="background-color:white">
+                                            <input class="search-input category-check" data-index="{{ children.slug }}" type="checkbox">
+                                            <span class="name checkbtn-txt" data-index="{{ titles.slug }}">{{children.name}}</span>
+                                            {% if children.children.all %}
+                                            <i class="fa fa-caret-down" style="font-size:17px;"></i>
+                                            {% endif %}
+                                        </li>
+                                        <ul class="grand-children" data-parent="{{children.slug}}" style="display:none;width:100%;">
+                                            {% for grand_children in children.children.all %}
+                                            <li class="grand-children {% if grand_children.children.all %} a-grand-child {% endif %}" data-index="{{grand_children.slug}}" style="background-color:white">
+                                                <input class="search-input category-check" data-index="{{ grand_children.slug }}" type="checkbox">
+                                                <span class="name checkbtn-txt" data-index="{{ titles.slug }}">{{grand_children.name}}</span>
+                                            </li>
+                                            {% endfor %}
+                                        </ul>
+                                        {% endfor %}
+                                    </ul>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+
+                          <div class="brand">
+                              <span>Brands</span>
+                              <form method="get" action="{% url 'product_:search_single' %}">
+                                    {% csrf_token %}
+                                    <div class="search-field">
+                                        <button class="icon brand-icon"><i class="fa fa-search"></i></button>
+                                        <input type="text"  class="input brand-icon" placeholder="Search" name="query">
+                                    </div>
+
+                                  {% for i in brands %}
+                                  <span class="block" style="font-size:13px;">
+                                      <input class="search-input brand-value" data-index="{{ i.name }}" type="checkbox" style="font-size:15px;margin-right:11px;">
+                                      <span data-index="{{ i.name }}" class="checkbtn-txt" style="font-size:13px;">{{ i.name }}</span>
+                                  </span>
+                                  {% endfor %}
+                              </form>
+                          </div>
+                          <div class="color">
+                              <span>Color</span>
+                              <div class="search-field">
+                                  <!--{{color_input.color}}-->
+                                  <input id="color-input" style="border-radius:20px;height:24px;width:82%;" name="color" type="text" class="input" placeholder="  choose color">
+                              </div>
+                          </div>
+                          <div class="size">
+                              <span>Size</span>
+                              <form method="get" action="{% url 'product_:search_single' %}">
+                                  {% csrf_token %}
+                                    <div class="search-field">
+                                        <button class="icon size-icon"><i class="fa fa-search"></i></button>
+                                        <input type="text" class="input size-input" placeholder="Search" name="sub_query">
+                                    </div>
+
+                                  <span><input type="checkbox" class="search-input size-value" data-index="S" role="button" style="font-size:15px;margin-right:11px;">
+                                      <span class="checkbtn-txt" data-index="S" style="font-size:13px;">S</span></span>
+                                  <span><input type="checkbox" class="search-input size-value" data-index="M" role="button" style="font-size:15px;margin-right:11px;">
+                                      <span class="checkbtn-txt" data-index="M" style="font-size:13px;">M</span></span>
+                                  <span><input type="checkbox" class="search-input size-value" data-index="L" role="button" style="font-size:15px;margin-right:11px;">
+                                      <span class="checkbtn-txt" data-index="L" style="font-size:13px;">L</span></span>
+                                  <span><input type="checkbox" class="search-input size-value" data-index="X" role="button" style="font-size:15px;margin-right:11px;">
+                                      <span class="checkbtn-txt" data-index="X" style="font-size:13px;">X</span></span>
+                                  <span><input type="checkbox" class="search-input size-value" data-index="XL" role="button" style="font-size:15px;margin-right:11px;">
+                                      <span class="checkbtn-txt" data-index="XL" style="font-size:13px;">XL</span></span>
+                                  <span><input type="checkbox" class="search-input size-value" data-index="XXL" role="button" style="font-size:15px;margin-right:11px;">
+                                      <span class="checkbtn-txt" data-index="XXL" style="font-size:13px;">XXL</span></span>
+                              </form>
+                          </div>
+                          <div class="discount">
+                              <span>Discount</span>
+                              <form method="get" action="{% url 'product_:search_single' %}">
+                                  {% csrf_token %}
+                                  <div class="search-field">
+                                        <button class="icon discount-icon"><i class="fa fa-search"></i></button>
+                                        <input type="text" class="input discount-input" placeholder="Search" name="sub_query">
+                                    </div>
+                                  <span><input type="checkbox" class="search-input discount-value" data-index="< 10%" style="font-size:15px;margin-right:11px;">
+                                      <span class="checkbtn-txt" data-index="< 10%"  style="font-size:13px;">1% - 10%</span></span>
+                                  <span><input type="checkbox" class="search-input discount-value" data-index="< 20%" style="font-size:15px;margin-right:11px;">
+                                      <span class="checkbtn-txt" data-index="< 20%"  style="font-size:13px;">10% - 20%</span></span>
+                                  <span><input type="checkbox" class="search-input discount-value" data-index="< 30%" style="font-size:15px;margin-right:11px;">
+                                      <span class="checkbtn-txt" data-index="< 30%"  style="font-size:13px;">20% - 30%</span></span>
+                                  <span><input type="checkbox" class="search-input discount-value" data-index="< 40%" style="font-size:15px;margin-right:11px;">
+                                      <span class="checkbtn-txt" data-index="< 40%"  style="font-size:13px;">30% - 40%</span></span>
+                                  <span><input type="checkbox" class="search-input discount-value" data-index="< 50%" style="font-size:15px;margin-right:11px;">
+                                      <span class="checkbtn-txt" data-index="< 50%"  style="font-size:13px;">40% - 50%</span></span>
+                                  <span><input type="checkbox" class="search-input discount-value" data-index="< 60%" style="font-size:15px;margin-right:11px;">
+                                      <span class="checkbtn-txt" data-index="< 60%"  style="font-size:13px;">50% - 60%</span></span>
+                              </form>
+                          </div>
+                      </div>
+
+                      <div class="other-box" id="top-selling-container">
+                      {% if product_search %}
+                        <div class="inner-box">
+                            <div class="box-header">
+
+                                <span class="item1">({{product_search.count}}) items found</span>
+                                <div class="item2">
+                                    <span>Sort:</span>
+                                    <select>
+                                        <option>date</option>
+                                        <option>date</option>
+                                        <option>date and time</option>
+                                        <option>date</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                {% for i in product_search %}
+                                {% if i.is_active %}    
+                                {% with i as i %}
+                                    {% include "core/card.html" %}
+                                {% endwith %}
+                                {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                      {% else %}
+                        <p>we dont have the searched item</p>
+                      {% endif %}
+                      </div>
+                  </div>
+
+              </div>
+          </div>
+      </div>
+    </div>
+</section>
+{% endblock %}
+                            <!--<div class="category side2">
+                                <ul>
+                                    <span style="padding:7px;">Categories</span>
+                                    {% for titles in categories %}
+                                   <li class="category-checkbtn-txt {% if titles.children.all %} a-parent {% endif %}" data-index="{{titles.slug}}">
+                                        <input class="search-input {{ titles.slug }}" data-index="{{ titles.slug }}" type="checkbox" style="font-size:15px;margin-right:11px;">
+                                        <span class="checkbtn-txt-cat {{ titles.slug }}" data-index="{{ titles.slug }}">{{ titles }}</span>
+                                        {% if titles.children.all %}
+                                        <i class="fa fa-caret-down" style="font-size:17px;"></i>
+                                        {% endif %}
+                                    </li>
+                                    {% for children in titles.children.all %}
+                                        <ul class="children {% if children.children.all %} a-child {% endif %}" data-index="{{titles.slug}}" style="display:none;width:100%;">
+                                            <li style="background-color:white">
+                                                <input class="search-input {{ children.slug }}" data-index="{{ titles.slug }}" type="checkbox" style="font-size:15px;margin-right:11px;">
+                                                <span class="checkbtn-txt-cat {{ children.slug }}" data-index="{{ titles.slug }}">{{children.name}}{% if children.children.all %}<i class="fa fa-caret-down" style="font-size:17px;"></i>{% endif %}</span>
+                                            </li>
+                                        </ul>
+                                        {% for grand_children in children.children.all %}
+                                        <ul class="grand-children {% if grand_children.children.all %} a-grand-child {% endif %}" data-index="{{titles.slug}}" style="display:none;width:100%;">
+                                            <li style="background-color:white">
+                                                <input class="search-input {{ grand_children.slug }}" data-index="{{ titles.slug }}" type="checkbox" style="font-size:15px;margin-right:11px;">
+                                                <span class="checkbtn-txt-cat {{ grand_children.slug }}" data-index="{{ titles.slug }}">{{grand_children.name}}</span></li>
+                                        </ul>
+                                        {% endfor %}
+                                    {% endfor %}
+                                    {% endfor %}
+                                </ul>
+                            </div>-->
+
+
+{% block scripts %}
+<script>
+$(document).ready(function(){
+    $('.submit-list').on(
+        {click: function(){
+            brands=[]
+            color = document.getElementById('color-input').value
+            $('.search-input').each(function(index, values){
+                if ($(this).is(":checked")){
+                    prod_id=$(this).data('index');
+                    brands.push(prod_id)
+                }
+            });
+            $('.category-check').each(function(index, values){
+                if ($(this).is(":checked")){
+                    brands.pop("has_category")
+                    brands.push("has_category")
+                }
+            });
+            $('.brand-value').each(function(index, values){
+                if ($(this).is(":checked")){
+                    brands.push("has_brand")
+                }
+            });
+            $('.size-value').each(function(index, values){
+                if ($(this).is(":checked")){
+                    brands.push("has_size")
+                }
+            });
+            $('.discount-value').each(function(index, values){
+                if ($(this).is(":checked")){
+                    brands.push("has_discount")
+                }
+            });
+
+            if (color != ''){
+                brands.push(color, 'has_color')
+            }
+            document.getElementById('list-input').value =  brands
+            document.getElementById('list-input-top').value =  brands
+        }}
+    );
+
+
+    $('.submit-list-top').on(
+        {click: function(){
+            brands=[]
+            color = document.getElementById('color-input-top').value
+            $('.search-input-top').each(function(index, values){
+                if ($(this).is(":checked")){
+                    prod_id=$(this).data('index');
+                    brands.push(prod_id)
+                }
+            });
+            $('.category-check-top').each(function(index, values){
+                if ($(this).is(":checked")){
+                    brands.push("has_category")
+                }
+            });
+            $('.brand-value-top').each(function(index, values){
+                if ($(this).is(":checked")){
+                    brands.push("has_brand")
+                }
+            });
+            $('.size-value-top').each(function(index, values){
+                if ($(this).is(":checked")){
+                    brands.push("has_size")
+                }
+            });
+            $('.discount-value-top').each(function(index, values){
+                if ($(this).is(":checked")){
+                    brands.push("has_discount")
+                }
+            });
+
+            if (color != ''){
+                brands.push(color, 'has_color')
+            }
+            document.getElementById('list-input').value =  brands
+            document.getElementById('list-input-top').value =  brands
+        }}
+    );
+
+    $('.search-input').on(
+        {change: function(){
+            var prod_id=$(this).data('index');
+            if ($(this).is(":checked")){
+                $('.search-input-top[data-index="'+ prod_id +'"]').attr("checked",true);
+            } else {
+                $('.search-input-top[data-index="'+ prod_id +'"]').attr("checked",false);
+            }
+        }}
+    );
+
+    $('.search-input-top').on(
+        {change: function(){
+            var prod_id=$(this).data('index');
+            if ($(this).is(":checked")){
+                $('.search-input[data-index="'+ prod_id +'"]').attr("checked",true);
+            } else {
+                $('.search-input[data-index="'+ prod_id +'"]').attr("checked",false);
+            }
+        }}
+    );
+    var cloned = $('.brand > form > .block').clone()
+    $('input.brand-icon').on(
+        {keyup: function(){
+            $.ajax({
+                type:"GET",
+                url:"{% url 'product_:search_brand' %}",
+                data: {
+                    brands: $(this).val(),
+                    csrfmiddlewaretoken: "{{ csrf_token }}",
+                    action: 'get'
+                },
+                success: function(json){
+                    if (json.item.table){
+                        $(json.item.table).each(function(index, values){
+                            $('.brand > form > .block').remove()
+                            $('.brand > form').append(
+                                  '<span class="block" style="font-size:13px;"> \
+                                      <input class="search-input brand-value" data-index="' + values.pk + '" type="checkbox" style="font-size:15px;margin-right:11px;"> \
+                                      <span data-index="' + values.pk + '" class="checkbtn-txt" style="font-size:13px;">' + values.fields.name + '</span> \
+                                  </span>');
+                        })
+                    } else {
+                        $('.brand > form > .block').remove()
+                        $('.brand > form').append(cloned);
+                    }
+                },
+                error: function(xhr, errmsg, err){
+                    console.log('completed with error');
+                }
+            });
+        }}
+    );
+
+    $('.checkbtn-txt').on(
+        {click: function(){
+            var prod_id=$(this).data('index');
+            if ($('.search-input[data-index="'+ prod_id +'"]').is(":checked")){
+                $('.search-input[data-index="'+ prod_id +'"]').attr("checked",false);
+                $('.search-input-top[data-index="'+ prod_id +'"]').attr("checked",false);
+            } else {
+                $('.search-input[data-index="'+ prod_id +'"]').attr("checked",true);
+                $('.search-input-top[data-index="'+ prod_id +'"]').attr("checked",true);
+            }
+        }}
+    );
+
+    $('.checkbtn-txt-top').on(
+        {mousedown: function(){
+            var prod_id=$(this).data('index');
+            if ($('.search-input[data-index="'+ prod_id +'"]').is(":checked")){
+                $('.search-input[data-index="'+ prod_id +'"]').attr("checked",false);
+                $('.search-input-top[data-index="'+ prod_id +'"]').attr("checked",false);
+            } else {
+                $('.search-input[data-index="'+ prod_id +'"]').attr("checked",true);
+                $('.search-input-top[data-index="'+ prod_id +'"]').attr("checked",true);
+            }
+        }}
+    );
+
+    $('li.category-list').on(
+        {mouseenter: function (){
+            var parent_id=$(this).data('index');
+            $(this).css('background-color','var(--lightgrey)')
+            $('ul.children').slideUp(500);
+            $('ul.grand-children').slideUp(500);
+        },
+        mouseleave: function (){
+            $(this).css('background-color','var(--normalwhite)')
+        }}
+    )
+    $('.a-parent').on(
+        {mouseenter: function (){
+            var parent_id=$(this).data('index');
+            $(this).css('background-color','var(--lightgrey)')
+            $('ul.children').not('ul.children[data-parent="'+ parent_id +'"]').slideUp(500);
+            $('ul.children[data-parent="'+ parent_id +'"]').slideToggle(500);
+            $('ul.grand-children').slideUp(500);
+        },
+        mouseleave: function (){
+            $(this).css('background-color','var(--normalwhite)')
+        }}
+    )
+    $('.a-child').on(
+        {mouseenter: function (){
+            var parent_id=$(this).data('index');
+            $(this).css('background-color','var(--lightgrey)')
+            $('ul.grand-children').not('ul.grand-children[data-parent="'+ parent_id +'"]').slideUp(500);
+            $('ul.grand-children[data-parent="'+ parent_id +'"]').slideToggle(500);
+
+            //$('ul[data-parent="'+ parent_id +'"]').slideToggle(500);
+        },
+        mouseleave: function (){
+            $(this).css('background-color','var(--normalwhite)')
+        }}
+    )
+    $('li.grand-children').on(
+        {mouseenter: function (){
+            $(this).css('background-color','var(--lightgrey)')
+        },
+        mouseleave: function (){
+            $(this).css('background-color','var(--normalwhite)')
+        }}
+    )
+
+
+
+
+
+    /* WHEN I GOT MY AJAX WORKING
+
+    $('.checkbtn-txt').on(
+        {mousedown: function(){
+            var prod_id=$(this).data('index');
+            if ($('.search-input[data-index="'+ prod_id +'"]').is(":checked")){
+                $('.search-input[data-index="'+ prod_id +'"]').attr("checked",false);
+            } else {
+                $('.search-input[data-index="'+ prod_id +'"]').attr("checked",true);
+            }
+            $('.search-input').each(function(index, values){
+                if ($(this).is(":checked")){
+                    prod_id=$(this).data('index');
+                    $.ajax({
+                        type:"GET",
+                        url:"{% url 'product_:search_single' %}",
+                        data: {
+                            productID: prod_id,
+                            csrfmiddlewaretoken: "{{ csrf_token }}",
+                            action: 'get'
+                        },
+                        success: function(json){
+                            console.log('completed with success');
+                            var arrOfstrings=json.product_search
+                            $('.inner-box').html(json.product_search)
+
+                        },
+                        error: function(xhr, errmsg, err){
+                            console.log('completed with error');
+                        }
+                    });
+                }
+            });
+        }}
+    );
+
+    $('.search-input').on(
+        {click: function(){
+            console.log('t5555555 with error');
+            $('.search-input').each(function(index, values){
+                if ($(this).is(":checked")){
+                    prod_id=$(this).data('index');
+                    $.ajax({
+                        type:"GET",
+                        url:"{% url 'product_:search_single' %}",
+                        data: {
+                            productID: prod_id,
+                            csrfmiddlewaretoken: "{{ csrf_token }}",
+                            action: 'get'
+                        },
+                        success: function(json){
+                            console.log('completed with success');
+                            var arrOfstrings=json.product_search
+                            $('.inner-box').html(json.product_search)
+
+                        },
+                        error: function(xhr, errmsg, err){
+                            console.log('completed with error');
+                        }
+                    });
+                }
+            });
+        }}
+    ); */
+
+
+    $('.add-to-cart-btn').on(
+        {click: function(e){
+            e.preventDefault();
+            var prod_id=$(this).data('index');
+            $.ajax({
+                type:"POST",
+                url:"{% url 'cart_:cart_detail' %}",
+                data: {
+                    productQTY: "1",
+                    productID: $(this).data('index'),
+                    csrfmiddlewaretoken: "{{ csrf_token }}",
+                    mainAction: 'post',
+                    subAction: 'add'
+                },
+                success: function(json){
+                    $("a > .cart > #qty").text(json.cart_length);
+                },
+                error: function(xhr, errmsg, err){
+                    console.log('completed with error');
+                }
+            });
+
+        }}
+    )
+    $('.head').on(
+        {mouseenter: function(){
+            $('.side2').slideToggle(500);
+        },
+        mousedown: function(){
+            $('.side2').slideToggle(500);
+        }}
+    );
+
+});
+</script>
+{% endblock %}

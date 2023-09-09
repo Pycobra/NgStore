@@ -1,0 +1,333 @@
+<div id="deliver-address-details" class="lower-block">
+    <div class="first-box">
+        <div class="block block1">
+            <div class="head">
+                <span>Delivery Options</span>
+                <span>Please select your delivery options</span>
+            </div>
+
+            <div class="messages">
+                <div class="body">
+                    <span>
+                        <i style="margin-right:5px;" class="fa fa-info"></i>
+                        <span class="text">Please select a delivery method</span>
+                    </span>
+                    <div class="clear-delivery-msg">&times;</div>
+                </div>
+            </div>
+
+            <div class="card-col">
+                {% if mydeliveryopt %}
+                    <div class="card removable-card" data-index="{{mydeliveryopt.id}}">
+                        <div class="card-wrap">
+                            <div class="place1">
+                                <div class="icon">
+                                    {% if deliveries.delivery_method == 'Bike' %}
+                                        <i class="fa fa-motorcycle"></i>
+                                    {% else %}
+                                        <i class="fa fa-car"></i>
+                                    {% endif %}
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-text">{{mydeliveryopt.delivery_name}}</p>
+                                    <p class="card-text"><span>Your order should be delivered within</span> <span>{{mydeliveryopt.delivery_timeframe}}</span></p>
+                                    <p class="card-text"><span>delivery region</span> <span>{{mydeliveryopt.delivery_region}}</span></p>
+                                    <p class="card-text"><span>delivery method</span> <span>{{mydeliveryopt.delivery_method}}</span></p>
+                                    <p class="card-text"><span>delivery window</span> <span>{{mydeliveryopt.delivery_window}}</span></p>
+                                </div>
+                            </div>
+                            <div class="icon2">
+                                <i style="color:var(--green)" class="fa fa-check"></i> 
+                                <input class="deliveryOption" type="radio" name="deliveryOption" value="{{mydeliveryopt.id}}">
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <button class="select-delivery" style="{% if deliveryoptions.count == 0 %}display:none;{% endif %} margin:10px;margin-bottom:15px;">
+                            <span>hide other delivery method</span>
+                             <i style="color:var(--green)" class="fa fa-caret-up"></i>         
+                        </button>
+                    </div>
+                {% endif %}
+
+                <div class="delivery other_card-col_container">
+                    {% for deliveries in deliveryoptions %}
+                    {% if deliveries.is_active %}
+                        <div class="card" data-index="{{deliveries.id}}">
+                            <div class="card-wrap">
+                                <div class="place1">
+                                    <div class="icon">
+                                        {% if deliveries.delivery_method == 'Bike' %}
+                                            <i class="fa fa-motorcycle"></i>
+                                        {% else %}
+                                            <i class="fa fa-car"></i>
+                                        {% endif %}
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-text">{{deliveries.delivery_name}}</p>
+                                        <p class="card-text"><span>Your order should be delivered within</span> <span>{{deliveries.delivery_timeframe}}</span></p>
+                                        <p class="card-text"><span>delivery region</span> <span>{{deliveries.delivery_region}}</span></p>
+                                        <p class="card-text"><span>delivery method</span> <span>{{deliveries.delivery_method}}</span></p>
+                                        <p class="card-text"><span>delivery window</span> <span>{{deliveries.delivery_window}}</span></p>
+                                    </div>
+                                </div>
+                                <div class="icon2">
+                                    <i  style="display:none;color:var(--green)" class="fa fa-check"></i> 
+                                    <input class="deliveryOption" type="radio" name="deliveryOption" value="{{deliveries.id}}">
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="block block2">
+            <div class="head">
+                <span>Delivery Address</span>
+                <span>Please select your delivery address</span>
+            </div>
+
+            <div class="messages">
+                <div class="body">
+                    <span style="display:flex;flex-wrap:no-wrap;">
+                        <i style="margin-right:5px;" class="fa fa-info"></i>
+                        <span class="text">Please select a delivery address</span>
+                    </span>
+                    <div class="clear-address-msg">&times;</div>
+                </div>
+            </div>
+
+            <div class="card-col">
+                {% if mydeliveryadd %}
+                    <div class="card  removable-card" data-index="{{mydeliveryadd.id}}">
+                        <div class="card-wrap">
+                            <div class="card-body">
+                                <p class="card-text"><span>Fullname: </span> <span>{{mydeliveryadd.full_name}}</span></p>
+                                <p class="card-text"><span>Phone: </span> <span>{{mydeliveryadd.phone}}</span></p>
+                                <p class="card-text"><span>Email2:</span> <span class="email-text" data-index="{{mydeliveryadd.id}}">{{mydeliveryadd.email}}</span></p>
+                                <p class="card-text"><span>Post code:</span> <span>{{mydeliveryadd.postal_code}}</span></p>
+                                <p class="card-text"><span>Town/city:</span> <span>{{mydeliveryadd.address_line1}}</span></p>
+                                <p class="card-text"><span>Address line1:</span> <span>{{mydeliveryadd.address_line2}}</span></p>
+                                <p class="card-text"><span>Address line2:</span> <span>{{mydeliveryadd.city}}</span></p>
+                            </div>
+                            <div class="icon2">
+                                <i style="color:var(--green)" class="fa fa-check"></i>
+                                <input class="addressOption" type="radio" name="addressOption" value="{{mydeliveryadd.id}}">
+                            </div>
+                        </div>
+                        <span class="icon-wrap">
+                            <span class="icon"><i class="fa fa-trash" data-index="{{mydeliveryadd.id}}"></i></span>
+                            <span class="icon"><i class="fa fa-pencil" data-index="{{mydeliveryadd.id}}"></i></span>
+                        </span>
+                    </div>
+                    <div>
+                        <button class="select-address"  style="{% if deliveryaddressess.count == 0 %}display:none;{% endif %} margin:10px;margin-bottom:15px;">
+                            <span>hide other delivery address</span>
+                            <i style="color:var(--green)" class="fa fa-caret-up"></i>         
+                        </button>
+                    </div>
+                {% endif %}
+
+                <div class="address other_card-col_container">
+                    {% if deliveryaddressess %}
+                    {% for addressess in deliveryaddressess %}
+                    <div class="card" data-index="{{addressess.id}}">
+                        <div class="card-wrap">
+                            <div class="card-body">
+                                <p class="card-text"><span>Fullname: </span> <span>{{addressess.full_name}}</span></p>
+                                <p class="card-text"><span>Phone: </span> <span>{{addressess.phone}}</span></p>
+                                <p class="card-text"><span>Email5:</span> <span class="email-text" data-index="{{addressess.id}}">{{addressess.email}}</span></p>
+                                <p class="card-text"><span>Post code:</span> <span>{{addressess.postal_code}}</span></p>
+                                <p class="card-text"><span>Town/city:</span> <span>{{addressess.address_line1}}</span></p>
+                                <p class="card-text"><span>Address line1:</span> <span>{{addressess.address_line2}}</span></p>
+                                <p class="card-text"><span>Address line2:</span> <span>{{addressess.town_city}}</span></p>
+                            </div>
+                            <div class="icon2">
+                                <i style="color:var(--green)" class="fa fa-check"></i>
+                                <input class="addressOption" type="radio" name="addressOption" value="{{addressess.id}}">
+                            </div>
+                        </div>
+                        <span class="icon-wrap">
+                            <span class="icon"><i class="fa fa-trash" data-index="{{addressess.id}}"></i></span>
+                            <span class="icon"><i class="fa fa-pencil" data-index="{{addressess.id}}"></i></span>
+                        </span>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+                <div class=" card3">
+                    <a href="{% url 'account_:add_address' %}">
+                        <div class="card-wrap">
+                                <i class="fa fa-plus"></i><span>Add address</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include 'checkout/checkout.html' %}
+</div>
+
+
+{% block scripts %}
+    <!-- <script src="https://js.stripe.com/v3/"></script> -->
+    <script>
+    $(document).ready(function(){
+        $('.del-address').on(
+            {click: function(e){
+            var address_id=$(this).data('index');
+            $.ajax({
+              type: "POST",
+              url: '{% url "cart_:cart_update_address" %}',
+              data: {
+                address_id: address_id,
+                csrfmiddlewaretoken: "{{csrf_token}}",
+                action: "delete_address",
+              },
+              success: function (json) {
+                  $('.card[data-index="'+ address_id +'"]').remove()
+                  if (json.address_in_session == 'true'){
+                      $('.select-address').css('display', 'none')
+                      $('.address > .card').slideToggle(1000)
+                  }
+                  $('.block2 > .messages > .body > span > .text').text('Address with "' + address_id + '" id successfully deleted')
+                  $('.block2 > .messages').slideDown(1000)
+              },
+              error: function (xhr, errmsg, err) {},
+            });
+
+            }}
+        )
+        $('.select-delivery').on(
+            {click: function(e){
+                this.innerHTML=`<span>${
+                    document.querySelector('.block1 > .card-col > .other_card-col_container').style.display
+                    ? 'hide' : 'show'
+                }
+                other delivery method</span> \
+                <i style="color:var(--green)" class="fa fa-caret-${
+                    document.querySelector('.block1 > .card-col > .other_card-col_container').style.display
+                    ? 'up' : 'down'
+                }"></i>`
+                $('.block1 > .card-col > .other_card-col_container').slideToggle(1000)
+            }}
+        )
+        $('.select-address').on(
+            {click: function(e){
+                this.innerHTML=`<span>${
+                    document.querySelector('.block2 > .card-col > .other_card-col_container').style.display
+                    ? 'hide' : 'show'
+                }
+                other delivery address</span> \
+                <i style="color:var(--green)" class="fa fa-caret-${
+                    document.querySelector('.block1 > .card-col > .other_card-col_container').style.display
+                    ? 'up' : 'down'
+                }"></i>`
+                $('.block2 > .card-col > .other_card-col_container').slideToggle(1000)
+            }}
+        )
+        $('.clear-delivery-msg').on(
+            {click: function(e){
+                $('.block1 > .messages').slideUp(500)
+            }}
+        )
+        $('.clear-address-msg').on(
+            {click: function(e){
+                $('.block2 > .messages').slideUp(500)
+            }}
+        )
+      
+      $(document).on(
+        'change', 'input[type=radio][name=deliveryOption]', function(e){
+            e.preventDefault();
+            var deliveryOption=$(this).val();
+            $.ajax({
+            type: "POST",
+            url: '{% url "checkout_:cart_update_delivery" %}',
+            data: {
+                deliveryoption: deliveryOption,
+                csrfmiddlewaretoken: "{{csrf_token}}",
+                action: "post",
+            },
+            success: function (json) {
+                $(`.block1 > .card-col > .removable-card > .card-wrap > .icon2 > input`).css("display","block")
+                $(`.block1 > .card-col > .removable-card > .card-wrap > .icon2 > i`).css("display","none")
+                const prevMainDelivery = $('.block1 > .card-col > .removable-card')
+                prevMainDelivery.removeClass("removable-card")
+                $('.block1 > .card-col > .other_card-col_container').prepend(prevMainDelivery)
+                
+                newMainDelivery = $('.block1 > .card-col > .other_card-col_container > .card[data-index="'+ deliveryOption +'"]').clone(true)
+                newMainDelivery.addClass("removable-card")
+                $('.card[data-index="'+ deliveryOption +'"]').remove()
+                $('.block1 > .card-col').prepend(newMainDelivery)
+                $('.block1 > .card-col > .removable-card > .card-wrap > .icon2 > i').css("display","block")
+                $('.block1 > .card-col > .removable-card > .card-wrap > .icon2 > input').css("display","none");
+
+                $('.select-delivery').remove()
+                other_card = $('.block1 > .card-col > .other_card-col_container > .card')
+                if (other_card){
+                    const selectAnotherDelivery = document.createElement('div')
+                    selectAnotherDelivery.className = "select-delivery"
+                    selectAnotherDelivery.innerHTML = `<button style="margin:10px;margin-bottom:15px;">select another delivery method</button>`
+                    document.querySelector('.block1 > .card-col > .other_card-col_container').insertAdjacentElement('beforebegin' ,selectAnotherDelivery)    
+                }
+
+                alert('You chose a new delivery option')
+                const container = document.querySelector('.lower-block > .first-box');
+                containerTop = container.offsetTop
+                container.scrollTo(0, containerTop)
+            },
+            error: function (xhr, errmsg, err) {},
+            });
+      });
+
+      $(document).on(
+        'change', 'input[type=radio][name=addressOption]', function(e){
+            e.preventDefault();
+            var addressOption=$(this).val();
+            $.ajax({
+              type: "POST",
+              url: '{% url "cart_:cart_update_address" %}',
+              data: {
+                address_id: addressOption,
+                csrfmiddlewaretoken: "{{csrf_token}}",
+                action: "post",
+            },
+            success: function (json) {
+                $(`.block2 > .card-col > .removable-card > .card-wrap > .icon2 > input`).css("display","block")
+                $(`.block2 > .card-col > .removable-card > .card-wrap > .icon2 > i`).css("display","none")
+                const prevMainDelivery = $('.block2 > .card-col > .removable-card')
+                prevMainDelivery.removeClass("removable-card")
+                $('.block2 > .card-col > .other_card-col_container').prepend(prevMainDelivery)
+                
+                
+                newMainDelivery = $('.block2 > .card-col > .other_card-col_container > .card[data-index="'+ addressOption +'"]').clone(true)
+                newMainDelivery.addClass("removable-card")
+                $('.card[data-index="'+ addressOption +'"]').remove()
+                $('.block2 > .card-col').prepend(newMainDelivery)
+                $('.block2 > .card-col > .removable-card > .card-wrap > .icon2 > i').css("display","block")
+                $('.block2 > .card-col > .removable-card > .card-wrap > .icon2 > input').css("display","none");
+
+                $('.select-address').remove()
+                other_card = $('.block2 > .card-col > .other_card-col_container > .card')
+                if (other_card){
+                    const selectAnotherAddress = document.createElement('div')
+                    selectAnotherAddress.className = "select-address"
+                    selectAnotherAddress.innerHTML = `<button style="margin:10px;margin-bottom:15px;">select another address</button>`
+                    document.querySelector('.block2 > .card-col > .other_card-col_container').insertAdjacentElement('beforebegin' ,selectAnotherAddress)    
+                }
+
+                alert('You chose a new address')
+                const container = document.querySelector('.lower-block > .first-box');
+                containerTop = container.offsetTop
+                container.scrollTo(0, containerTop)
+            },
+            error: function (xhr, errmsg, err) {},
+            });
+      });
+    });
+    </script>
+{% endblock %}
+

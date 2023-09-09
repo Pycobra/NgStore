@@ -1,0 +1,17 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Add Product | {{ request.user.which_vendor.name }}{% endblock %}
+
+{% block content %}
+    <h1>Add Product</h1>
+
+    <form method="post" action="." enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="field">
+            <div class="control">
+                <button class="button is-dark is-uppercase"  type="submit">Submit</button>
+            </div>
+        </div>
+    </form>
+{% endblock %}

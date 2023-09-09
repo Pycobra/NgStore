@@ -1,0 +1,153 @@
+{% extends 'core/base.html' %}
+
+
+{% load static %}
+{% block stylesheet %}{% static 'styles/account/user_wishlist.css' %}{% endblock %}
+
+{% block title %}Your Wish List{% endblock %}
+
+{% block content %}
+<section id="main-container">
+    <div class="main-box">
+          <h1 class="main-head">My Wishlist</h1>
+          <div class="box">
+              {% if wishlist %}
+              <div class="inside-box">
+                  <div class="sub-head">
+                      <div><span>All</span><span id="wish1" style="font-size:15px;font-weight:normal;"> ({{wishlist.count}}) items</span></div>
+                      <div class="wish2"><span style="font-size:15px;font-weight:normal;">1 of 3 pages</span></div>
+                  </div>
+                  <div class="body-row">
+                      {% for i in wishlist  %}
+                      <a href="{% url 'product_:product_detail_' i.category.slug i.slug %}" class="">
+                          <div class=" card wish-card" data-index="{{ i.id }}">
+                              {% for image in i.product_images.all %}
+                              {% if image.is_main %}
+                              <div class="card-img">
+                                  <img src="{{ image.images.url }}" alt="{{ image.images.alt_text }}">
+                              </div>
+                              <div class="card-text">
+                                  <strong class="title">{{ i.title|slice:":50" }}</strong>
+                                  {% if i.discount_price != 0 %}
+                                  <span>
+                                      <strong class="discount_price">{{ i.discount_price }} </strong>
+                                      <strike class="price" style="color:#ACADA8;">{{ i.price }} </strike>
+                                  </span>
+                                  {% else %}
+                                  <strong class="price">{{ i.price }} </strong>
+                                  {% endif %}
+                              </div>
+                              <button class="remove-wishlist" data-index="{{ i.id }}"><i class="fa fa-trash" style="font-weight:500;font-size:25px;color:var(--normalwhite)"></i></button>
+                              {% endif %}
+                              {% endfor %}
+                          </div>
+                      </a>
+                      {% endfor %}
+                  </div>
+              </div>
+              {% else %}
+              <div class="empty">
+                <p>No products have been added to your wishlist yet</p>
+              </div>
+              {% endif %}
+
+
+              <h1 class="">My Likes</h1>
+              {% if likes %}
+              <div class="inside-box">
+                  <div class="sub-head">
+                      <div><span>All</span><span id="likes1" style="font-size:15px;font-weight:normal;"> ({{likes.count}}) items</span></div>
+                      <div class="likes2"><span style="font-size:15px;font-weight:normal;">1 of 3 pages</span></div>
+                  </div>
+                  <div class="body-row">
+                      {% for i in likes  %}
+                      <a href="{% url 'product_:product_detail_' i.category.slug i.slug %}" class="">
+                          <div class="card like-card" data-index="{{ i.id }}">
+                              {% for image in i.product_images.all %}
+                              {% if image.is_main %}
+                              <div class="card-img">
+                                  <img src="{{ image.images.url }}" alt="{{ image.images.alt_text }}">
+                              </div>
+                              <div class="card-text">
+                                  <strong class="title">{{ i.title|slice:":50" }}</strong>
+                                  {% if i.discount_price != 0 %}
+                                  <span>
+                                      <strong class="discount_price">{{ i.discount_price }} </strong>
+                                      <strike class="price" style="color:#ACADA8;">{{ i.price }} </strike>
+                                  </span>
+                                  {% else %}
+                                  <strong class="price">{{ i.price }} </strong>
+                                  {% endif %}
+                              </div>
+                              <button class="add-like" data-index="{{ i.id }}"><i class="fa fa-trash" style="font-weight:500;font-size:25px;color:var(--normalwhite)"></i></button>
+                              {% endif %}
+                              {% endfor %}
+                          </div>
+                      </a>
+                      {% endfor %}
+                  </div>
+              </div>
+              {% else %}
+              <div class="empty">
+                <p>You like no item</p>
+              </div>
+              {% endif %}
+          </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+$(document).ready(function(){
+    $('.remove-wishlist').on(
+        {click: function(e){
+            e.preventDefault();
+            var prod_id=$(this).data('index');
+            $.ajax({
+                type:"GET",
+                url:"{% url "account_:remove_from_wishlist" %}",
+                data: {
+                    productID: $(this).data('index'),
+                    csrfmiddlewaretoken: "{{ csrf_token }}",
+                    action: 'get'
+                },
+                success: function(json){
+                    $('.wish-card[data-index="'+ prod_id +'"]').remove();
+                    $('#wish1').text(' (' + json.wishlist_cnt + ') items')
+                },
+                error: function(xhr, errmsg, err){
+                    console.log('completed with error');
+                }
+            });
+
+        }}
+    )
+
+   $('.add-like').on(
+        {click: function(e){
+            e.preventDefault();
+            var prod_id=$(this).data('index');
+            $.ajax({
+                type:"GET",
+                url:"{% url "account_:remove_from_likes" %}",
+                data: {
+                    productID: $(this).data('index'),
+                    csrfmiddlewaretoken: "{{ csrf_token }}",
+                    action: 'get'
+                },
+                success: function(json){
+                    $('.like-card[data-index="'+ prod_id +'"]').remove();
+                    $('#likes1').text(' (' + json.likes_cnt + ') items')
+                },
+                error: function(xhr, errmsg, err){
+                    console.log('completed with error');
+                }
+            });
+
+        }}
+
+   )
+});
+</script>
+{% endblock %}

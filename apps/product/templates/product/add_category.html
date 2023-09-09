@@ -1,0 +1,49 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Add Category {% endblock %}
+
+
+{% block content %}
+<style>
+</style>
+<div class="title">
+    <div class="hhh">
+        <form method="post" action="." id="category-form">
+            {% csrf_token %}
+            <div class="head">
+                <h3>Add Category</h3>
+                {% if form.errors %}
+                <p class="form-alert" role="alert">Errors: Username or Password incorrect</p>
+                {% for field in form %}
+                {% if field.errors %}
+                <div class="">
+                    <li><strong>{{ field.label }}: </strong>{{ field.errors|striptags }}</li>
+                </div>
+                <div class="notification is-danger">
+                    <li><strong>{{ field.label }}: </strong>{{ field.errors|striptags }}</li>
+                </div>
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+            </div>
+            <div class="body">
+                <div class="header">
+                    <div class="field">
+                        <div class="label"><label>{{ form.name.label }}翸</label></div>
+                        <div class="input">{{ form.name }}</div>
+                    </div>
+                    <div class="field">
+                        <div class="label"><label>{{ form.parent.label }}</label></div>
+                        <div class="input">{{ form.parent }}</div>
+                    </div>
+                </div>
+                <div class="footer">
+                    <button class="button" type="submit">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+{% endblock %}

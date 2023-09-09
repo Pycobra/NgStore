@@ -1,0 +1,135 @@
+
+<div class="checkout">
+    <div class="box">
+        <span style="position:absolute;top:30px;left:0;width:100%;height:1px;background-color:#BBBCB6;"></span>
+        <span style="position:absolute;top:143px;left:0;width:100%;height:1px;background-color:#BBBCB6;"></span>
+        <div class="block1">
+            <span style="width:100%;font-weight:600;text-align:center;">ORDER SUMMARY</span>
+            <div class="unit-price">
+                <span>Total quantity</span><span class="total-qty">{{ cart|length }}</span>
+            </div>
+            <div class="discount">
+                <span>Total Price</span><span class="total-cost">N{{cart.get_subtotal_cost}}</span>
+            </div>
+            <div class="discount">
+                <span>Estimated Tax</span><span>0</span>
+            </div>
+            <div class="unit-total">
+                <span>Delivery Fee</span><span id="delivery-amt">{{cart.get_delivery_price}}</span>
+            </div>
+            <div class="total">
+                <span>FINAL TOTAL</span><span id="final-total">N{{ cart.get_total_cost }}</span>
+            </div>
+        </div>
+        <form id="paystackPaymentForm">   
+            <button  type="submit" class="paystack">
+                <img style="width:100px;height:25px;object-fit:cover;" src="/media/images/paystack/paystack.png">    
+            </button>
+        </form>
+    </div>
+</div>
+
+
+{% block scripts %}
+    <!-- <script src="https://js.stripe.com/v3/"></script> -->
+    <script>
+    var paymentForm = document.getElementById('paystackPaymentForm');
+    paystackPaymentForm.addEventListener('submit', payWithPaystack.bind(this));
+    
+    //$('.pay').on('click', function(e) {
+    function payWithPaystack(e){
+        e.preventDefault();
+        $.ajax({
+            url: "{% url 'checkout_:user_details_authenticated' %}",
+            method: 'get',
+            data: {
+                csrfmiddlewaretoken: "{{ csrf_token }}",
+            },
+            success: function (response) {
+                const {userHasdeliveryopt, userHasdeliveryadd, email, delivery_price, 
+                    phone, user_name, amt, key} = response
+                    console.log(response, "response response response")
+                if (userHasdeliveryopt && userHasdeliveryadd){
+                    const total_paid = amt + delivery_price
+                    const amount = total_paid * 100
+                    var handler = PaystackPop.setup({
+                        key: key,
+                        email: email,
+                        amount: amount,
+                        currency: 'NGN',
+                        ref: ''+Math.floor((Math.random() * 1000000000) + 1),
+                        metadata: { 
+                            name: user_name, 
+                            phone: phone 
+                        },
+                        callback: function(response) {
+                            ref = response.reference
+                            $.ajax({
+                                url: "{% url 'checkout_:complete_payment2' %}",
+                                method: 'post',
+                                data: {
+                                    ref: response.reference,
+                                    total_paid: total_paid,
+                                    csrfmiddlewaretoken: "{{ csrf_token }}",
+                                    action: 'post',
+                                },
+                                success: function (response) {
+                                // the transaction status is in response.data.status
+                                }
+
+                            });
+                        },
+                        onClose: function() {
+                            alert('Transaction was not completed, window closed.');
+                        },
+                    });
+                    handler.openIframe();
+                }
+                if (!userHasdeliveryopt && !userHasdeliveryadd){
+                    console.log('not delivering and not addressing')
+                    $('.block1 > .messages').slideDown(1000)
+                    $('.block2 > .messages').slideDown(1000)
+                }
+                else if (!userHasdeliveryopt){
+                    console.log('not delivering')
+                    $('.block1 > .messages').slideDown(1000)
+                }
+                else if (!userHasdeliveryopt){
+                    console.log('not addressing')
+                    $('.block2 > .messages').slideDown(1000)
+                }
+            }
+        })
+    }
+    //})
+
+    /*
+    var stripe = Stripe['{{ stripe_pub_key }}'];
+    var elements = stripe.elements();
+    var card = elements.create('card');
+    card.mount('#card-element')
+    var form = document.getElementById('payment-form');
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        stripe.createToken(card).then(function(result) {
+            if (result.error) {
+                var errorElement = document.getElementById('card-errors')
+                errorElement.textContent = result.error.message;
+            } else {
+                stripeTokenHandler(result.token);
+            }
+        });
+    });
+
+    function stripeTokenHandler(token) {
+        var form = document.getElementById('payment-form');
+        var hiddenInput = document.createElement('input');
+        hiddenInput.setAttribute('type','hidden');
+        hiddenInput.setAttribute('name','stripe_token');
+        hiddenInput.setAttribute('value',token.id);
+        form.appendChild(hiddenInput);
+        form.submit();
+    } */
+    </script>
+{% endblock %}
+

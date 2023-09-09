@@ -1,0 +1,102 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block title %}Delivery Options{%endblock %}
+{% block content %}
+
+<div class="container">
+  <div class="col-12">
+    <h1 class="h2">Delivery Options</h1>
+  </div>
+  <div class="col-12">
+    <p>Select your delivery options</p>
+  </div>
+  <hr />
+</div>
+
+
+<div class="container">
+{% if messages %}
+<div class="alert alert-warning" alert-{{ message.tags }}" role="alert">
+  {% for message in messages  %}
+    {{message|safe}}
+  {% endfor %}
+</div>
+{% endif %}
+  <div class="row g-3">
+    {% if deliveryoptions|length == 0 %}
+    <div class="col-12">There are no delivery options <a href="{% url "core_:frontpage" %}">Shop</a></div>
+    {% else %}
+    <div class="">
+      <div class="">
+        <div class="">Sub Total:</div>
+        <div class=""><span class="">£</span><span id="sub_total"
+            class="">{{cart.get_subtotal_cost}}</span></div>
+      </div>
+      <div class="">
+        <div class="">Delivery Cost:</div>
+        <div class=""><span class="5">£</span><span id="delivery_price"
+            class="">{{cart.get_delivery_price}}</span></div>
+      </div>
+      <div class="">
+        <div class="">Total:</div>
+        <div class=""><span class="">£</span><span id="total"
+            class="">{{cart.get_total_cost}}</span></div>
+      </div>
+      <a role="button" href="{% url "checkout_:delivery_address" %}" class=""
+        type="button">Pay Securely</a>
+    </div>
+    <div class="">
+      {% for option in deliveryoptions %}
+      {% if option.is_active %}
+      <div class="card" data-index="{{option.id}}">
+        <div class="row g-0">
+          <div class="">
+            <i class="fa fa-car"></i>
+          </div>
+          <div class="">
+            <div class="card-body">
+              <p class="card-text">{{option.delivery_name}}</p>
+              <p class="card-text">Your order should be delivered within {{option.delivery_timeframe}} day</p>
+              <p class="card-text"><span>delivery region</span> <span>{{option.delivery_region}}</span></p>
+              <p class="card-text"><span>delivery method</span> <span>{{option.delivery_method}}</span></p>
+              <p class="card-text"><span>delivery window</span> <span>{{option.delivery_window}}</span></p>
+
+            </div>
+          </div>
+          <div class="">
+            <input class="" type="radio" {% if request.user.order_user.payment_option == option %} checked {% endif %} name="deliveryOption" id="{{option.id}}"
+              value="{{option.id}}">
+          </div>
+        </div>
+      </div>
+      {% endif %}
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+<script>
+  $('input[type=radio][name=deliveryOption]').on('change', function(e) {
+    e.preventDefault();
+    console.log($(this).val())
+    $.ajax({
+      type: "POST",
+      url: '{% url "checkout_:cart_update_delivery" %}',
+      data: {
+        deliveryoption: $(this).val(),
+        csrfmiddlewaretoken: "{{csrf_token}}",
+        action: "post",
+      },
+      success: function (json) {
+        document.getElementById("total").innerHTML = json.total;
+        document.getElementById("delivery_price").innerHTML = json.delivery_price;
+      },
+      error: function (xhr, errmsg, err) {},
+    });
+    
+  });
+</script>
+
+
+{% endblock %}

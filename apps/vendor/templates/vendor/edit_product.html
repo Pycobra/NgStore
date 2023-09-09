@@ -1,0 +1,206 @@
+{% extends 'core/base.html' %}
+
+{% load static %}
+{% block stylesheet %}{% static 'styles/account/forms.css' %}{% endblock %}
+
+{% block title %}Edit Product | {{ request.user.which_vendor.store_name }}{% endblock %}
+
+{% block content %}
+<div id="form">
+    <div id="form-inside">
+        <form method="post" action="{% url "vendor_:edit_product_" product.id %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="head">
+                <h1>Update product</h1>
+                {% if product_form.is_valid and product_spec_form.is_valid and product_img_form.is_valid %}
+                <span class="form-alert" role="alert">Details successfully updated!</span>
+                {% endif %}
+            </div>
+            <div class="block">
+                <div class="label">{{ product_form.product_type.label }}:</div>
+                <div class="input">
+                    {{ product_form.product_type}}
+                    <div class="alert" role="alert">
+                        {{ product_form.product_type.errors }}
+                    </div>
+                </div>
+            </div>
+            <div class="block">
+                <div class="label">{{ product_form.category.label }}:</div>
+                <div class="input">
+                    {{ product_form.category }}
+                    <div class="alert" role="alert">
+                        {{ product_form.category.errors }}
+                    </div>
+                </div>
+            </div>
+            <div class="block">
+                <div class="label">{{ product_form.title.label }}:</div>
+                <div class="input">
+                    {{ product_form.title}}
+                    <div class="alert" role="alert">
+                        {{ product_form.title.errors }}
+                    </div>
+                </div>
+            </div>
+            <div class="block">
+                <div class="label">{{ product_form.description.label }}:</div>
+                <div class="input">
+                    {{ product_form.description}}
+                    <div class="alert" role="alert">
+                        {{ product_form.description.errors }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="block" style="border-bottom:3px solid #f3f3f3;padding-bottom:25px;margin-bottom:25px;" >
+                <div class="inner-block1">
+                    <div class="place1">
+                        <div class="label">Discount&nbsp;price:</div>
+                        <div class="input">
+                            {{ product_form.discount_price}}
+                            <!-- <div class="alert" role="alert">
+                                {{ product_form.discount_price.errors }}
+                            </div> -->
+                        </div>
+                    </div>
+                    <div class="place2">
+                        <div class="label">Regular&nbsp;price:</div>
+                        <div class="input">
+                            {{ product_form.price}}
+                            <!-- <div class="alert" role="alert">
+                                {{ product_form.price.errors }}
+                            </div> -->
+                        </div>
+                    </div>
+                    <div class="place3">
+                        <div class="label">In&nbsp;stock</div>
+                        {{ product_form.in_stock }}
+                    </div>
+
+                </div>
+            </div>
+
+            <div id="spec" style="border-bottom:3px solid #f3f3f3;margin-bottom:25px;" >
+                {{ product_spec_form.management_form }}
+                {% for form in product_spec_form %}
+                    {{ form.id }}
+                <div class="inner-block">
+                    <div class="place1">
+                        <div class="label">{{ form.id }}{{ form.specification.label }}:</div>
+                        <div class="input">
+                            {{ form.id }}{{ form.specification}}
+                            <!-- <div class="alert" role="alert">
+                                {{ form.specification.errors }}
+                            </div> -->
+                        </div>
+                    </div>
+                    <div class="place2">
+                        <div class="label">{{ form.id }}{{ form.value.label }}:</div>
+                        <div class="input">
+                            {{ form.id }}{{ form.value}}
+                            <!-- <div class="alert" role="alert">
+                                {{ form.value.errors }}
+                            </div> -->
+                         </div>
+                    </div>
+                    <div class="place3">
+                        <div class="label">{{ form.id }}{{ form.DELETE.label }}:</div>
+                            {{ form.id }}{{ form.DELETE}}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="block-column">
+                {{ product_img_form.management_form }}
+                {% for form in product_img_form %}
+                    {{form.id}}
+                <div class="inner-block3">
+                    <div class="place1">
+                        <div class="label">{{ form.images.label }}</div>
+                        <div class="input">
+                            <div>{{ form.images }}</div>
+                        </div>
+                    </div>
+                    <div class="place2">
+                        <div class="label" style="margin-right:10px;">Main</div>
+                        <div class="check-parent">{{ form.is_main}}</div>
+                    </div>
+                    <div class="place3">
+                        <div class="label">{{ form.id }}{{ form.DELETE.label }}</div>
+                        {{ form.DELETE}}
+                    </div>
+                </div>
+
+
+                {% endfor %}
+            </div>
+
+            <div class="block">
+                    <button style="width:100%;" type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+
+
+{% block scripts %}
+<script>
+    $(document).ready(function(){
+        $('.checkbox').each(function(index, values){
+            if ($(this).is(":checked")){
+                var place2 = $(this).closest('.place2')
+                place3 = place2.siblings('.place3')
+                place3.css('display','none')
+
+                var col = $(this).closest('.inner-block3')
+                var newly_cloned = col.clone(true)
+                col.remove()
+                $('.block-column').prepend(newly_cloned)
+            }
+        });
+        $('.checkbox').on(
+            {mousedown: function(e){
+                e.preventDefault();
+                $('.checkbox').each(function(index, values){
+                    if ($(this).is(":checked")){
+                        values.checked = false
+                    }
+                });
+            }}
+        )
+
+        $('.add-more').on(
+            {mouseenter: function(e){
+                e.preventDefault();
+                $('select > option').css('background-color','red')
+            },
+            mousedown: function(){
+            }}
+        )
+
+
+
+        /*$('.add-more').on(
+            {click: function(){
+                console.log("great weeeeeeeeeeeeeeeeeeeeeeeee")
+                $('#spec').append('<div class="inner-block2"><div class="place1"><div class="label">' + {{ product_spec_form.specification.label }} + ':</div><div class="input">' + {{ product_spec_form.specification}} +'<div class="alert" role="alert">' + {% if product_form.errors %}{% for field in form %}{% if field.errors %}{% if field.label == "Discount price" %} + '<p>' + {{ field.errors|striptags }} +'</p>' + {% endif %}{% endif %}{% endfor %}{% endif %} + '</div></div></div><div class="place2"><div class="label">' + {{ product_spec_form.value.label }} + ':</div><div class="input">' +{{ product_spec_form.value}} + '<div class="alert" role="alert">' + {% if product_form.errors %}{% for field in form %}{% if field.errors %}{% if field.label == "Discount price" %} +'<p>' + {{ field.errors|striptags }} + '</p>' + {% endif %}{% endif %}{% endfor %}{% endif %} + '</div></div></div></div>')
+
+
+               $('#spec').append('<div class="inner-block2"><div class="place1"><div class="label">' + {{ product_spec_form.specification.label }} + ':</div><div class="input">' + {{ product_spec_form.specification}} +
+                            '<div class="alert" role="alert">' + {% if product_form.errors %} + {% for field in form %} + {% if field.errors %} + {% if field.label == "Discount price" %} + '<p>' + {{ field.errors|striptags }} +
+                            '</p>' + {% endif %} + {% endif %} + {% endfor %} + {% endif %} + '</div></div></div><div class="place2"><div class="label">' + {{ product_spec_form.value.label }} + ':</div><div class="input">' +
+                            {{ product_spec_form.value}} + '<div class="alert" role="alert">' + {% if product_form.errors %} + {% for field in form %} + {% if field.errors %} + {% if field.label == "Discount price" %} +
+                            '<p>' + {{ field.errors|striptags }} + '</p>' + {% endif %} + {% endif %} + {% endfor %} + {% endif %} + '</div></div></div></div>')
+
+             }}
+        );*/
+    });
+</script>
+{% endblock %}
+
+
+

@@ -1,0 +1,144 @@
+{% extends 'core/base.html' %}
+
+{% load static %}
+{% block stylesheet %}{% static 'styles/account/forms.css' %}{% endblock %}
+
+
+{% block content %}
+
+<div id="form">
+    <div id="form-inside">
+        <form method="post" action="." enctype="multipart/form-data" id="add-address-form">
+            {% csrf_token %}
+            <div class="head">
+                <h1>Add address</h1>
+                {% if form.is_valid %}
+                <div class="form-alert" role="alert">Details successfully updated!</div>
+                {% endif %}
+            </div>
+            <div class="block">
+                <div class="label">{{ form.full_name.label }}</div>
+                <div class="input">
+                    {{ form.full_name}}
+                    <div class="alert" role="alert">
+                        {% if form.errors %}
+                        {% for field in form %}
+                        {% if field.errors %}
+                        {% if field.label == "Fullname:" %}
+                        <p>{{ field.errors|striptags }}</p>
+                        {% endif %}
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="block">
+                <div class="label">{{ form.city.label }}</div>
+                <div class="input">
+                    {{ form.city}}
+                    <div class="alert" role="alert">
+                        {% if form.errors %}
+                        {% for field in form %}
+                        {% if field.errors %}
+                        {% if field.label == "Town/City:" %}
+                        <p>{{ field.errors|striptags }}</p>
+                        {% endif %}
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="block">
+                <div class="label">{{ form.email.label }}</div>
+                <div class="input">
+                    {{ form.email}}
+                    <div class="alert" role="alert">
+                        {% if form.errors %}
+                        {% for field in form %}
+                        {% if field.errors %}
+                        {% if field.label == "Email:" %}
+                        <p>{{ field.errors|striptags }}</p>
+                        {% endif %}
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="block">
+                <div class="label">{{ form.phone.label }}</div>
+                <div class="input">
+                    {{ form.phone}}
+                    <div class="alert" role="alert">
+                        {% if form.errors %}
+                        {% for field in form %}
+                        {% if field.errors %}
+                        {% if field.label == "Fullname:" %}
+                        <p>{{ field.errors|striptags }}</p>
+                        {% endif %}
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="block">
+                <div class="label">{{ form.postal_code.label }}</div>
+                <div class="input">
+                    {{ form.postal_code}}
+                    <div class="alert" role="alert">
+                        {% if form.errors %}
+                        {% for field in form %}
+                        {% if field.errors %}
+                        {% if field.label == "Fullname:" %}
+                        <p>{{ field.errors|striptags }}</p>
+                        {% endif %}
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="block">
+                <div class="label">{{ form.address_line1.label }}</div>
+                <div class="input">
+                    {{ form.address_line1}}
+                    <div class="alert" role="alert">
+                        {% if form.errors %}
+                        {% for field in form %}
+                        {% if field.errors %}
+                        {% if field.label == "Fullname:" %}
+                        <p>{{ field.errors|striptags }}</p>
+                        {% endif %}
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="block">
+                <div class="label">{{ form.address_line2.label }}</div>
+                <div class="input">
+                    {{ form.address_line2 }}
+                    <div class="alert" role="alert">
+                        {% if form.errors %}
+                        {% for field in form %}
+                        {% if field.errors %}
+                        {% if field.label == "Fullname:" %}
+                        <p>{{ field.errors|striptags }}</p>
+                        {% endif %}
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="block">
+                <button style="width:100%;" type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

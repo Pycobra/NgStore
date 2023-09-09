@@ -1,0 +1,41 @@
+{% extends 'core/base.html' %}
+
+{% load static %}
+{% block stylesheet %}{% static 'styles/account/edit_login.css' %}{% endblock %}
+
+
+{% block title %} Edit Login {% endblock %}
+{% block content %}
+<div id="form">
+    <div id="register">
+        <form method="post" class="" action="{% url 'account_:password_reset' %}">
+            {% csrf_token %}
+            <h1>Edit your login</h1>
+            <h2>Enter your email address linked to your account and we will send you a link that will help you obtain a new password</h2>
+            <div class="input">
+                  <i class="fa fa-info-circle" style="color:var(--normalorange);"></i> {{ form.email.label }}
+                  {{ form.email}}
+                  <i class="fa fa-eye-slash"></i>
+                  <div class="alert" role="alert">
+                      {% if form.errors %}
+                      {% for field in form %}
+                      {% if field.errors %}
+                      <p><strong>{{ field.label }}: </strong>{{ field.errors|striptags }}</p>
+                      {% endif %}
+                      {% endfor %}
+                      {% endif %}
+                  </div>
+            </div>
+            <button type="submit"><i class="fa fa-sign-in" style="font-weight:500;font-size:25px;margin:0 35% 0 10px"></i>Send me e-mail</button>
+            <p><a class="dashboard" href="{% url "account_:dashboard" %}"> <<< Back to my dashboard</a></p>
+        </form>
+
+        <form method="post" action="{% url 'account_:delete_account' %}" enctype="multipart/form-data" id="delete-account-form">
+            {% csrf_token %}
+            <h3  style="margin-right:10px">Delete my account</h3>
+            <button class="button" type="submit" role="button"><i class="fa fa-trash" style="font-weight:500;font-size:15px;"></i></button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

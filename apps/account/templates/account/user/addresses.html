@@ -1,0 +1,198 @@
+{% extends 'core/base.html' %}
+
+{% load static %}
+{% block stylesheet %}{% static 'styles/account/forms.css' %}{% endblock %}
+
+{% block title %} My Address {% endblock %}
+
+{% block content %}
+<div id="form">
+    <div id="form-inside">
+        {% if address %}
+        {% for i in address %}
+        <form method="post" action="." enctype="multipart/form-data" data-index="{{i.id}} id="add-address-form">
+            {% csrf_token %}
+            <div class="head">
+                <h1>Address</h1>
+                <a class="" href="{% url "account_:edit_address" i.id %}"><i class="fa fa-pencil"><span style="font-size:17px;">edit</span></i></a>
+            </div>
+            <div class="block" style="padding-bottom:10px;border-bottom:1px solid #f3f3f3;">
+                <div class="label">Fullname</div>
+                <div class="input">{{ i.full_name }}</div>
+            </div>
+            <div class="block" style="padding-bottom:10px;border-bottom:1px solid #f3f3f3;">
+                <div class="label">Town/City</div>
+                <div class="input">{{ i.city }}</div>
+            </div>
+            <div class="block" style="padding-bottom:10px;border-bottom:1px solid #f3f3f3;">
+                <div class="label">Address_line1</div>
+                <div class="input">{{ i.address_line1 }}</div>
+            </div>
+            <div class="block" style="padding-bottom:10px;border-bottom:1px solid #f3f3f3;">
+                <div class="label">Address_line2</div>
+                <div class="input">{{ i.address_line2 }}</div>
+            </div>
+            <div class="block" style="padding-bottom:10px;border-bottom:1px solid #f3f3f3;">
+                <div class="label">Postcode</div>
+                <div class="input">{{ i.postal_code }}</div>
+            </div>
+            <div class="block" style="padding-bottom:10px;border-bottom:1px solid #f3f3f3;">
+                <div class="label">Phone no</div>
+                <div class="input">{{ i.phone }}</div>
+            </div>
+            <div class="block">
+              <div class="label">
+                  <div>
+                  {% if not i.default %}
+                      <input class="search-input" data-index="{{ i.id }}" type="checkbox" style="font-size:15px;margin-right:11px;">
+                      <span class="text" data-index="{{ i.id }}">Set default</span>
+                  {% else %}
+                      <input class="search-input" data-index="{{ i.id }}" checked="true" type="checkbox" style="font-size:15px;margin-right:11px;">
+                      <span class="text" data-index="{{ i.id }}">Set default2</span>
+                  {% endif %}
+                  </div>
+                  <div>
+                      <a class="del-address" data-index="{{i.id}}"><i class="fa fa-trash"></i></a>
+                  </div>
+              </div>
+            </div>
+        </form>
+        {% endfor %}
+        <a href="{% url "account_:add_address" %}"><button><i class="fa fa-pencil" style="margin:0;margin-right:10px;"></i>Add address</button></a>
+        {% else %}
+
+        <h1>You have no address</h1>
+
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+    $(document).ready(function(){
+        $('.search-input').on(
+            {mousedown: function(){
+                /* for funny resons jquery is seeing checked as false */
+                var address_id=$(this).data('index');
+                if ($('.search-input[data-index="'+ address_id +'"]').is(":checked")){
+                    $('.search-input').attr("checked",false);
+                    $('.search-input[data-index="'+ address_id +'"]').attr("checked",true);
+                } else {
+                    $('.search-input').attr("checked",false);
+                    $('.search-input[data-index="'+ address_id +'"]').attr("checked",false);
+                }
+                if ($('.search-input[data-index="'+ address_id +'"]').is(":checked")){
+                    $.ajax({
+                        type:"POST",
+                        url: '{% url "cart_:cart_update_address" %}',
+                        data: {
+                            address_id: address_id,
+                            csrfmiddlewaretoken: "{{csrf_token}}",
+                            action: "post",
+                        },
+                        success: function(json){
+                            console.log('completed with success');
+                        },
+                        error: function(xhr, errmsg, err){
+                            console.log('completed with error');
+                        }
+                    });
+                } else {
+                    /* for funny resons jquery is seeing checked as true */
+                    var prod_id=$(this).data('index');
+                    $.ajax({
+                        type:"POST",
+                        url:"{% url "account_:set_default" %}",
+                        data: {
+                            default_mode:true,
+                            productID: prod_id,
+                            csrfmiddlewaretoken: "{{ csrf_token }}",
+                        },
+                        success: function(json){
+                            console.log(prod_id);
+                        },
+                        error: function(xhr, errmsg, err){
+                            console.log('completed with error');
+                        }
+                    });
+                }
+            }}
+        );
+
+
+        $('.text').on(
+            {mousedown: function(){
+                var address_id=$(this).data('index');
+                if ($('.search-input[data-index="'+ address_id +'"]').is(":checked")){
+                    $('.search-input').attr("checked",false);
+                    $('.search-input[data-index="'+ address_id +'"]').attr("checked",false);
+                } else {
+                    $('.search-input').attr("checked",false);
+                    $('.search-input[data-index="'+ address_id +'"]').attr("checked",true);
+                }
+                if ($('.search-input[data-index="'+ address_id +'"]').is(":checked")){
+                    var address_id=$(this).data('index');
+                    $.ajax({
+                        type:"POST",
+                        url: '{% url "cart_:cart_update_address" %}',
+                        data: {
+                            address_id: address_id,
+                            csrfmiddlewaretoken: "{{csrf_token}}",
+                            action: "post",
+                        },
+                        success: function(json){
+                            console.log('completed with success');
+                        },
+                        error: function(xhr, errmsg, err){
+                            console.log('completed with error');
+                        }
+                    });
+                } else {
+                    var address_id=$(this).data('index');
+                    $.ajax({
+                        type:"POST",
+                        type:"POST",
+                        url: '{% url "cart_:cart_update_address" %}',
+                        data: {
+                            address_id: address_id,
+                            csrfmiddlewaretoken: "{{csrf_token}}",
+                            action: "post",
+                        },
+                        success: function(json){
+                            console.log('completed with success');
+                        },
+                        error: function(xhr, errmsg, err){
+                            console.log('completed with error');
+                        }
+                    });
+                }
+            }}
+        );
+
+
+
+
+        $('.del-address').on(
+            {click: function(e){
+            var address_id=$(this).data('index');
+            $.ajax({
+              type: "POST",
+              url: '{% url "cart_:cart_update_address" %}',
+              data: {
+                address_id: address_id,
+                csrfmiddlewaretoken: "{{csrf_token}}",
+                action: "delete_address",
+              },
+              success: function (json) {
+              },
+              error: function (xhr, errmsg, err) {},
+            });
+
+            }}
+        )
+
+
+    });
+    </script>
+{% endblock %}

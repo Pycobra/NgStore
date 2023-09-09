@@ -1,0 +1,214 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block stylesheet %}{% static 'styles/cart/cart.css' %}{% endblock %}
+{% comment %} {% block stylesheet2 %}{% static 'styles/order/deliver-address-details.css' %}{% endblock %} {% endcomment %}
+{% comment %} {% block stylesheet2 %}{% static 'styles/breadcrumbs.css' %}{% endblock %} {% endcomment %}
+
+{% block title %} Cart {% endblock %}
+{% block content %}
+
+<section id="main-container">
+  <div class="main-box">
+      {% if messages %}
+      <div id="pop-notification" class="alert alert-success">
+          <div class="alert alert-success">
+              {% for message in messages %}
+                {{message|safe}}.
+              {% endfor %}
+          </div>
+      </div>
+      {% endif %}
+
+      <h1 class="main-head">Your Cart</h1>
+      <div class="box">
+          {% if cart %}
+          <div class="inside-box">
+              <div class="body-row">
+                  {% for i in cart %}
+                  <div data-index="{{ i.id }}" class="cart-item-block">
+                      <div class="first-block">
+                          <div class="block1">
+                              <div class="innerblock1">
+                                  {% for image in i.product.product_images.all %}
+                                  {% if image.is_main %}
+                                  <img class="" alt="cart image" src="{{ image.images.url }}" alt="{{ image.images.alt_text }}">
+                                  {% endif %}
+                                  {% endfor %}
+                              </div>
+                          </div>
+                          <div class="block2">
+                              <div class="innerblock">
+                                  <div class="first-line">
+                                      <a class="title" href="{% url 'product_:product_detail_' i.product.category.slug i.product.slug %}">{{ i.product.title }}</a>
+                                      <div class="social">
+                                        <button value="{{ i.id }}" data-index="{{ i.id }}" class="subtract-qty" type="button">
+                                            <i style="color:#CCCDC6;" class="fa fa-minus"></i>
+                                        </button>
+                                        <span  data-index="{{ i.id }}" class="item-qty">{{ i.quantity }}</span>
+                                        <button value="{{ i.id }}" data-index="{{ i.id }}" class="add-to-qty" type="button">
+                                            <i class="fa fa-plus-circle"></i>
+                                        </button>
+                                      </div>
+                                  </div>
+                                  <div class="second-line">
+                                      <div>
+                                          <span class="price">N{{i.product.price}}</span>
+                                          <div class="discount_price">
+                                              <span class="price1">N{{i.product.discount_price}}</span>
+                                              <span class="price2" style="color:var(--normalorange);font-size:14px;">saving </span>
+                                              <span class="price3" style="color:var(--normalorange);font-size:14px;">N{{i.discount_amt}}</span>
+                                          </div>
+                                      </div>
+                                      <button value="{{ i.id }}" data-index="{{ i.id }}" class="delete-item" type="button">
+                                          <i class="fa fa-trash"></i>Remove
+                                      </button>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="last-block">
+                          <span style="position:absolute;top:20px;left:0;width:100%;height:1px;background-color:#BBBCB6;"></span>
+                          <span style="position:absolute;top:95px;left:0;width:100%;height:1px;background-color:#BBBCB6;"></span>
+                          <div class="block1">
+                              <span style="width:100%;font-weight:600;margin-bottom:5px;text-align:center;">{{ i.product.title|slice:":20"  }}</span>
+                              <div class="unit-price">
+                                  <span>Unit Price</span><span data-index="{{ i.id }}" class="price_">N{% if i.product.discount_price %}{{ i.product.discount_price }} {% else %} {{ i.price }} {% endif %}</span>
+                              </div>
+                              <div class="discount">
+                                  <span>Discount</span><span data-index="{{ i.id }}" class="discount_">{% if i.product.discount_price %} N{{ i.discount_percent }}% + {% else %} 0 {% endif %}</span>
+                              </div>
+                              <div class="unit-total">
+                                  <span data-index="{{ i.id }}" class="qty_">Units Total (x{{ i.quantity }})</span><span data-index="{{ i.id }}" class="total_price_">N{{ i.total_price }}</span>
+                              </div>
+                              <div class="subtotal">
+                                  <span>SUBTOTAL</span><span data-index="{{ i.id }}" class="subtotal_">N{{ i.total_price }}</span>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  {% endfor %}
+                {% include 'order/deliver-address-details.html' %}
+
+              </div>
+          </div>
+          <div class="">
+              <div class="">
+                <a role="button" href="{% url 'checkout_:delivery_choice' %}" class="btn btn-success fw-bold" type="button">Checkout Securely</a>
+                <button class="btn btn-light" type="button">Save for later</button>
+              </div>
+          </div>
+          {% else %}
+            <p>You dont have any product in your cart</p>
+          {% endif %}
+      </div>
+
+
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+    $(document).ready(function(){
+        $('.add-to-qty').on(
+            {click: function(e){
+                e.preventDefault();
+                var prod_id=$(this).data('index');
+                $.ajax({
+                    type:"POST",
+                    url:"{% url 'cart_:cart_detail' %}",
+                    data: {
+                        productID: $(this).data('index'),
+                        csrfmiddlewaretoken: "{{ csrf_token }}",
+                        mainAction: 'post',
+                        subAction: 'update'
+                    },
+                    success: function(json){
+                        $("a > .cart > .qty").text(json.cart_length);
+                        $('.item-qty[data-index="'+ prod_id +'"]').text(json.item_quantity);
+                        $('.unit-total > .qty_[data-index="'+ prod_id +'"]').text('Units Total ' + '(x' + json.item_quantity + ')')
+                        $('.unit-total > .total_price_[data-index="'+ prod_id +'"]').text(json.item_total_cost);
+                        $('.subtotal > .subtotal_[data-index="'+ prod_id +'"]').text('$' + json.item_total_cost);
+
+                        $('.total-qty').text('$' + json.cart_length);
+                        $('.total-cost').text('$' + json.sub_total);
+                        $('#final-total').text('$' + json.get_total_cost);
+                    },
+                    error: function(xhr, errmsg, err){
+                        console.log('completed with error');
+                    }
+                });
+
+            }}
+        )
+
+        $('.subtract-qty').on(
+            {click: function(e){
+                e.preventDefault();
+                var prod_id=$(this).data('index');
+                $.ajax({
+                    type:"POST",
+                    url:"{% url 'cart_:cart_detail' %}",
+                    data: {
+                        productID: $(this).data('index'),
+                        csrfmiddlewaretoken: "{{ csrf_token }}",
+                        mainAction: 'post',
+                        subAction: 'subtract'
+                    },
+                    success: function(json){
+                        $("a > .cart > .qty").text(json.cart_length);
+                        $('.item-qty[data-index="'+ prod_id +'"]').text(json.item_quantity);
+                        $('.unit-total > .qty_[data-index="'+ prod_id +'"]').text('Units Total ' + '(x' + json.item_quantity + ')')
+                        $('.unit-total > .total_price_[data-index="'+ prod_id +'"]').text(json.item_total_cost);
+                        $('.subtotal > .subtotal_[data-index="'+ prod_id +'"]').text('$' + json.item_total_cost);
+
+                        $('.total-qty').text('$' + json.cart_length);
+                        $('.total-cost').text('$' + json.sub_total);
+                        $('#final-total').text('$' + json.get_total_cost);
+
+                    },
+                    error: function(xhr, errmsg, err){
+                        console.log('completed with error');
+                    }
+                });
+
+            }}
+        )
+
+        $('.delete-item').on(
+            {click: function(e){
+                e.preventDefault();
+                var prod_id=$(this).data('index');
+                $.ajax({
+                    type:"POST",
+                    url:"{% url 'cart_:cart_detail' %}",
+                    data: {
+                        productID: $(this).data('index'),
+                        csrfmiddlewaretoken: "{{ csrf_token }}",
+                        mainAction: 'post',
+                        subAction: 'delete'
+                    },
+                    success: function(json){
+                        $("a > .cart > .qty").text(json.cart_length);
+                        $('.total-qty').text('$' + json.cart_length);
+                        $('.total-cost').text('$' + json.sub_total);
+                        $('#final-total').text('$' + json.get_total_cost);
+                        $('.cart-item-block[data-index="'+ prod_id +'"]').remove();
+
+                        if (json.cart_length == 0){
+                            $('.total').remove();
+                            $('.box').html('<p>You dont have any product in your cart</p>');
+                        };
+                    },
+                    error: function(xhr, errmsg, err){
+                        console.log('completed with error');
+                    }
+                });
+
+            }}
+        )
+
+    })  
+    </script>
+{% endblock %}
+

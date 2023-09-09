@@ -1,0 +1,759 @@
+{% extends 'core/base.html' %}
+
+{% load static %}
+{% block stylesheet %}{% static 'styles/vendor/vendor_dashboard.css' %}{% endblock %}
+{% block stylesheet2 %}{% static 'styles/breadcrumbs.css' %}{% endblock %}
+
+{% block title %} Admin Dashboard | {{ vendor_view.store_name }}{% endblock %}
+
+{% block content %}
+<section id="main-container">
+  <div class="main-box">
+      <div class="pop-up">
+        <div id="notification-message" class="notification-success"></div>
+      </div>
+      <div class="main-head">
+          {% if request.user.is_authenticated %}
+          {% if vendor.unique_id == request.user.which_vendor.unique_id %}
+          <h1 class="">Your Store</h1>
+          <div class="left">
+              <div class="myBtn"><span style="margin-right:3px;">Followers</span><span style="margin-right:bold;">{% if my_followers %}({{my_followers.count}}){% else %}(0){% endif %}</span></div>
+              <span style="margin:0 10px">|</span>
+              <a href="{% url "message_:messages_history" request.user.which_vendor.unique_id %}">
+                <span>Message</span>
+                <i class="fa fa-envelope"></i>{% if unread_msg %} <span id="msg-no-top">{{ unread_msg }}</span> {% endif %}
+              </a>
+          </div>
+          {% else %}
+          <h1 class="">{{vendor.created_by}} Store</h1>
+          <div class="myBtn"><span style="margin-right:3px;">Followers</span><span style="margin-right:bold;">{% if am_following %}({{am_following.count}}){% else %}(0){% endif %}</span></div>
+          {% endif %}
+          {% endif %}
+      </div>
+      <div class="box">
+          <div class="inside-box">
+              <div class="body-row">
+                  <div class="main-block">
+                      <div class="first-box">
+                          {% for i in vendor.vendor_image.all %}
+                          <img class="" src="{{ i.image_value.images.url }}" alt="profile-image">
+                          {% endfor %}
+                          <div class="block2">
+                              <div class="innerblock">
+                                  <div class="name">
+                                      <span>{{vendor.store_name}} Store</span>
+                                  </div>
+                                  <span style="width:100%;height:1px;background-color:var(--normalwhite);margin-top:5px;"></span>
+                                  <div id="button">
+                                      <button class=""><a href="tel:333333333"><i class="fa fa-phone" style="font-weight:500;font-size:25px;color:var(--normalwhite)"></i></a></button>
+                                      {% if vendor.unique_id != request.user.which_vendor.unique_id %}
+                                      {% if stores_user_follow  %}
+                                          {% if vendor in stores_user_follow %}
+                                          <button class="follow-btn follow-a" data-index="{{vendor.id}}">Following</button>
+                                          {% else %}
+                                          <button class="follow-btn follow-b" data-index="{{vendor.id}}">Follow</button>
+                                          {% endif %}
+                                      {% else %}
+                                      <button class="follow-btn follow-b" data-index="{{vendor.id}}">Follow</button>
+                                      {% endif %}
+                                      {% endif %}
+
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+
+                      <div class="second-box">
+                          <span>Manage Products</span>
+
+                          {% if vendor.vendors_products.all %}
+                          <div class="top" style="position:relative;">
+                              <span class="label" style="width:150px;margin-bottom:0;">Categories<i class="fa fa-caret-down" style="margin-left:10px;"></i></span>
+                              <div class="side1 side2"  style="position:absolute;display:none;width:170px;">
+                                <ul class="" style="padding-top:0;">
+                                    {% for titles in categories %}
+                                    <!--<li><a style="color:var(--darkgrey);" href="{% url "product_:vendor_category" %}">{{ titles }}</a></li>-->
+                                    <li class="category-list {% if titles.children.all %} a-parent {% endif %}" data-index="{{titles.slug}}">
+                                        <a href="{% url 'vendor_:vendor_admin2_' vendor.unique_id titles.slug %}"> {{ titles }}
+                                        {% if titles.children.all %}
+                                        <i class="fa fa-caret-down" style="font-size:17px;"></i>
+                                        {% endif %}
+                                        </a>
+                                    </li>
+                                    {% for children in titles.children.all %}
+                                        <ul class="children {% if children.children.all %} a-child {% endif %}" data-parent="{{titles.slug}}" data-index="{{children.slug}}" style="display:none;width:100%;">
+                                            <li style="background-color:white">
+                                                <a style="color:brown;" href="{% url 'vendor_:vendor_admin2_' vendor.unique_id children.slug %}">{{children.name}}
+                                                    {% if children.children.all %}<i class="fa fa-caret-down" style="font-size:17px;"></i>{% endif %}
+                                                </a>
+                                            </li>
+                                        </ul>
+                                        {% for grand_children in children.children.all %}
+                                        <ul class="grand-children {% if grand_children.children.all %} a-grand-child {% endif %}" data-grandparent="{{titles.slug}}" data-parent="{{children.slug}}" data-index="{{titles.slug}}" style="display:none;width:100%;">
+                                            <li style="background-color:white">
+                                                <a style="color:blue;" href="{% url 'vendor_:vendor_admin2_' vendor.unique_id grand_children.slug %}">
+                                                    {{grand_children.name}}
+                                                </a>
+                                            </li>
+                                        </ul>
+                                        {% endfor %}
+                                    {% endfor %}
+                                    {% endfor %}
+                                </ul>
+                          </div>
+                          </div>
+                          <div class="inner-block">
+                            <!--<div class="inner-block-top">
+                                 <ul>
+                                    {% for titles in categories %}
+                                    <li class="category-list" data-index="{{titles.slug}}">{{ titles }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div> -->
+                            <div class="inner-block-bottom">
+                                <div class="first-block side2">
+                                    <ul>
+                                        <span style="padding:7px;">Categories</span>
+                                        {% for titles in categories %}
+                                        <!--<li><a style="color:var(--darkgrey);" href="{% url "product_:vendor_category" %}">{{ titles }}</a></li>-->
+                                        <li class="category-list {% if titles.children.all %} a-parent {% endif %}" data-index="{{titles.slug}}">
+                                            <a href="{% url 'vendor_:vendor_admin2_' vendor.unique_id titles.slug %}"> {{ titles }}
+                                            {% if titles.children.all %}
+                                            <i class="fa fa-caret-down" style="font-size:17px;"></i>
+                                            {% endif %}
+                                            </a>
+                                        </li>
+                                        {% for children in titles.children.all %}
+                                            <ul class="children {% if children.children.all %} a-child {% endif %}" data-parent="{{titles.slug}}" data-index="{{children.slug}}" style="display:none;width:100%;">
+                                                <li style="background-color:white">
+                                                    <a style="color:brown;" href="{% url 'vendor_:vendor_admin2_' vendor.unique_id children.slug %}">{{children.name}}
+                                                        {% if children.children.all %}<i class="fa fa-caret-down" style="font-size:17px;"></i>{% endif %}
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                            {% for grand_children in children.children.all %}
+                                            <ul class="grand-children {% if grand_children.children.all %} a-grand-child {% endif %}" data-grandparent="{{titles.slug}}" data-parent="{{children.slug}}" data-index="{{titles.slug}}" style="display:none;width:100%;">
+                                                <li style="background-color:white">
+                                                    <a style="color:blue;" href="{% url 'vendor_:vendor_admin2_' vendor.unique_id grand_children.slug %}">
+                                                        {{grand_children.name}}
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                            {% endfor %}
+                                        {% endfor %}
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                <div class="second-block">
+                                    <div class="inner-box">
+                                        <div class="head">
+                                            <div class="place1"><span>All</span><span style="font-size:15px;font-weight:normal;"> ({{ vendor.vendors_products.count }}) items found</span></div>
+                                            <div class="place2"><span style="font-size:15px;font-weight:normal;">1 of 3 pages</span></div>
+                                        </div>
+                                        <div class="body">
+                                            {% for i in vendor.vendors_products.all %}
+                                            {% if i.is_active %}
+                                            <a href="{% url 'product_:product_detail_' i.category.slug i.slug %}" class="">
+                                                <div class="card" data-index="{{ i.id }}">
+                                                    <div class="card-img" style="@media screen and (max-width:391px){width:20px;}">
+                                                        {% if i.vendor.unique_id == request.user.which_vendor.unique_id %}
+                                                        <div class="pop" data-index="{{ i.id }}">
+                                                            <a href="{% url "vendor_:edit_product_" i.id %}"> <i class="fa fa-pencil"></i></a>
+                                                            <i class="fa fa-trash" data-index="{{ i.id }}"></i>
+                                                        </div>
+                                                        {% endif %}
+                                                        
+                                                        {% for image in i.product_images.all %}
+                                                        {% if image.is_main %}
+                                                        <img src="{{ image.images.url }}" alt="{{ image.images.alt_text }}">
+                                                    {% endif %}
+                                                    {% endfor %}
+                                                    </div>
+                                                     <div class="card-text">
+                                                        <strong class="title">{{ i.title|slice:":50" }}</strong>
+                                                        {% if i.discount_price != 0 %}
+                                                        <span class="money" style="font-size:13px;">
+                                                            <div>
+                                                                <strong class="discount">N{{ i.discount_price }} </strong>
+                                                                {% if i.price_difference != 0 %}
+                                                                <span style="font-size:13px;">save N{{ i.price_difference }}</span>
+                                                                {% endif %}
+                                                            </div>
+                                                            <strike class="price" style="color:#ACADA8;">N{{ i.price }} </strike>
+                                                        </span>
+                                                        {% else %}
+                                                        <strong class="price">N{{ i.price }} </strong>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </a>
+                                            {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                        <!-- <footer>
+                                             <span>1 of 3 pages</span>
+                                        </footer> -->
+                                    </div>
+                                </div>
+                            </div>
+                          </div>
+                          {% else %}
+                          <p> You have no item</p>
+                          {% endif %}
+                      </div>
+
+                      {% if request.user.is_authenticated %}
+                      {% if vendor.unique_id == request.user.which_vendor.unique_id %}
+                      <div class="third-box">
+                          <span>Manage your store</span>
+                          <div class="inner-box">
+                              <div class="block1">
+                                  <a href="{% url "order_:vendor_orders" request.user.which_vendor.store_name request.user.which_vendor.unique_id %}">
+                                  <div class="box1">
+                                      <span class="icon"><i class="fa fa-shopping-bag" style="font-weight:500;font-size:50px;color:var(--lightgrey)"></i></span>
+                                      <div class="text"><span>Order</span><span>View, Track, Or Buy Again</span></div>
+                                  </div>
+                                  </a>
+                                  <a href="{% url "vendor_:add_category_" %}">
+                                  <div class="box3">
+                                      <span class="icon"><i class="fa fa-lock" style="font-weight:500;font-size:50px;color:var(--lightgrey)"></i></span>
+                                      <div class="text"><span>Add Category</span><span>Upload new category to your store</span></div>
+                                  </div>
+                                  </a>
+                              </div>
+                              <div class="block2">
+                                  <a href="{% url "vendor_:add_product_" %}">
+                                  <div class="box1">
+                                      <span class="icon"><i class="fa fa-shopping-bag" style="font-weight:500;font-size:50px;color:var(--lightgrey)"></i></span>
+                                      <div class="text"><span>Add Product</span><span>Upload new product to your store</span></div>
+                                  </div>
+                                  </a>
+                                  <a href="{% url "vendor_:edit_vendor_" %}">
+                                  <div class="box1">
+                                      <span class="icon"><i class="fa fa-pencil" style="font-weight:500;font-size:50px;color:var(--lightgrey)"></i></span>
+                                      <div class="text"><span>Your Store</span><span>Edit informations about your store</span></div>
+                                  </div>
+                                  </a>
+                              </div>
+                          </div>
+                      </div>
+                      {% endif %}
+                      {% endif %}
+                  </div>
+                  <div class="side-block">
+                      <div class="block1">
+                          <div class="head">Other infos</div>
+                          <div class="inside-box">
+                              <div class="other-info">
+                                  <span class="info"><i class="fa fa-info" style="font-size:15px;color:#CCCDC6;"></i></span><span class="text">created on 2/12/21</span>
+                              </div>
+                              <div class="other-info">
+                                  <span class="info"><i class="fa fa-info" style="font-size:15px;color:#CCCDC6;"></i></span><span class="text">created on 2/12/21</span>
+                              </div>
+                              <div class="other-info">
+                                  <span class="info"><i class="fa fa-info" style="font-size:15px;color:#CCCDC6;"></i></span><span class="text">created on 2/12/21</span>
+                              </div>
+                              <div class="other-info">
+                                  <span class="info"><i class="fa fa-info" style="font-size:15px;color:#CCCDC6;"></i></span><span class="text">created on 2/12/21</span>
+                              </div>
+                          </div>
+                      </div>
+                      {% if request.user.is_authenticated %}
+                      {% if vendor.unique_id == request.user.which_vendor.unique_id %}
+                      <div class="block2">
+                          <div class="head">Activity log</div>
+                          <div class="inside-box">
+                              <div class="activity-log">
+                                  <span class="info"><i class="fa fa-info" style="font-size:15px;color:#CCCDC6;"></i></span><span class="text">you updated your storename</span>
+                              </div>
+                              <div class="activity-log">
+                                  <span class="info"><i class="fa fa-info" style="font-size:15px;color:#CCCDC6;"></i></span><span class="text">you deleted product with id 12345</span>
+                              </div>
+                              <div class="activity-log">
+                                  <span class="info"><i class="fa fa-info" style="font-size:15px;color:#CCCDC6;"></i></span><span class="text">you messaged customer"Adidex"</span>
+                              </div>
+                              <div class="activity-log">
+                                  <span class="info"><i class="fa fa-info" style="font-size:15px;color:#CCCDC6;"></i></span><span class="text">you added product with id 0980</span>
+                              </div>
+                              <div class="activity-log">
+                                  <span class="info"><i class="fa fa-info" style="font-size:15px;color:#CCCDC6;"></i></span><span class="text">user"peter1" followed you</span>
+                              </div>
+                          </div>
+                      </div>
+                      {% endif %}
+                      {% endif %}
+
+                      <div class="block3">
+                          <div class="head">Top Stores</div>
+
+                          {% for i in vendor.vendor_image.all %}
+                          <div class="top-buyers">
+                              <img class="" src="{{ i.image_value.images.url }}" alt="top-sellers-image">
+                              <div class="text">
+                                  <div class="name">{{vendor.store_name}} Store</div>
+                                  <div><span style="font-weight:normal;font-size:14px;">Sales</span> <span>5000 products</span></div>
+                              </div>
+                          </div>
+                          {% endfor %}
+                          {% for i in vendor.vendor_image.all %}
+                          <div class="top-buyers">
+                              <img class="" src="{{ i.image_value.images.url }}" alt="top-sellers-image">
+                              <div class="text">
+                                  <div class="name">{{vendor.store_name}} Store</div>
+                                  <div><span style="font-weight:normal;font-size:14px;">Sales</span> <span>4000 products</span></div>
+                              </div>
+                          </div>
+                          {% endfor %}
+                      </div>
+
+                      <div class="block4">
+                          <div class="head">Other Stores</div>
+                          <div class="search-field">
+                              <button class="icon-stores"><i class="fa fa-search" style="font-size:15px;"></i></button>
+                              <input type="text" class="query" placeholder="Search stores" name="query">
+                          </div>
+                          {% if searches == 0 %}
+
+                          {% for stores in all_vendor %}
+                          {% for i in stores.vendor_image.all %}
+                          <div class="other-stores">
+                              <a href="{% url "vendor_:vendor_admin_" stores.unique_id %}">
+                                <img class="" src="{{ i.image_value.images.url }}" alt="top-sellers-image">
+                              </a>
+                              <div class="text">
+                                  <div class="name">{{stores.store_name}} Store</div>
+                                  {% if stores_user_follow  %}
+                                      {% if stores in stores_user_follow %}
+                                      <button class="follow-btn follow-a" data-index="{{stores.id}}">following</button>
+                                      {% else %}
+                                      <button class="follow-btn follow-b" data-index="{{stores.id}}">follow</button>
+                                      {% endif %}
+                                  {% else %}
+                                  <button class="follow-btn follow-b" data-index="{{stores.id}}">follow</button>
+                                  {% endif %}
+
+                              </div>
+                          </div>
+                          {% endfor %}
+                          {% endfor %}
+
+                          {% else %}
+
+                          {% for stores in all_vendor %}
+                          {% for i in stores.vendor_image.all %}
+                          <div class="other-stores">
+                              <a href="{% url "vendor_:vendor_admin_" stores.unique_id %}">
+                                <img class="" src="{{ i.image_value.images.url }}" alt="top-sellers-image">
+                              </a>
+                              <div class="text">
+                                  <div class="name">{{stores.store_name}} Store</div>
+                                  {% if stores_user_follow  %}
+                                      {% if stores in stores_user_follow %}
+                                      <button class="follow-btn follow-a" data-index="{{stores.id}}">following</button>
+                                      {% else %}
+                                      <button class="follow-btn follow-b" data-index="{{stores.id}}">follow</button>
+                                      {% endif %}
+                                  {% else %}
+                                  <button class="follow-btn follow-b" data-index="{{stores.id}}">follow</button>
+                                  {% endif %}
+                              </div>
+                          </div>
+                          {% endfor %}
+                          {% endfor %}
+
+                          {% endif %}
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+
+</section>
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+      <!-- Modal content -->
+      <div class="modal-content">
+          <div class="line1">
+              <span class="close">&times;</span>
+              <div style="width:95%;text-align:center;">My Followers</div>
+          </div>
+          <div class="body">
+              {% if my_followers %}
+              {% for i in my_followers %}
+              <div class="inside" data-index="{{ i.follower.unique_id }}">
+                  <div class="inner">
+                    <img src="{{ i.follower.user_image.url }}" alt="profile-image">
+                    <span class="active"></span>
+                    <div class="name">{{i.follower.user_name}}</div>
+                  </div>
+                  <span>{{i.created_at.day}}/ {{i.created_at.month}}/ {{i.created_at.year}}</span>
+              </div>
+              {% endfor %}
+              {% else %}
+              <p>you have no follower</p>
+              {% endif %}
+          </div>
+      </div>
+    </div>
+
+{% endblock %}
+
+
+{% block scripts %}
+<script>
+    var modal = document.getElementById("myModal");
+    var btn = document.getElementsByClassName("myBtn")[0];
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks on the button, open the modal
+    btn.onclick = function() {
+      modal.style.display = "block";
+    }
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+      modal.style.display = "none";
+    }
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+
+    $('form').on( 'keyup', 'textarea', function (){
+        $(this).height( 0 );
+        $(this).height( this.scrollHeight );
+    });
+    $('form').find( 'textarea' ).keyup();
+
+    $(document).ready(function(){
+       $('input[placeholder="Search stores"]').on(
+            {keyup: function(e){
+                var query = $(this).val()
+                $.ajax({
+                    type:"POST",
+                    url:"{% url 'account_:dashboard_ajax' %}",
+                    data: {
+                        query: query,
+                        mode: 'vendor',
+                        csrfmiddlewaretoken: "{{ csrf_token }}",
+                        action: 'get',
+                    },
+                    success: function(json){
+                        $('.other-stores').remove()
+                        $('.other-stores > .text > button').remove()
+                        $(json.item.table).each(function(index, values){
+                            $('.block4').append(
+                                  '<div class="other-stores"> \
+                                      <a> \
+                                        <img class="" src="/media/' + values.fields.images + '" alt=""> \
+                                      </a> \
+                                       <div class="text" data-index="' + values.fields.unique_id + '"> \
+                                          <div class="name">' + values.fields.store_name + 'Store</div> \
+                                      </div> \
+                                  </div>')
+                            if (json.stores_user_follow) {
+                                $(json.stores_user_follow).each(function(index, values2){
+                                    if (values2 == values.fields.store_name) {
+                                        $('.other-stores > .text[data-index="' + values.fields.unique_id + '"]').append('<button class="follow-btn follow-a" data-index="' + values.fields.unique_id + '">following</button>')
+                                    }
+                                    else {
+                                        $('.other-stores > .text[data-index="' + values.fields.unique_id + '"]').append('<button class="follow-btn follow-b" data-index="' + values.fields.unique_id + '">follow</button>')
+                                    }
+                                })
+                            }
+                            else {
+                                $('.other-stores > .text[data-index="' + values.fields.unique_id + '"]').append('<button class="follow-btn follow-b" data-index="' + values.fields.unique_id + '">follow</button>')
+                            }
+                        })
+                    },
+                    error: function(xhr, errmsg, err){
+                    }
+                });
+            }}
+        )
+
+        $('.card').on(
+            {mouseenter: function(e){
+                var content = $(this).data('index')
+                $('div.pop[data-index="' + content +'"]').css('display','flex')
+            },
+            mouseleave: function(e){
+                var content = $(this).data('index')
+                $('div.pop[data-index="' + content +'"]').css('display','none')
+            }}
+        )
+
+
+        $('.fa-trash').on(
+            {click: function(e){
+                var id = $(this).data('index')
+                $.ajax({
+                    type:"POST",
+                    url:"{% url 'vendor_:delete_product_' %}",
+                    data: {
+                        id: id,
+                        csrfmiddlewaretoken: "{{ csrf_token }}",
+                        action: 'post',
+                    },
+                    success: function(json){
+                        $('.card[data-index="' + id +'"]').hide()
+                    },
+                    error: function(xhr, errmsg, err){
+                    }
+                });
+            }}
+        )
+
+        $('.icon-stores').on(
+            {click: function(e){
+                var query = $('.query').val()
+                if (query.length != 0) {
+                    $.ajax({
+                        type:"POST",
+                        url:"{% url 'vendor_:vendor_admin_ajax' %}",
+                        data: {
+                            query: query,
+                            csrfmiddlewaretoken: "{{ csrf_token }}",
+                            action: 'post',
+                        },
+                        success: function(json){
+                            $(json.item.table).each(function(index, values){
+                                var block4 = document.getElementsByClassName("block4")[0];
+                                $('.other-stores').remove()
+                                block4.insertAdjacentHTML('beforeend',
+                                      '<div class="other-stores"> \
+                                          <a> \
+                                            <img class="" src="' + json.image + '" alt=""> \
+                                          </a> \
+                                          <div class="text"> \
+                                              <div class="name">' + values.fields.store_name + ' Store</div> \
+                                              {% if values.stores_user_follow %} \
+                                              <button class="follow-btn follow-a" data-index="' + values.pk + '">following</button> \
+                                              {% else %} \
+                                              <button class="follow-btn follow-b" data-index="' + values.pk + '">follow</button> \
+                                              {% endif %} \
+                                          </div> \
+                                      </div>');
+                            })
+                        },
+                        error: function(xhr, errmsg, err){
+                        }
+                    });
+                }
+            }}
+        )
+
+
+
+    $(document).on(
+        'click', '.follow-btn', function(e){
+                $('.pop-up').removeClass('head-notification-absolute')
+                var id = $(this).data('index')
+                $.ajax({
+                    type:"POST",
+                    url:"{% url 'vendor_:follow_unfollow' %}",
+                    data: {
+                        vendor_id: id,
+                        csrfmiddlewaretoken: "{{ csrf_token }}",
+                        action: 'post',
+                    },
+                    success: function(json){
+                        //the front end view jumps because of the use of addClass/removeClass
+                        $('.pop-up').addClass('head-notification-absolute')
+                        $('#notification-message').text(json.message)
+                        if (json.exists == true){
+                            $('.follow-btn[data-index="' + id + '"]').text("follow")
+                            $('.follow-btn[data-index="' + id + '"]').css('background-color','var(--normalorange)')
+                        }
+                        else if (json.exists == false){
+                            $('.follow-btn[data-index="' + id + '"]').text("following")
+                            $('.follow-btn[data-index="' + id + '"]').css('background-color','var(--lightblue)')
+                        }
+                    },
+                    error: function(xhr, errmsg, err){
+                        console.log('completed with error');
+                    }
+                });
+            }
+    )
+    
+        // $('.follow-btn').on(
+        //     {click: function(e){
+        //         $('.pop-up').removeClass('head-notification-absolute')
+        //         var id = $(this).data('index')
+        //         $.ajax({
+        //             type:"POST",
+        //             url:"{% url 'vendor_:follow_unfollow' %}",
+        //             data: {
+        //                 vendor_id: id,
+        //                 csrfmiddlewaretoken: "{{ csrf_token }}",
+        //                 action: 'post',
+        //             },
+        //             success: function(json){
+        //                 //the front end view jumps because of the use of addClass/removeClass
+        //                 $('.pop-up').addClass('head-notification-absolute')
+        //                 $('#notification-message').text(json.message)
+        //                 if (json.exists == true){
+        //                     $('.follow-btn[data-index="' + id + '"]').text("follow")
+        //                     $('.follow-btn[data-index="' + id + '"]').css('background-color','var(--normalorange)')
+        //                 }
+        //                 else if (json.exists == false){
+        //                     $('.follow-btn[data-index="' + id + '"]').text("following")
+        //                     $('.follow-btn[data-index="' + id + '"]').css('background-color','var(--lightblue)')
+        //                 }
+        //             },
+        //             error: function(xhr, errmsg, err){
+        //                 console.log('completed with error');
+        //             }
+        //         });
+        //     }}
+        // )
+
+
+        $('.msg-btn').on(
+            {click: function(e){
+                e.preventDefault();
+                var unique_id_list = []
+                sent_fleet_msg = $('textarea').val()
+                $('.search-input').each(function(index, values){
+                    console.log(index, values)
+                    if ($(this).is(":checked")){
+                        unique_id=$(this).data('index');
+                        unique_id_list.push(unique_id)
+                    }
+                })
+                $.ajax({
+                    type:"POST",
+                    url:"{% url 'message_:send_fleet_message' %}",
+                    data: {
+                        unique_id_list: unique_id_list,
+                        sent_fleet_msg: sent_fleet_msg,
+                        csrfmiddlewaretoken: "{{ csrf_token }}",
+                        do_action: 'post_it'
+                    },
+                    success: function(json){
+                        console.log('completed with success');
+                    },
+                    error: function(xhr, errmsg, err){
+                        console.log('completed with error');
+                    }
+                });
+                console.log(unique_id_list)
+                console.log(sent_fleet_msg)
+            }}
+        )
+
+
+        function window391(currentScreen){
+            if (currentScreen.matches){
+                console.log("111111111n bbbbbbbbbbbbbbbbbbb")
+                $('.second-block > .inner-box > .body > a > .card').css('background-color','red').css('width', '130px')
+                $('.card-img > img').css('width', '115px')
+            };
+        }
+        function window320(currentScreen){
+            if (currentScreen.matches){
+                console.log("22222222222 bbbbbbbbbbbbbbbbbbb")
+                $('.second-block > .inner-box > .body > a > .card').css('background-color','blue').css('width', '110px')
+                $('.card-img > img').css('width', '95px')
+            };
+        }
+        var x = window.matchMedia("(max-width:391px)")
+        var y = window.matchMedia("(max-width:320px)")
+        window391(x)
+        window320(y)
+        x.addListener(window391)
+        y.addListener(window320)
+
+        function window1(color){
+            var what_color = 'color'
+        }
+        $('.category-list').on(
+            {mouseenter: function enter_color(){
+                color = window1('white')
+                console.log(color)
+                $(this).css('border-radius','10px 0 0 10px').css('background-color', 'var(--normalwhite)')
+                $(this).prev('li').css('border-radius','0 0 20px 0')
+                $(this).next('li').css('border-radius','0 20px 0 0')
+            },
+            click: function click_color(){
+                color = window1('black')
+                console.log(color)
+                $(this).css('border-radius','10px 0 0 10px').css('background-color', 'var(--normalwhite)')
+                $(this).prev('li').css('border-radius','0 0 20px 0')
+                $(this).next('li').css('border-radius','0 20px 0 0')
+            },
+            mouseleave: function leave_color(){
+                if (window1().what_color == 'black'){
+                    $(this).css('border-radius','0').css('background-color', 'var(--normalwhite)')
+                    $(this).prev('li').css('border-radius','0')
+                    $(this).next('li').css('border-radius','0')
+                } else if (window1().what_color == 'white') {
+                    $(this).css('border-radius','0').css('background-color', 'var(--lightgrey)')
+                    $(this).prev('li').css('border-radius','0')
+                    $(this).next('li').css('border-radius','0')
+                };
+            }}
+        );
+
+        $('.a-parent').on(
+            {mouseenter: function (){
+                var parent_id=$(this).data('index');
+                $('.children[data-parent="'+ parent_id +'"]').slideToggle(500);
+                $('.grand-children[data-grandparent="'+ parent_id +'"]').slideUp(500);
+                /*$(this).append('<hr style="width:90%;background-color:black;">')*/
+            }}
+        )
+        $('.a-child').on(
+            {mouseenter: function (){
+                var parent_id=$(this).data('index');
+                $('.grand-children[data-parent="'+ parent_id +'"]').slideToggle(500);
+                /*$(this).append('<hr style="width:90%;background-color:black;">')*/
+            }}
+        )
+
+        $('.label').on(
+            {mouseenter: function(){
+                $('.side1').slideToggle(500);
+            },
+            mousedown: function(){
+                $('.side1').slideToggle(500);
+            }}
+        );
+
+        /* $('.category-list').on(
+            {click: function(e){
+                e.preventDefault();
+                var category_slug=$(this).data('index');
+                $.ajax({
+                    type:"POST",
+                    url:"{% url "product_:vendor_category" %}",
+                    data: {
+                        category_slug: category_slug,
+                        csrfmiddlewaretoken: "{{ csrf_token }}",
+                        mainAction: 'post',
+                    },
+                    success: function(json){
+                        console.log('completed with success');
+                        var arrOfStrings = json.product
+                        $('.inner-block').append(json.product)
+                    },
+                    error: function(xhr, errmsg, err){
+                        console.log('completed with error');
+                    }
+                });
+
+            }}
+        ) */
+
+        $('#vendor-homepage').css('background-image', 'url("..../static/images/site_images/vacation/image5.png")').css('background-size', 'cover');
+    });
+</script>
+{% endblock %}
+
+

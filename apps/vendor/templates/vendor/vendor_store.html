@@ -1,0 +1,32 @@
+{% extends 'core/base.html' %}
+
+{% block title %} Vendor product | {{ vendor_store.name }}{% endblock %}
+
+{% block content %}
+    <div class="column is-multiline mb-6">
+        <div class="column is-12 has-text-centered mt-6 mb-6">
+            <h2 class="is-size-3">{{ vendor_store.store_name }}</h2><a href="{% url "vendor_:suscribe_to_vendor_"  vendor_store.id %}" class="">Suscribe</a>
+        </div>
+    </div>
+
+  {% if vendor_store.vendors_related_name.all %}
+    <section>
+        <div class="category-box-inline" id="team-container">
+            <div class="box-body-flex">
+                {% for product_html_frontpage_html_category_html in vendor_store.vendors_related_name.all %}
+                    {% include 'product/parts/list_item.html' %}
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+  {% else %}
+        <div class="column is-3 product-list-item">
+            <div class="box">
+                <h3>This user has no item</h3>
+            </div>
+        </div>
+  {% endif %}
+
+{% endblock %}
+
+

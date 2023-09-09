@@ -1,0 +1,62 @@
+{% extends 'core/base.html' %}
+{% block title  %}Category | {{ category_in_product_view.title }}{% endblock %}
+
+{% block content %}
+<br>
+<div class="text-center"><h2>{{instance.name}}</h2></div>
+
+{% if  instance.children.all %}
+    <h4>Sub Categories</h4>
+    {% for i in instance.children.all %}
+        <a href="{{ i.slug }}"> {{ i.name }} </a><br>
+    {% endfor %}
+
+    <br><hr>
+{% endif %}
+
+{% if  instance.post_set.all %}
+ {% for i in instance.post_set.all %}
+  <h4>Posts</h4>
+  <div class="row small-up-1 medium-up-3" >
+
+   <div class="column">
+    <a href="{{ i.slug }}">
+      <div class="card" style="width: 300px; border-color: black">
+         <div class="card-divider">
+           <strong>{{ i.title | truncatechars:30}}</strong>
+         </div>
+
+         <div class="card-section">
+          <small>{{ i.publish}} </small>
+          <p>{{ i.content | safe | truncatechars_html:120 }}</p>
+         </div>
+      </div>
+    </a>
+   </div>
+{% endfor %}
+{% endif %}
+</div>
+{% endblock %}
+
+
+<!--
+<div class="column is-multiline mb-6">
+        <div class="column is-12 has-text-centered mt-6 mb-6">
+            <h2 class="is-size-3">{{ category_in_product_view.title }}</h2>
+        </div>
+    </div>
+
+    <section>
+        <div class="category-box-inline" id="team-container">
+            <div class="box-header">
+                <div class="item-1">Wears</div>
+                <div class="item-2">Wears</div>
+            </div>
+            <div class="box-body-flex">
+                {% for product_html_frontpage_html_category_html in category_in_product_view.categorys_related_name.all %}
+                  {% include 'product/parts/list_item.html' %}
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+-->

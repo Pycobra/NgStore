@@ -1,0 +1,30 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+
+{% block title %}Vendor List{% endblock %}
+
+{% block content %}
+    <h1 class="titletitle">Vendors List</h1>
+
+    <div class="category-box-block" id="team-container">
+        <div class="box-body-block">
+            {% for vendor in site_vendors %}
+            <a href="{% url 'vendor_:vendor_store_' vendor.id  %}" class="">
+            <div class="card">
+                <div class="card-img">
+                    <img src="{% static 'img/fashion/waldo-kleyn-2bMHWCLfqRs-unsplash.png' %}" alt="category-image">
+                </div>
+                <figure class="image is-4by3 mb-4">
+                    <!-- <images src="{{ product_html_frontpage_html_category_html.get_thumbnail }}"> -->
+                </figure>
+                <br>
+                <div class="card-text">
+                    <h2>{{ vendor.store_name }}</h2>
+                </div>
+            </div>
+            <a>
+            {% endfor %}
+        </div>
+    <div>
+{% endblock %}

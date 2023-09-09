@@ -1,0 +1,60 @@
+{% extends 'core/base.html' %}
+
+{% load static %}
+{% block stylesheet %}{% static 'styles/account/forms.css' %}{% endblock %}
+
+{% block title %}Edit Vendor | {{ request.user.which_vendor.name }}{% endblock %}
+
+{% block content %}
+<div id="form">
+    <div id="form-inside">
+        <form method="post" action="." enctype="multipart/form-data" id="edit-vendor-form">
+            {% csrf_token %}
+            <div class="head">
+                <h1>Edit your store</h1>
+                {% if form.is_valid %}
+                <div class="form-alert" role="alert">Store successfully updated!</div>
+                {% endif %}
+            </div>
+            <div class="block">
+                <div class="label">{{ form.store_name.label }}:</div>
+                <div class="input">
+                    {{ form.store_name }}
+                    <div class="alert" role="alert">
+                        {% if form.errors %}
+                        {% for field in form %}
+                        {% if field.errors %}
+                        {% if field.label == "Store name" %}
+                        <p>{{ field.errors|striptags }}</p>
+                        {% endif %}
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="block">
+              <div class="label">{{ imageForm.image_value.label }}</div>
+                  <div class="input">
+                        {{ imageForm.image_value}}
+                        <div class="alert" role="alert">
+                          {% if imageForm.errors %}
+                          {% for field in form %}
+                          {% if field.errors %}
+                          <p>{{ field.errors|striptags }}</p>
+                          {% endif %}
+                          {% endfor %}
+                          {% endif %}
+                        </div>
+                  </div>
+            </div>
+            <div class="block">
+                <div class="label">
+                    <button  style="width:100%;" class="button" type="submit">Save Changes</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

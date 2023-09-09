@@ -1,0 +1,404 @@
+{% extends 'core/base.html' %}
+
+
+{% load static %}
+{% block stylesheet %}{% static 'styles/dashboard.css' %}{% endblock %}
+
+
+{% block title %} Your Dashboard {% endblock %}
+{% block content %}
+
+
+<div id="head-notification-absolute" class="notification-bg">
+  <div id="notification-message" class="notification-success"></div>
+</div>
+<section id="main-container">
+  <div class="main-box">
+
+      <!--<div class="main-head">
+          {% if request.user.is_authenticated %}
+          {% if vendor.unique_id == request.user.which_vendor.unique_id %}
+          <h1 class="">Your Store</h1>
+          <div class="left">
+              <div class="myBtn"><span style="margin-right:3px;">Followers</span><span style="margin-right:bold;">{% if my_followers %}({{my_followers.count}}){% else %}(0){% endif %}</span></div>
+              <span style="margin:0 10px">|</span>
+              <a href="{% url "message_:messages_history" request.user.which_vendor.unique_id %}">
+                <span>Message</span>
+                <i class="fa fa-envelope"></i>{% if unread_msg %} <span>{{ unread_msg }}</span> {% endif %}
+              </a>
+          </div>
+          {% else %}
+          <h1 class="">{{vendor.created_by}} Store</h1>
+          <div class="myBtn"><span style="margin-right:3px;">Followers</span><span style="margin-right:bold;">{% if am_following %}({{am_following.count}}){% else %}(0){% endif %}</span></div>
+          {% endif %}
+          {% endif %}
+      </div> -->
+      <div class="main-head">
+          {% if request.user.is_authenticated %}
+          {% if account.id == request.user.id %}
+          <h1>Your Account</h1>
+          <div class="left">
+              <div class="myBtn"><span style="margin-right:3px;">Following</span><span style="margin-right:bold;">{% if am_following %}({{am_following.count}}){% else %}(0){% endif %}</span></div>
+              <span style="margin:0 10px">|</span>
+              <a href="{% url "message_:messages_history" request.user.unique_id %}">
+                <span>Message</span>
+                <i class="fa fa-envelope"></i>{% if unread_account_msg %} <span id="msg-no-top">{{ unread_account_msg }}</span> {% endif %}
+              </a>
+          </div>
+          {% else %}
+          <h1>{{account.user_name}} Account</h1>
+          <div class="myBtn"><span style="margin-right:3px;">Following</span><span style="margin-right:bold;">{% if am_following %}({{am_following.count}}){% else %}(0){% endif %}</span></div>
+          {% endif %}
+          {% endif %}
+      </div>
+      <div class="box">
+          <div class="inside-box">
+              <div class="body-row">
+                  <div class="main-block">
+                      <div class="first-box1">
+                          <img class="bg-image" src="{{ account.user_image.url }}" alt="profile-image">
+                          <!-- <form method="post" class="camera" action=".">
+                              {% csrf_token %}
+                              {{ imageForm.user_image}}
+                              <i style="font-size:30px;" class="fa fa-camera"></i>
+                          </form> -->
+                          {% for followers in my_followers %}
+                          {% if followers.follower == account %}
+                          <span class="follow-tag">follower</span>
+                          {% endif %}
+                          {% endfor %}
+                          <div class="block1">
+                              <div class="innerblock1">
+                                  <img class="" src="{{ account.user_image.url }}" alt="profile-image">
+                              </div>
+                              <div class="username"><span>{{account.user_name}}</span></div>
+                              <div id="button">
+                                  <a class=""><i class="fa fa-phone" style="font-weight:500;font-size:25px;color:#746D69"></i></a>
+                                  <a class=""><i class="fa fa-mobile-phone" style="font-weight:500;font-size:25px;color:#746D69"></i></a>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="first-box">
+                          <div class="block1">
+                              <span>Name:</span>
+                              <span>Username:</span>
+                              <span>E-mail:</span>
+                              <span>Phone no:</span>
+                              <span>Activity Status:</span>
+                              <span>User Status:</span>
+                              <span>Seller Status:</span>
+                              <span>Account Created:</span>
+                              <span>Last Update:</span>
+                          </div>
+                          <div class="block2">
+                              <span>{{account.firstname}} {{account.lastname}}</span>
+                              <span>{{account.user_name}}</span>
+                              <span>{{account.email}}</span>
+                              <span>{{account.mobile}}</span>
+                              <span>{% if account.is_active %} Active {% else %} Inactive {% endif %}</span>
+                              <span>{% if account.is_staff %} Admin {% else %} User {% endif %}</span>
+                              <span>{% if account.is_vendor %} Seller {% else %} User {% endif %}</span>
+                              <span>{{account.created_at}}</span>
+                              <span>{{account.updated_at}}</span>
+
+                          </div>
+                      </div>
+                      {% if account.id == request.user.id %}
+                      <div class="second-box">
+                          <div class="inside">
+                              <span>My {% if account.which_vendor.count > 1 %} stores {% else %} store {% endif %}</span>
+                              {% if account.is_vendor %}
+                              <div class="inner-box">
+                                  {% for i in account.which_vendor.vendor_image.all %}
+                                  <a href="{% url "vendor_:vendor_admin_" account.which_vendor.unique_id %}">
+                                  <img class="" src="{{ i.image_value.images.url }}" alt="{{ i.vendor_image.images.alt_text }}">
+                                  <span class="name">{{ i.vendor.store_name }}</span>
+                                  {% if unread_store_msg %} <span id="msg-no-bottom">{{ unread_store_msg }}</span> {% endif %}
+                                  </a>
+                                  {% endfor %}
+                              </div>
+                              {% else %}
+                              <a class="block" style="color:blue;" href="{% url "vendor_:become_vendor_" %}">
+                              <div class="create-store">
+                                  <div><i class="fa fa-plus" style="font-weight:500;font-size:60px;color:#CCCDC6;"></i></div>
+                                  <span>Create store</span>
+                              </div>
+                              </a>
+                              {% endif %}
+                          </div>
+                      </div>
+                      {% else %}
+                      {% if account.is_vendor %}
+                      <div class="second-box">
+                          <div class="inside">
+                              <span>{{account.user_name}} {% if account.which_vendor.count > 1 %} stores {% else %} store {% endif %}</span>
+                              <div class="inner-box">
+                                  {% for i in account.which_vendor.vendor_image.all %}
+                                  <a href="{% url "vendor_:vendor_admin_" account.which_vendor.unique_id %}">
+                                  <img class="" src="{{ i.image_value.images.url }}" alt="{{ i.vendor_image.images.alt_text }}">
+                                  <span>{{ i.vendor.store_name }}</span>
+                                  </a>
+                                  {% endfor %}
+                              </div>
+                          </div>
+                      </div>
+                      {% endif %}
+                      {% endif %}
+
+                      {% if request.user.is_authenticated and account.id == request.user.id %}
+                      <div class="third-box">
+                          <div class="inside">
+                              <span>Manage your account</span>
+                              <div class="inner-box">
+                                  <div class="block1">
+                                      <a href="{% url "order_:user_orders" request.user.user_name request.user.unique_id %}">
+                                      <div class="box1">
+                                          <span class="icon"><i class="fa fa-shopping-bag" style="font-weight:500;font-size:50px;color:var(--lightgrey)"></i></span>
+                                          <div class="text"><span>Order</span><span>View, Track, Or Buy Again</span></div>
+                                      </div>
+                                      </a>
+                                      <a href="{% url "account_:edit_profile" %}">
+                                      <div class="box3">
+                                          <span class="icon"><i class="fa fa-lock" style="font-weight:500;font-size:50px;color:var(--lightgrey)"></i></span>
+                                          <div class="text"><span>Edit Profile</span><span>Edit your name, profile image, username and phone number</span></div>
+                                      </div>
+                                      </a>
+                                  </div>
+                                  <div class="block2">
+                                      <a href="{% url "account_:addresses" %}">
+                                      <div class="box1">
+                                          <span class="icon"><i class="fa fa-pencil" style="font-weight:500;font-size:50px;color:var(--lightgrey)"></i></span>
+                                          <div class="text"><span>Your Address</span><span>View, add & edit your shipping address</span></div>
+                                      </div>
+                                      </a>
+                                      <a href="{% url "account_:likes_and_wishlist" %}">
+                                      <div class="box2">
+                                          <span class="icon"><i class="fa fa-cart-plus" style="font-weight:500;font-size:50px;color:var(--lightgrey)"></i></span>
+                                          <div class="text"><span>Your likes & wishlist</span><span>View & remove items from your wishlist & liked item</span></div>
+                                      </div>
+                                      </a>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      {% endif %}
+                  </div>
+                  <div class="side-block">
+                      {% if request.user.is_authenticated and account.id == request.user.id %}
+                      <div class="block1">
+                          <div class="head">Activity log</div>
+                          <div class="inside-box">
+                              <div class="activity-log">
+                                  <span class="info"><i class="fa fa-info" style="font-size:15px;color:#CCCDC6;"></i></span><span class="text">you updated your storename</span>
+                              </div>
+                              <div class="activity-log">
+                                  <span class="info"><i class="fa fa-info" style="font-size:15px;color:#CCCDC6;"></i></span><span class="text">you deleted product with id 12345</span>
+                              </div>
+                              <div class="activity-log">
+                                  <span class="info"><i class="fa fa-info" style="font-size:15px;color:#CCCDC6;"></i></span><span class="text">you messaged customer"Adidex"</span>
+                              </div>
+                              <div class="activity-log">
+                                  <span class="info"><i class="fa fa-info" style="font-size:15px;color:#CCCDC6;"></i></span><span class="text">you added product with id 0980</span>
+                              </div>
+                              <div class="activity-log">
+                                  <span class="info"><i class="fa fa-info" style="font-size:15px;color:#CCCDC6;"></i></span><span class="text">user"peter1" followed you</span>
+                              </div>
+                          </div>
+                      </div>
+                      {% endif %}
+
+                      <div class="block2">
+                          <div class="head">Top Buyers</div>
+                          <div class="top-buyers">
+                              <img class="" src="{{ account.user_image.url }}" alt="top-buyers-image">
+                              <div class="text">
+                                  <div class="name">{{ account.user_name }}</div>
+                                  <div><span style="font-weight:normal;font-size:14px;">Order</span> <span>N180</span></div>
+                              </div>
+                          </div>
+                          <div class="top-buyers">
+                              <img class="" src="{{ account.user_image.url }}" alt="top-buyers-image">
+                              <div class="text">
+                                  <div class="name">{{ account.user_name }}</div>
+                                  <div><span style="font-weight:normal;font-size:14px;">Order</span> <span>N180</span></div>
+                              </div>
+                          </div>
+                          <div class="top-buyers">
+                              <img class="" src="{{ account.user_image.url }}" alt="top-buyers-image">
+                              <div class="text">
+                                  <div class="name">{{ account.user_name }}</div>
+                                  <div><span style="font-weight:normal;font-size:14px;">Order</span> <span>N180</span></div>
+                              </div>
+                          </div>
+                          <div class="top-buyers">
+                              <img class="" src="{{ account.user_image.url }}" alt="top-buyers-image">
+                              <div class="text">
+                                  <div class="name">{{ account.user_name }}</div>
+                                  <div><span style="font-weight:normal;font-size:14px;">Order</span> <span>N180</span></div>
+                              </div>
+                          </div>
+                          <div class="top-buyers">
+                              <img class="" src="{{ account.user_image.url }}" alt="top-buyers-image">
+                              <div class="text">
+                                  <div class="name">{{ account.user_name }}</div>
+                                  <div><span style="font-weight:normal;font-size:14px;">Order</span> <span>N180</span></div>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="block3">
+                          <div class="inside">
+                              <div class="head">Other Accounts</div>
+                              <div class="search-field">
+                                <button class="icon-accounts-search"><i class="fa fa-search" style="font-size:15px;"></i></button>
+                                <input type="text" class="query" placeholder="Search accounts" name="query">
+                              </div>
+                              {% for i in all_account %}
+                               <div class="other-account">
+                                    {% comment %} <a href=""> {% endcomment %}
+                                    <a href="{% url 'account_:users_dashboard_' i.unique_id %}">
+                                        <img class="" src="{{ i.user_image.url }}" alt="top-buyers-image">
+                                   </a>
+                                   <div class="text">
+                                       <div class="name">{{ i.user_name }}</div>
+                                       {% for followers in my_followers %}
+                                       {% if followers.follower == i %}
+                                       <span class="follow" data-index="{{i.unique_id}}">follower</span>
+                                       {% endif %}
+                                       {% endfor %}
+                                   </div>
+                               </div>
+                              {% endfor %}
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+
+</section>
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+      <!-- Modal content -->
+      <div class="modal-content">
+          <div class="line1">
+              <span class="close">&times;</span>
+              <div style="width:95%;text-align:center;">Following</div>
+          </div>
+          <div class="body">
+              {% if am_following %}
+              {% for i in am_following %}
+              <div class="inside" data-index="{{ i.following.unique_id }}">
+                  <div class="inner">
+                      {% for img in i.following.vendor_image.all %}
+                      <img src="{{ img.image_value.images.url }}" alt="profile-image">
+                      {% endfor %}
+                    <span class="active"></span>
+                    <div class="name">{{i.following.store_name}} store</div>
+                  </div>
+                  <span>{{i.created_at.day}}/ {{i.created_at.month}}/ {{i.created_at.year}}</span>
+              </div>
+              {% endfor %}
+              {% else %}
+              <p>you're not following anyone</p>
+              {% endif %}
+          </div>
+      </div>
+    </div>
+
+{% endblock %}
+
+
+{% block scripts %}
+<script>
+    var modal = document.getElementById("myModal");
+    var btn = document.getElementsByClassName("myBtn")[0];
+    var span = document.getElementsByClassName("close")[0];
+    btn.onclick = function() {
+      modal.style.display = "block";
+    }
+    span.onclick = function() {
+      modal.style.display = "none";
+    }
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+
+
+    $(document).ready(function(){
+       store_clicked_msg_notification_removed = 0
+       if (store_clicked_msg_notification_removed != 0){
+            $('#msg-no-bottom').remove()
+       }
+
+       $('input[placeholder="Search accounts"]').on(
+            {keyup: function(e){
+                var query = $(this).val()
+                if (query.length != 0) {
+                    $.ajax({
+                        type:"POST",
+                        url:"{% url 'account_:dashboard_ajax' %}",
+                        data: {
+                            query: query,
+                            mode: 'user',
+                            csrfmiddlewaretoken: "{{ csrf_token }}",
+                            action: 'get',
+                        },
+                        success: function(json){
+                            $('.other-account').remove()
+                            $(json.item.table).each(function(index, values){
+                                $('.block3 > .inside').append(
+                                      '<div class="other-account"> \
+                                          <a> \
+                                            <img class="" src="/media/' + values.fields.user_image + '" alt=""> \
+                                          </a> \
+                                           <div class="text" data-index="' + values.fields.unique_id + '"> \
+                                              <div class="name">' + values.fields.user_name + '</div> \
+                                          </div> \
+                                      </div>')
+                                if (json.stores_user_follow) {
+                                    $(json.stores_user_follow).each(function(index, values2){
+                                        console.log(values2, values.fields.user_name)
+                                        if (values2 == values.fields.user_name) {
+                                            $('.other-account > .text[data-index="' + values.fields.unique_id + '"]').append('<span class="follow" data-index="' + values.fields.unique_id + '">follower</span>')
+                                        }
+                                    })
+                                }
+                            })
+                        },
+                        error: function(xhr, errmsg, err){
+                        }
+                    });
+                }
+            }}
+        )
+
+
+
+
+
+        $('#button > button:nth-child(1)').on(
+            {mouseenter: function(){
+                $('.fa-phone').animate(0%{transform:'rotate(-20deg)'}, 25%{transform:'rotate(20deg)'}, 50%{transform:'rotate(-20deg)'}, 100%{transform:'rotate(20deg)'})
+            },
+            mousedown: function(){
+                $(this).css('background-color','var(--darkblue)').css('border','1px solid var(--darkblue)');
+                $('#button > button:nth-child(2)').css('background-image', 'url("../images/site_images/others/use.PNG")').css('background-size', 'cover').css('border','1px solid var(--darkgrey)')
+            }}
+        );
+        $('#button > button:nth-child(2)').on(
+            {mouseenter: function(){
+                $('.fa-mobile-phone').animate({transform:'rotate(-20deg)'},1000)
+            },
+            mousedown: function(){
+                $(this).css('background-color','var(--darkblue)').css('border','1px solid var(--darkblue)');
+                $('#button > button:nth-child(1)').css('background-image', 'url(../images/site_images/others/use.PNG)').css('background-size', 'cover').css('border','1px solid var(--darkgrey)')
+            }}
+        );
+
+    });
+</script>
+{% endblock %}

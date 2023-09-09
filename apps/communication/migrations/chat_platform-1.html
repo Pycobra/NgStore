@@ -1,0 +1,246 @@
+{% extends 'core/base.html' %}
+
+{% load static %}
+{% block stylesheet %}{% static 'styles/communication/chat_platform.css' %}{% endblock %}
+
+{% block title %}{% if request.user.is_authenticated %} {{ request.user.user_name }} | {% endif %}Chat{% endblock %}
+
+{% block content %}
+<section id="main-container">
+  <div class="main-box">
+      <div class="main-head">
+      </div>
+      <div class="box">
+          <div class="inside-box">
+              <div class="body-row">
+                  <div class="firstbox">
+                      {% if user.unique_id == request.user.unique_id %}
+                      <div class="block1"><span>{{ request.user.user_name }}</span><span><i class="myBtn2" class="fa fa-pencil"></i></span></div>
+                      {% elif user.unique_id == request.user.which_vendor.unique_id %}
+                      <div class="block1"><span>{{ request.user.which_vendor.store_name }}</span><span><i class="myBtn2" class="fa fa-pencil"></i></span></div>
+                      {% endif %}
+                      <div class="block2"></div>
+                  </div>
+                  <div class="secondbox">
+                      <div class="block1">
+                        {% if msg_sender_data %}
+                        {% for sender in msg_sender_data %}
+                        <a class="inside" data-index="{{sender.0}}" {% if sender.6 == 'a_vendor' %} href="{% url 'message_:chat_platform2' sender.0 request.user.which_vendor.unique_id %}" {% else %} href="{% url 'message_:chat_platform2' sender.0 request.user.unique_id %}" {% endif %}>
+                            <div class="inner">
+                                {% if sender.6 == 'a_vendor' %}
+                                <img src="{{ sender.2.url }}" alt="profile-image">
+                                {% else %}
+                                {% for sender in sender.2 %}
+                                {% if sender.is_main %}
+                                <img src="{{ sender.image_value.images.url }}" alt="profile-image">
+                                {% endif %}
+                                {% endfor %}
+                                {% endif %}
+                                <span class="active"></span>
+                            </div>
+                            <div class="chat-lines">
+                                <div>{{sender.1}}</div>
+                                <input type="hidden" value="{{sender.3}}">
+                                <span class="all msg">{{sender.3 | truncatechars:25}}</span>
+                                <span class="all msg1">{{sender.3 | truncatechars:20}}</span>
+                                <span class="all msg2">{{sender.3 | truncatechars:15}}</span>
+                                <span class="all msg3">{{sender.3 | truncatechars:10}}</span>
+                            </div>
+                            <span class="time">.{{sender.4}}</span>
+                            {% if sender.5 != 0 %}<span class="msg_amt" data-index="{{sender.0}}"> {{sender.5}}</span> {% endif %}
+                        </a>
+                        {% endfor %}
+                         {% else %}
+                          <p class="no-msg">no message</p>
+                        {% endif %}
+                      </div>
+                      <div class="block2 block2-a">
+                          <div class="inside inside-a">
+                              <span><i class="fa fa-envelope-o" style="font-size:25px;"></i></span>
+                              <span>Your Messages</span>
+                              <span>Send private photos and messages to a friend or group.</span>
+                              <button class="myBtn">Send Messages</button>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+        <!-- The Modal -->
+    <div id="myModal" class="modal">
+
+      <!-- Modal content -->
+      <div class="modal-content">
+          <div class="line1">
+              <span class="close">&times;</span>
+              <div>New Message</div>
+              <div>Next</div>
+          </div>
+          <form method="post" action="">
+              {% csrf_token %}
+              <textarea rows="5" wrap="hard soft" autofocus="autofocus" placeholder="Write a message" name="sent_message"></textarea>
+              <button class="msg-btn" type="submit"><i class="fa fa-caret-right"></i></button>
+          </form>
+          <div class="body">
+              {% if request.user.is_authenticated %}
+              {% for i in request.user.which_vendor.followers.all %}
+              <div class="inside" data-index="{{ i.unique_id }}">
+                  <div class="inner">
+                    <img src="{{ i.user_image.url }}" alt="profile-image">
+                    <span class="active"></span>
+                    <div class="name">{{i.user_name}}</div>
+                  </div>
+                  <input class="search-input" data-index="{{ i.unique_id }}" type="checkbox">
+              </div>
+              {% endfor %}
+              {% endif %}
+          </div>
+      </div>
+
+    </div>
+
+</section>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+    $(document).ready(function(){
+        $('.msg-btn').on(
+            {click: function(e){
+                e.preventDefault();
+                var unique_id_list = []
+                sent_fleet_msg = $('textarea').val()
+                $('.search-input').each(function(index, values){
+                    console.log(index, values)
+                    if ($(this).is(":checked")){
+                        unique_id=$(this).data('index');
+                        unique_id_list.push(unique_id)
+                    }
+                })
+                $.ajax({
+                    type:"POST",
+                    url:"{% url 'message_:send_fleet_message' %}",
+                    data: {
+                        unique_id_list: unique_id_list,
+                        sent_fleet_msg: sent_fleet_msg,
+                        csrfmiddlewaretoken: "{{ csrf_token }}",
+                        do_action: 'post_it'
+                    },
+                    success: function(json){
+                        console.log('completed with success');
+                    },
+                    error: function(xhr, errmsg, err){
+                        console.log('completed with error');
+                    }
+                });
+                console.log(unique_id_list)
+                console.log(sent_fleet_msg)
+            }}
+        )
+
+
+        var modal = document.getElementById("myModal");
+        var btn = document.getElementsByClassName("myBtn")[0];
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+        // When the user clicks on the button, open the modal
+        btn.onclick = function() {
+          modal.style.display = "block";
+        }
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+          modal.style.display = "none";
+        }
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+          if (event.target == modal) {
+            modal.style.display = "none";
+          }
+        }
+
+        $('form').on( 'keyup', 'textarea', function (){
+            $(this).height( 0 );
+            $(this).height( this.scrollHeight );
+        });
+        $('form').find( 'textarea' ).keyup();
+
+
+
+        $('.msg').css('display','block')
+
+        function windowz(){
+            if (window.matchMedia("(max-width:1050px)").matches){
+                var variable = $('.chat-lines > input').val()
+                if (variable.length > 20) {
+                    $('.all').css('display','none')
+                    $('.msg1').css('display','block')
+                }
+            };
+            if (window.matchMedia("(max-width:900px)").matches){
+                var variable = $('.chat-lines > input').val()
+                if (variable.length > 15) {
+                    $('.all').css('display','none')
+                    $('.msg2').css('display','block')
+                }
+            };
+            if (window.matchMedia("(max-width:768px)").matches){
+                var variable = $('.chat-lines > input').val()
+                if (variable.length > 10) {
+                    $('.all').css('display','none')
+                    $('.msg3').css('display','block')
+                }
+            };
+            if (window.matchMedia("(max-width:768px)").matches){
+                var variable = $('.chat-lines > input').val()
+                if (variable.length > 10) {
+                    $('.all').css('display','none')
+                    $('.msg2').css('display','block')
+                }
+            };
+        }
+        var y = window.matchMedia("(max-width:768px)")
+        windowz()
+        y.addListener(windowz)
+
+        $('.secondbox > .block1 > .inside').on(
+            {mousedown: function(){
+                $('.secondbox > .block1').children().css('background-color','var(--normalwhite)')
+                $(this).css('background-color','var(--lightgrey)')
+
+                var unique_id = $(this).data('index')
+                $('.msg_amt[data-index="'+ unique_id +'"]').remove();
+            }}
+        )
+        $('.chatz').on(
+            {click: function(e){
+                e.preventDefault();
+                $.ajax({
+                    type:"POST",
+                    data: {
+                        ID: $(this).data('index'),
+                        csrfmiddlewaretoken: "{{ csrf_token }}",
+                        action: 'get_msg'
+                    },
+                    success: function(json){
+                    },
+                    error: function(xhr, errmsg, err){
+                        console.log('completed with error');
+                    }
+                });
+
+            }}
+        )
+    });
+    </script>
+{% endblock %}
+
+
+
+
+
+
+
+

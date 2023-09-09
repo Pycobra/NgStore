@@ -1,0 +1,613 @@
+{% load static %}
+<!--fa-bars
+fa-times
+fa-times-rectangle
+fa-times-rectangle-o
+fa-arrow-up
+fa-arrow-down-->
+
+
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %} MultiVendorSite {% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'styles/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+    <!-- <script type="text/javascript" language="JavaScript" src="{% static 'scripts/jQuery-3.2.1.min.js' %}"></script>
+    <script type="text/javascript" language="JavaScript" src="{% static 'scripts/learner.js' %}"></script> -->
+    <link rel="stylesheet" type="text/css" href="{% static 'styles/main.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'styles/order/deliver-address-details.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'styles/checkout/checkout.css' %}">
+    <link rel="stylesheet" href="{% block stylesheet %}{% endblock %}">
+    <link rel="stylesheet" href="{% block stylesheet2 %}{% endblock %}">
+    <link rel="stylesheet" href="{% block stylesheet3 %}{% endblock %}">
+    <script src = "{% static 'scripts/channels/reconnecting-websocket.min.js' %}"> </script>
+    <!-- <script src = "{% static 'scripts/channels/new_user.js' %}"> </script> -->
+    <script src="https://js.paystack.co/v1/inline.js"></script>
+    <script type="text/javascript" language="JavaScript" src="{% static 'scripts/jQuery-3.2.1.min.js' %}"></script>
+    <script type="text/javascript" language="JavaScript" src="{% static 'scripts/main.js' %}"></script>
+
+</head>
+<body>
+    <header>
+        <!--
+        <span id="account-caret"><i class="fa fa-caret-down"></i></span>
+        <span id="dropdown-shop-caret"><i class="fa fa-caret-down"></i></span>
+        <span id="dropdown-deals-caret"><i class="fa fa-caret-down"></i></span>
+        <span id="dropdown-brands-caret"><i class="fa fa-caret-down"></i></span>
+        <span id="dropdown-services-caret"><i class="fa fa-caret-down"></i></span>
+        <div id="dropdown-account1">
+            <ul>
+               <li class="account">
+                    {% if request.user.is_authenticated %}
+                   <a href="{% url "account_:logout" %}"><button><i class="fa fa-sign-out"></i>Sign Out</button></a>
+                    {% else %}
+                   <a href="{% url "account_:login" %}"><button><i class="fa fa-sign-in"></i>Sign in</button></a>
+                    {% endif %}
+                </li>
+                <hr>
+                {% if request.user.is_authenticated %}
+                <li>
+                    <a href="{% url "account_:dashboard"  %}"><i class="fa fa-dashboard" style="font-weight:600;margin-right:10px;font-size:20px;color:var(--normalblack)"></i>My Dashboard</a>
+                </li>
+                {% endif %}
+                <li><i class="fa fa-heart-o" style="font-weight:600;margin-right:10px;font-size:20px;color:var(--normalblack)"></i>Saved Items</li>
+                <li><i class="fa fa-check-circle-o" style="font-weight:600;margin-right:10px;font-size:20px;color:var(--normalblack)"></i>Liked Items</li>
+            </ul>
+        </div>
+        -->
+        <div class="first">
+            <div id="dropdown-accounto">
+                <span id="account-caret2"><i class="fa fa-caret-up"></i></span>
+                <ul>
+                   <li class="account">
+                        {% if request.user.is_authenticated %}
+                       <a href="{% url "account_:logout" %}"><button><i class="fa fa-sign-out" style="color:var(--normalwhite)"></i>Sign Out</button></a>
+                        {% else %}
+                       <a href="{% url "account_:login" %}"><button><i class="fa fa-sign-in" style="color:var(--normalwhite)"></i>Sign in</button></a>
+                        {% endif %}
+                    </li>
+                    <hr>
+                    {% if request.user.is_authenticated %}
+                    <li>
+                        <a href="{% url "account_:dashboard" %}"><i class="fa fa-dashboard" style="font-weight:600;margin-right:10px;font-size:20px;color:var(--normalblack)"></i>My Dashboard</a>
+                    </li>
+                    <li>
+                        <a href="{% url "message_:messages_history" request.user.unique_id %}">
+                            <span class="msg-block">
+                                <i class="fa fa-envelope"></i>
+                                {% if chats %}<span id="msg-no-top">{{chats}}</span>{% endif %}
+                            </span>
+                            Chats
+                        </a>
+                    </li>
+                    <!-- <li><a href="{% url "message_:messages_history" request.user.unique_id %}"><i class="fa fa-dashboard" style="font-weight:600;margin-right:10px;font-size:20px;color:var(--normalblack)"></i>Chats
+                        {% if chats %}<span class="msg-block"><i class="fa fa-envelope"></i><span id="msg-no-top">{{chats}}</span> {% endif %}</span></a>
+                    </li> -->
+                    {% endif %}
+                    <li><a href="{% url "account_:likes_and_wishlist" %}"><i class="fa fa-heart-o" style="font-weight:600;margin-right:10px;font-size:20px;color:var(--normalblack)"></i>Saved & liked items</a></li>
+                    <li><i class="fa fa-check-circle-o" style="font-weight:600;margin-right:10px;font-size:20px;color:var(--normalblack)"></i>Liked Items</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="second">
+            <div id="dropdown-shop">
+                <span class="caret"><i class="fa fa-caret-up"></i></span>
+                <ul>
+                    <li><i class="fa fa-heart-o" style="font-weight:600;margin-right:10px;font-size:20px;color:var(--normalblack)"></i>Shop</li>
+                    <li><i class="fa fa-check-circle-o" style="font-weight:600;margin-right:10px;font-size:20px;color:var(--normalblack)"></i>shop</li>
+                </ul>
+            </div>
+            <div id="dropdown-deals">
+                <span class="caret"><i class="fa fa-caret-up"></i></span>
+                <ul>
+                    <li><i class="fa fa-heart-o" style="font-weight:600;margin-right:10px;font-size:20px;color:var(--normalblack)"></i>deals</li>
+                    <li><i class="fa fa-check-circle-o" style="font-weight:600;margin-right:10px;font-size:20px;color:var(--normalblack)"></i>deals</li>
+                </ul>
+            </div>
+            <div id="dropdown-brands">
+                <span class="caret"><i class="fa fa-caret-up"></i></span>
+                <ul>
+                    <li><i class="fa fa-heart-o" style="font-weight:600;margin-right:10px;font-size:20px;color:var(--normalblack)"></i>brands</li>
+                    <li><i class="fa fa-check-circle-o" style="font-weight:600;margin-right:10px;font-size:20px;color:var(--normalblack)"></i>brands</li>
+                </ul>
+            </div>
+            <div id="dropdown-services">
+                <span class="caret"><i class="fa fa-caret-up"></i></span>
+                <ul>
+                    <li><i class="fa fa-heart-o" style="font-weight:600;margin-right:10px;font-size:20px;color:var(--normalblack)"></i>Services</li>
+                    <li><i class="fa fa-check-circle-o" style="font-weight:600;margin-right:10px;font-size:20px;color:var(--normalblack)"></i>services</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="third">
+            <div id="slide-account">
+                <ul>
+                   <span>
+                       <!--<i class="fa fa-times-rectangle" id="menutimes2"></i>-->
+                       <a href="/" class="">
+                           <strong>NGStore<br>Boy
+                               <span class="cart"><i class="fa fa-shopping-cart" style="color:var(--normalorange);"></i><i class="fa fa-star"></i></span>
+                           </strong>
+                       </a>
+                   </span>
+                   <form method="get" action="{% url 'product_:search_' %}">
+                        <div class="search-field">
+                            <button class="icon"><i class="fa fa-search"></i></button>
+                            <input type="text" class="input" placeholder="Search NGStoreboy" name="query">
+                        </div>
+                   </form>
+                    <span style="border-bottom:1px solid rgba(0,0,0,0.1);width:90%;margin-bottom:10px;"></span>
+                   <span class="head">MY ACCOUNT</span>
+                   <li class="account">
+                       {% if request.user.is_authenticated %}
+                       <a href="{% url "account_:logout" %}"><button><i class="fa fa-sign-out" style="color:var(--normalwhite);"></i>Sign Out</button></a>
+                       {% else %}
+                       <a href="{% url "account_:login" %}"><button><i class="fa fa-sign-in" style="color:var(--normalwhite);"></i>Sign in</button></a>
+                       {% endif %}
+                    </li>
+                    {% if request.user.is_authenticated %}
+                    <li>
+                        <a href="{% url "account_:dashboard" %}"><i class="fa fa-dashboard" style="font-weight:600;margin-right:10px;font-size:20px;"></i>My Dashboard</a>
+                    </li>
+                    <li>
+                        <a href="{% url "message_:messages_history" request.user.unique_id %}">
+                            <span class="msg-block">
+                                <i class="fa fa-envelope"></i>
+                                {% if chats %}<span id="msg-no-top">{{chats}}</span>{% endif %}
+                            </span>
+                            Chats
+                        </a>
+                    </li>
+                    <li><a class="dropdown-item" href=""><i class="fa fa-dashboard" style="font-weight:600;margin-right:10px;font-size:20px;"></i>Notification</a></li>
+                    <li><a href="{% url "account_:likes_and_wishlist" %}"><i class="fa fa-heart-o" style="font-weight:600;margin-right:10px;font-size:20px;"></i>Saved & liked items</a></li>
+                    {% endif %}
+                    <span style="border-bottom:1px solid rgba(0,0,0,0.1);width:90%;margin-bottom:10px;"></span>
+                    <span class="head">OUR CATEGORIES</span>
+                    {% for titles in categories %}
+                    <li class="category-list"><a href="{% url "core_:category_search" titles.slug %}">{{ titles }}</a></li>
+                    {% endfor %}
+                    <span style="border-bottom:1px solid rgba(0,0,0,0.1);width:90%;margin-bottom:10px;"></span>
+                    <li><a href="{% url "vendor_:sell" %}" class="">Sell&nbspOn&nbspNGStoreboy</a></li>
+                    <li><a href="{% url "vendor_:sell" %}" class="">help</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <section id="section-nav">
+        <!--navigations start---------------------------------->
+            <nav class="container-fluid" id="nav1">
+                <div class="first-nav">
+                    <span>
+                        <a href="/" class="">
+                            <strong>NGStore<br>Boy
+                                <span class="cart"><i class="fa fa-shopping-cart"></i><i class="fa fa-star"></i></span>
+                            </strong>
+                        </a>
+                    </span>
+                    <form method="get" action="{% url 'product_:search_' %}">
+                        <div class="search-field">
+                            <div class="field">
+                                <div class="icon"><i class="fa fa-search"></i></div>
+                                <input type="text" class="input" placeholder="Search NGStoreboy" name="query">
+                                <button class="is-uppercase">SEARCH</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="main-nav">
+                    <div class="inside">
+                        <a href="{% url "cart_:cart_detail" %}">
+                            <div class="help">
+                                <i class="fa fa-question-circle"></i>
+                                <span class="text">Help</span>
+                            </div>
+                        </a>
+                        <a href="{% url "cart_:cart_detail" %}">
+                            <div class="cart">
+                                <i class="fa fa-shopping-cart" class="shopping-cart"></i>
+                                {% with total_qty=cart|length %}
+                                <span class="qty">{% if total_qty > 0 %}{{ total_qty }}{% else %}0{% endif %}</span>
+                                {% endwith %}
+                                <span class="text">Cart</span>
+                            </div>
+                        </a>
+                        <a>
+                            <div class="account">
+                                <i class="fa fa-user"></i>
+                                <span class="text">Account</span>
+                                <i class="fa fa-caret-down" id="caret4"></i>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div id="menuwrap1">
+                        <i class="fa fa-bars" id="menubars"></i>
+                        <i class="fa fa-times-rectangle" id="menutimes"></i>
+                    </div>
+                </div>
+            </nav>
+            <section>
+                <nav class="container-fluid" id="nav2">
+                    <div class="first-nav">
+                        <span>
+                            <a href="{% url "vendor_:sell" %}" class=""><strong>Sell&nbspOn&nbspNGStoreboy</strong></a>
+                        </span>
+                    </div>
+                    <div class="main-nav">
+                        <ul>
+                            {% for titles in categories %}
+                            <!--<li><a style="color:var(--darkgrey);" href="{% url "product_:vendor_category" %}">{{ titles }}</a></li>-->
+                            <a href="{% url "core_:category_search" titles.slug %}"><li class="category-list">{{ titles }}</li></a>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </nav>
+            </section>
+            <section class="container-fluid">
+                <nav class="container-fluid" id="nav3">
+                    <div class="first-nav">
+                        <ul>
+                            <li><span class="span1">Shop</span> <i class="fa fa-caret-down" id="caret5"></i></li>
+                            <li><span>Deals</span> <i class="fa fa-caret-down" id="caret6"></i></li>
+                            <li><span>Brands</span> <i class="fa fa-caret-down" id="caret7"></i></li>
+                            <li><span>Services</span> <i class="fa fa-caret-down" id="caret8"></i></li>
+                        </ul>
+                    </div>
+                    <div class="main-nav">
+                        <form method="get" action="{% url 'product_:search_' %}">
+                            <div class="search-field">
+                                <div class="field">
+                                    <div class="icon"><i class="fa fa-search"></i></div>
+                                    <input type="text" class="input" placeholder="Search NGStoreboy" name="query">
+                                    <button class="is-uppercase">SEARCH</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </nav>
+            </section>
+            <section class="container-fluid">
+                <nav class="container-fluid" id="nav4">
+                    <div class="first-nav">
+                        <form method="get" action="{% url 'product_:search_' %}">
+                            <div class="search-field">
+                                <div class="field">
+                                    <div class="icon"><i class="fa fa-search"></i></div>
+                                    <input type="text" class="input" placeholder="Search NGStoreboy" name="query">
+                                    <button class="is-uppercase">SEARCH</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="main-nav">
+                        <a href="{% url "cart_:cart_detail" %}">
+                            <div class="cart">
+                                <i class="fa fa-shopping-cart" class="shopping-cart"></i>
+                                {% with total_qty=cart|length %}
+                                <span class="qty">{% if total_qty > 0 %}{{ total_qty }}{% else %}0{% endif %}</span>
+                                {% endwith %}
+                                <span class="text">Cart</span>
+                            </div>
+                        </a>
+                    </div>
+                </nav>
+            </section>
+            <!--<div class="screen-focus-progress"></div>-->
+        </section>
+        <section id="section-container">
+            <div id="container">
+                {% block content %}
+                {% endblock %}
+            </div>
+        </section>
+    </header>
+    <footer>
+        <section class="first-side">
+            <div class="block1" id="inside1">
+                <div class="site-logo">
+                    <span>
+                        <a href="/" class="">
+                            <strong>NGStore<br>Boy
+                                <span class="cart"><i class="fa fa-shopping-cart"></i><i class="fa fa-star"></i></span>
+                            </strong>
+                        </a>
+                    </span>
+                    <!--<span class="">
+                        <a href="/" class="span"><strong>NGStore<br> Boy<i class="fa fa-shopping-chats"></i></strong></a>
+                    </span>-->
+                </div>
+                <div class="newletter">
+                    <p>NEW TO NGStoreboy?</p>
+                    <p>Subscribe to our newsletter to get updates on our latest offers!</p>
+                    <form method="get" action="{% url 'product_:search_' %}">
+                        <div class="search-field">
+                            <div class="field">
+                                <div class="part1">
+                                    <div class="icon"><i class="fa fa-envelope"></i></div>
+                                    <input type="text" placeholder="Enter E-Mail Address" name="query">
+                                </div>
+                                <div class="part2">
+                                    <button class="is-uppercase">Male</button>
+                                    <button class="is-uppercase">Female</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="download-app">
+                    <div class="inner-block1">
+                        <i class="fa fa-shopping-cart"></i>
+                        <div class="first-block1">
+                            <p>DOWNLOAD NGStoreboy FREE APP</p>
+                            <p>Get access to exclusive offers!</p>
+                        </div>
+                    </div>
+                    <div class="inner-block2">
+                        <span class="first-block2">
+                            <i class="fa fa-apple"></i>
+                            <div class="text">
+                                <p>Download&nbsp;on&nbsp;the</p>
+                                <p>App&nbsp;Store</p>
+                            </div>
+                        </span>
+                        <span class="last-block2">
+                            <i class="fa fa-play"></i>
+                            <div class="text">
+                                <p>GET&nbsp;IT&nbsp;ON</p>
+                                <p>Google&nbsp;Play</p>
+                            </div>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="second-side">
+            <div class="block2" id="inside2">
+                <div class="about">
+                    <span> ABOUT NGStoreboy</span>
+                    <span> About us</span>
+                    <span> NGStoreboy careers</span>
+                    <span> NGStoreboy Express</span>
+                    <span> Terms and Conditions</span>
+                    <span> Privacy and Cookie Notice</span>
+                    <span> NGStoreboy Prime</span>
+                    <span> NGStoreboy Global</span>
+                    <span> NGStoreboy Black Friday</span>
+                </div>
+                <div class="make-money">
+                    <div class="inner-block1">
+                        <span>MAKE MONEY WITH NGStoreboy</span>
+                        <span>Sell on NGStoreboy</span>
+                        <span>Become a Sales Consultant</span>
+                        <span>Become a NGStoreboy Vendor Service Provider</span>
+                        <span>Become a Logistics Service Partner</span>
+                        <span>Join the NGStoreboy DA Academy</span>
+                        <span>Join the NGStoreboy KOL Program</span>
+                    </div>
+                    <div class="inner-block2">
+                        <span>Lets us fix it</span>
+                        <span>Help center</span>
+                        <span>How to shon on NGStoreboy</span>
+                        <span>Delivery options and timeline</span>
+                        <span>How to return products on NGStoreboy</span>
+                        <span>Coperate and bulk purchase</span>
+                        <span>Report a product</span>
+                        <span>ship your package anywhere in nigeria</span>
+
+
+                    </div>
+                </div>
+                <div class="countries">
+                    <span>NGStoreboy INTERNATIONAL</span>
+                    <div class="names">
+                        <span>Algeria</span>
+                        <span>Egypt</span>
+                        <span>Ghana</span>
+                    </div>
+                </div>
+            </div>
+            <div class="block3" id="inside3">
+                <div class="recognition">
+                    <span>JOin Us On Social Media</span>
+                    <div class="inner-block1">
+                        <span><a class="" href="{% url 'core_:contact' %}"><i class="fa fa-cc-mastercard"></i></a></span>
+                        <span><a href="{% url 'core_:contact' %}"><i class="fa fa-cc-visa"></i></a></span>
+                        <span><a class="" href="{% url 'core_:contact' %}"><i class="fa fa-cc-mastercard"></i></a></span>
+                        <span><a href="{% url 'core_:contact' %}"><i class="fa fa-cc-visa"></i></a></span>
+                    </div>
+                </div>
+                <div class="social-icons">
+                    <span>Payment Methods & Delivery Partners</span>
+                    <div class="inner-block1">
+                        <span><a class="" href="{% url 'core_:contact' %}"><i class="fa fa-facebook"></i></a></span>
+                        <span><a href="{% url 'core_:contact' %}"><i class="fa fa-twitter"></i></a></span>
+                        <span><a href="{% url 'core_:contact' %}"><i class="fa fa-instagram"></i></a></span>
+                        <span><a href="{% url 'core_:contact' %}"><i class="fa fa-linkedin"></i></a></span>
+                        <span><a href="{% url 'core_:contact' %}"><i class="fa fa-snapchat"></i></a></span>
+                        <span><a href="{% url 'core_:contact' %}"><i class="fa fa-youtube"></i></a></span>
+                        <span><a href="{% url 'core_:contact' %}"><i class="fa fa-youtube-play"></i></a></span>
+                        <span><a href="{% url 'core_:contact' %}"><i class="fa fa-spotify"></i></a></span>
+
+                    </div>
+                </div>
+            </div>
+            <hr>
+        </section>
+
+
+        <!--<section>
+            <div class="block1">
+                <h3 class="is-size-4 mb-4">Copyright By BrightCode</h3>
+                <div class="admin">
+                   {% if request.user.is_authenticated %}
+                        <a href="{% url "vendor_:become_vendor_" %}">Make a vendor</a>
+                   {% else %}
+                        <a href="{% url "vendor_:become_vendor_" %}">Become a vendor</a>
+                   {% endif %}
+                    <a href=""> Site vendors</a>
+                </div>
+            </div>
+
+            <div class="block2">
+                <div class="contact">
+                    <p>Contacts</p>
+                    <div class="social-icons">
+                        <a class="" href="{% url 'core_:contact' %}"><i class="fa fa-facebook-square"></i></a>
+                        <a href="{% url 'core_:contact' %}"><i class="fa fa-twitter-square"></i></a>
+                        <a href="{% url 'core_:contact' %}"><i class="fa fa-instagram"></i></a>
+                        <a href="{% url 'core_:contact' %}"><i class="fa fa-linkedin-square"></i></a>
+                    </div>
+                </div>
+            </div>
+            <p class="copyright">Copyright By BrightCode</p>
+        </section>-->
+    </footer>
+    <div class="social-icons2">
+        <a class="" href="{% url 'core_:contact' %}"><i class="fa fa-facebook-square"></i></a>
+        <a href="{% url 'core_:contact' %}"><i class="fa fa-twitter-square"></i></a>
+        <a href="{% url 'core_:contact' %}"><i class="fa fa-instagram"></i></a>
+        <a href="{% url 'core_:contact' %}"><i class="fa fa-linkedin-square"></i></a>
+    </div>
+
+    {% block scripts %}
+        <script>
+const getPostion1 = (opts) => {
+    const promise = new Promise((resolve,reject) => {
+        navigator.geolocation.getCurrentPosition(success => {
+            resolve(success)
+        }, error => {
+            reject(error)
+        }, opts)
+    })
+    return promise
+}
+const setTimer_ = (duration) => {
+    const promise = new Promise((resolve,reject) => {
+        setTimeout(() => {
+           resolve(() => {console.log("Skipped 11!!")})
+         }, duration)
+    })
+    return promise
+}
+function trackUser1() {
+    let positionData
+    getPostion1()
+    .then(posData => {
+        console.log('skipped 1!!')
+        return setTimer(2000)
+    })
+    .catch(err => {
+        console.log('data, positionData')
+        return err
+    })
+    .then(data => console.log(data, positionData))
+}
+trackUser1()
+        </script>
+    {% endblock %}
+    </main>
+</body>
+</html>
+<!--
+
+
+
+    background-color:#ff3;
+    CCCDC6 204 205 198
+    BBBCB6 187 188 182
+    ACADA8 172 173 168
+    746D69 116 109 105
+
+    SEAFOAM 93e9be (147,233,190,1)
+    marshmallows 1612 & 1606 & 1364(
+    grass 348c31 (52,140,49,1)
+    midnight 191970
+    sun f9d71c (249,215,28,1)
+    rose F33A6A (243,58,106,1)/B76E79 (183,110,121,1)
+    AQUA 00ffff (0,255,255,1)/86aba5 (134,171,165,1)
+    cherry D2042D-FF5733/(210,4,45,1)
+    violet 8f00ff
+
+
+redis is stored in  Stored in directory: c:\users\bright\appdata\local\pip\cache\wheels\3c\18\dc\5765b45deada4449790d77fc54b0852e996f594767
+
+Installation Directory: C:\Program Files\PostgreSQL\14
+Server Installation Directory: C:\Program Files\PostgreSQL\14
+Data Directory: C:\Program Files\PostgreSQL\14\data
+Database Port: 5432
+Database Superuser: postgres
+Operating System Account: NT AUTHORITY\NetworkService
+Database Service: postgresql-x64-14
+Command Line Tools Installation Directory: C:\Program Files\PostgreSQL\14
+pgAdmin4 Installation Directory:
+Stack Builder Installation Directory: C:\Program Files\PostgreSQL\14
+port-no  = 5432
+
+
+
+
+ C:\Users\BRIGHT\AppData\Local\Programs\Microsoft VS Code
+
+
+//                  1           //
+ /*
+function addLi() {
+     let txtVal = document.getElementById('txtVal').value,
+        liNode = document.createElement("LI"),
+        txtNode = document.createTextNode(txtVal);
+        liNode.appendChild(txtNode);
+        listNode.appendChild(liNode);
+*/
+
+
+//                  2           //
+/*
+success: function (data) {
+   $.each(data.data, function(k, v) {
+       /// do stuff
+   });
+}
+
+OR
+
+var container = $('#some-container')
+container.load('/processData', {foo: "this is required to force a post rather than get")
+
+OR
+
+success: function(json){
+    // Table header
+    var table = $('<table>').addClass('table table-style table-striped');
+    var thead = $('<thead>');
+    var headrow = $('<tr>');
+    var head1 = $('<th>').text('HOSTNAME');
+    var head2 = $('<th>').text('TTL');
+    var head3 = $('<th>').text('CLASS');
+    var head4 = $('<th>').text('TYPE');
+    var head5 = $('<th>').text('DETAILS');
+    $(headrow).append(head1, head2, head3, head4, head5);
+    $(thead).append(headrow);
+    $(table).append(thead);
+
+    // table body
+    var tbody = $('<tbody>');
+    num_answers = json.length
+    for (i = 0; i < num_answers; i++) {
+        var row = $('<tr>');
+        var cell1 = $('<td>').text(json[i][0]);
+        var cell2 = $('<td>').text(json[i][1]);
+        var cell3 = $('<td>').text(json[i][2]);
+        var cell4 = $('<td>').text(json[i][3]);
+        var cell5 = $('<td>').text(json[i][4]);
+        $(row).append(cell1, cell2, cell3, cell4, cell5);
+        $(tbody).append(row);
+    }
+    $(table).append(row);
+    $('#mainsection').append(table);
+}
+*/
+-->

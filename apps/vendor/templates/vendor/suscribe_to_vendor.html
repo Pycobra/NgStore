@@ -1,0 +1,53 @@
+{% extends 'core/base.html' %}
+
+{% block title %} Suscription {% endblock %}
+
+{% block content %}
+
+
+<div class="container">
+{% if messages %}
+<div class="alert alert-warning" alert-{{ message.tags }}" role="alert">
+{% for message in messages  %}
+  {{message|safe}}
+{% endfor %}
+</div>
+{% endif %}
+
+<h2>{{vendor.store_name}} Suscriptions</h2>
+{% if subscription_type %}
+    {% for subscription in subscription_type %}
+    <div data-index="{{ subscription.id }}" class="subscribe">
+        {{subscription.title}}, {{subscription.duration}}, {{subscription.amount}}
+    </div>
+    {% endfor %}
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+    <script>
+    $(document).ready(function(){
+        $('.subscribe').on(
+            {click: function(e){
+                e.preventDefault();
+                $.ajax({
+                    type:"POST",
+                    url:"{% url "vendor_:suscribe_package_" vendor.unique_id %}",
+                    data: {
+                        subscription_id: $(this).data('index'),
+                        csrfmiddlewaretoken: "{{ csrf_token }}",
+                        action: 'post'
+                    },
+                    success: function(json){
+                    },
+                    error: function(xhr, errmsg, err){
+                        console.log('completed with error');
+                    }
+                });
+
+            }}
+        )
+    });
+    </script>
+{% endblock %}
+

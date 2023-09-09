@@ -1,0 +1,519 @@
+
+#main-container{
+    background-color:var(--normalwhite);
+    margin-bottom:50px;
+    margin-top:10px;
+    z-index:1;
+
+}
+a{
+    color:var(--normalblack);
+}
+#main-container .main-box{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width:auto;
+    border:2px solid #F3F3F3;
+    font-size:14px;
+    border-radius:5px;
+}
+#main-container .main-box .main-head{
+}
+#main-container .main-box .box{
+    width:100%;
+    margin:0;
+}
+#main-container .main-box .box .inside-box{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width:100%;
+}
+#main-container .main-box .box .body-row{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    background-color:var(--normalwhite);
+    width:100%;
+}
+#main-container .main-box .box .body-row .firstbox{
+    display: flex;
+    flex-direction:column;
+    justify-content: flex-start;
+    align-items: center;
+    background-color:var(--normalwhite);
+    width:40%;
+    height:77vh;
+    font-weight:550;
+}
+#main-container .main-box .box .body-row .firstbox-display-none{
+    display:none;
+}
+#main-container .main-box .box .body-row .secondbox{
+    display: flex;
+    flex-direction:column;
+    justify-content: flex-start;
+    align-items: center;
+    background-color:var(--normalwhite);
+    width:60%;
+    height:77vh;
+    position:relative;
+    z-index:1;
+}
+#main-container .main-box .box .body-row .firstbox .block1{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height:12vh;
+    width:100%;
+    border-right:2px solid #F3F3F3;
+    font-size:20px;
+}
+
+#main-container .main-box .box .body-row .firstbox .block2{
+    display: flex;
+    flex-direction:column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width:100%;
+    height:65vh;
+    border-right:2px solid #F3F3F3;
+    border-top:2px solid #F3F3F3;
+}
+#main-container .main-box .box .body-row .firstbox .block2 .inside,
+.secondbox .block1 .inside{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width:100%;
+    height:80px;
+    margin:2.5px 0 2.5px 0;
+    position:relative;
+}
+#main-container .main-box .box .body-row .firstbox .block2 .inside .inner,
+.secondbox .block1 .inside .inner{
+    position:relative;
+}
+#main-container .main-box .box .body-row .firstbox .block2 .inside .inner .active,
+.secondbox .block1 .inside .inner .active{
+    width:15px;
+    height:15px;
+    background-color:green;
+    position:absolute;
+    bottom:5px;
+    right:0;
+    border:3px solid var(--normalwhite);
+    border-radius:100%;
+}
+#main-container .main-box .box .body-row .firstbox .block2 .inside img,
+.secondbox .block1 .inside img{
+    object-fit:cover;
+    height:60px;
+    width:60px;
+    border-radius:100%;
+    margin-left:10px;
+}
+#main-container .main-box .box .body-row .firstbox .block2 .inside .chat-lines,
+.secondbox .block1 .inside .chat-lines{
+    display: flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items: flex-start;
+    margin-left:10px;
+}
+
+.secondbox .block1 .inside .chat-lines{
+    font-weight:bold;
+}
+#main-container .main-box .box .body-row .firstbox .block2 .inside .time{
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    margin-left:10px;
+    height:33px;
+    color:#ACADA8;
+}
+#main-container .main-box .box .body-row .firstbox .block2 .inside .msg_amt{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height:25px;
+    width:25px;
+    border-radius:100%;
+    position:absolute;
+    top:10px;
+    right:20px;
+    color:var(--normalwhite);
+    background-color:var(--lightred);
+    border:3px solid var(--lightgrey);
+    font-size:15px;
+    font-weight:550;
+}
+#main-container .main-box .box .body-row .firstbox .block2 .inside .chat-lines span{
+    display:none;
+}
+#main-container .main-box .box .body-row .firstbox .block2 .inside .chat-lines .all{
+    color:#ACADA8;
+    display:none;
+}
+#main-container .main-box .box .body-row .firstbox .block2 .no-msg{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width:100%;
+    height:100%;
+    font-size:20px;
+    color:#ACADA8;
+}
+/* ========================================================= */
+
+/* the below refused to work here due to name clash, so i put it down below */
+#main-container .main-box .box .body-row .secondbox .block1{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height:12vh;
+    width:100%;
+    border-bottom:2px solid #F3F3F3;
+}
+#main-container .main-box .box .body-row .secondbox .block1 .inside{
+    justify-content: center;
+}
+#main-container .main-box .box .body-row .secondbox .block2{
+    display: flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items: center;
+    width:100%;
+    height:18.7vh;
+    overflow:auto;
+    padding-bottom:200px;
+}
+
+#main-container .main-box .box .body-row .secondbox .block2-a{
+    height:100%;
+    padding-bottom:0;
+}
+#main-container .main-box .box .body-row .secondbox .block2 .inside-a{
+    display: flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items: center;
+    width:100%;
+}
+#main-container .main-box .box .body-row .secondbox .block2 .inside-b{
+    display: flex;
+    flex-direction:column-reverse;
+    justify-content: flex-end;
+    align-items: center;
+    width:100%;
+    height:100%;
+}
+#main-container .main-box .box .body-row .secondbox .block2 .inside .float-left{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width:97%;
+    margin-bottom:10px;
+}
+#main-container .main-box .box .body-row .secondbox .block2 .inside .float-right{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width:97%;
+    margin-bottom:10px;
+}
+#main-container .main-box .box .body-row .secondbox .block2 .inside .float-left .chat,
+#main-container .main-box .box .body-row .secondbox .block2 .inside .float-right .chat{
+    background-color:var(--lightgrey);
+    border:none;
+    width:auto;
+    height:auto;
+    padding:15px;
+}
+#main-container .main-box .box .body-row .secondbox .block2 .inside span:first-child{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height:100px;
+    width:100px;
+    border-radius:50px;
+    border:2px solid var(--normalblack);
+}
+#main-container .main-box .box .body-row .secondbox .block2 .inside span:nth-child(2){
+   font-size:20px;
+   font-weight:none;
+   color:#746D69;
+   margin-top:10px;
+}
+#main-container .main-box .box .body-row .secondbox .block2 .inside span:nth-child(3){
+   color:#ACADA8;
+}
+#main-container .main-box .box .body-row .secondbox .block2 .inside button{
+    background-color: var(--normalorange);
+    padding:10px;
+    border:none;
+    border-radius:5px;
+    font-weight:550;
+    margin-top:20px;
+    color:var(--normalwhite);
+}
+#main-container .main-box .box .body-row .secondbox .block2 .inside span{
+    margin:5px;
+}
+#main-container .main-box .box .body-row .secondbox .block2 .msg_place{
+    width:92%;
+    position:absolute;
+    bottom:5px;
+    right:5.5%;
+}
+#main-container .main-box .box .body-row .secondbox .block2 .msg_place form{
+    display: flex;
+    flex-wrap:no-wrap;
+    justify-content: center;
+    align-items: flex-start;
+    width:auto;
+    position:relative;
+}
+#main-container .main-box .box .body-row .secondbox .block2 .msg_place form textarea{
+    width:100%;
+    min-height:20px;
+    max-height:50px;
+    border-radius:30px;
+    border:1px solid #BBBCB6;
+    font-size:17px;
+    letter-spacing:1px;
+    resize:none;
+    outline:none;
+    padding:15px 30px 5px 30px;
+    overflow-y:none;
+    margin:0;
+}
+#main-container .main-box .box .body-row .secondbox .block2 .msg_place form button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height:50px;
+    width:50px;
+    border-radius:50px;
+    border:none;
+    color:var(--normalwhite);
+    background-color:var(--lightblue);
+    margin-left:2px;
+    font-size: 25px;
+    position:absolute;
+    top: 10px;
+    right: 10px;
+    transform: rotate(45deg);
+}
+
+
+
+
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  left: 0;
+  top: 20vh;
+  z-index:3;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  overflow-y: none;
+}
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  margin-top: 3%;
+  padding: 20px;
+  border: 1px solid #888;
+  border-radius:30px;
+  width: 30%; /* Could be more or less, depending on screen size */
+  height: 60%;
+  overflow-y: none;
+}
+.modal .modal-content .line1{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width:auto;
+    color: #aaa;
+    font-size: 16px;
+    font-weight: bold;
+}
+.modal .modal-content form{
+    display: flex;
+    flex-wrap:no-wrap;
+    justify-content: center;
+    align-items: flex-start;
+    width:auto;
+    position:relative;
+}
+.modal .modal-content form textarea{
+    width:100%;
+    height:100px;
+    min-height:30px;
+    max-height:50px;
+    border-radius:10px;
+    border:1px solid #BBBCB6;
+    font-size:17px;
+    letter-spacing:1px;
+    resize:none;
+    outline:none;
+    padding:7.7px 36px 2.5px 15px;
+    overflow-y:none;
+    margin:0;
+}
+.modal .modal-content form button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height:35px;
+    width:35px;
+    border-radius:50px;
+    border:none;
+    color:var(--normalwhite);
+    background-color:var(--lightblue);
+    margin-left:2px;
+    font-size:20px;
+    position:absolute;
+    top:5px;
+    right:5px;
+}
+.modal .modal-content .body{
+    display: flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items: center;
+    width:auto;
+    overflow-y:auto;
+    height:160px;
+}
+.modal .modal-content .body p{
+  color: #aaa;
+  font-size:23px;
+}
+.modal .modal-content .inside{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width:100%;
+    margin:2.5px 0 10px 0;
+}
+.modal .modal-content .inside .inner{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position:relative;
+}
+.modal .modal-content .inside .inner .active{
+    width:15px;
+    height:15px;
+    background-color:green;
+    position:absolute;
+    bottom:5px;
+    left:45px;
+    border:3px solid var(--normalwhite);
+    border-radius:100%;
+}
+
+.modal .modal-content .inside .inner img{
+    object-fit:cover;
+    height:50px;
+    width:50px;
+    border-radius:100%;
+    margin-left:10px;
+}
+.modal .modal-content .inside .inner .name{
+    margin:15px 0 0 15px;
+    font-weight:bold;
+    font-size:14px;
+    color:#746D69;
+}
+.search-input{
+    margin-top:15px;
+    height:17px;
+    width:17px;
+}
+/* The Close Button */
+.close {
+  color: #aaa;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+
+/* the below refused to work at 170 due to name clash, thats y i put it down below*/
+#main-container .main-box .box .body-row .secondbox .block1{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height:12vh;
+    width:100%;
+    border-bottom:2px solid #F3F3F3;
+}
+
+
+.main-box{
+    margin:0 6% 0 6%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media screen and (max-width:1100px){
+    #main-container .main-box .box .body-row .secondbox .block1 .inside .msg_amt{
+        top:0;
+        right:0;
+        height:20px;
+        width:20px;
+    }
+}
+/*-------------------------------------------------------*/
+
+@media screen and (max-width:1050px){
+    #main-container .main-box .box .body-row .secondbox .block1 .inside .chat-lines{
+        width: 200px;
+    }
+}
+@media screen and (max-width:768px){
+    #main-container .main-box .box .body-row .secondbox .block1 .inside .chat-lines{
+        width: 360px;
+    }
+    #main-container .main-box .box .body-row{
+        flex-wrap:wrap;
+    }
+    #main-container .main-box .box .body-row .firstbox{
+        width:100%;
+    }
+    #main-container .main-box .box .body-row .secondbox{
+        width:100%;
+        border-top:2px solid #F3F3F3;
+    }
+}

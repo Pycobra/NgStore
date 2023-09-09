@@ -1,0 +1,81 @@
+{% extends 'core/base.html' %}
+
+{% load static %}
+{% block stylesheet %}{% static 'styles/account/forms.css' %}{% endblock %}
+
+
+{% block title %} Edit Profile {% endblock %}
+{% block content %}
+<div id="form">
+    <div id="form-inside">
+        <form method="post" class="" action="{% url 'account_:edit_profile' %}">
+            {% csrf_token %}
+            <div class="head">
+                <h1>Edit your profile</h1>
+            </div>
+            <div class="block">
+                  <div class="label">{{ form.firstname.label }}</div>
+                  <div class="input">
+                      {{ form.firstname}}
+                      <div class="alert" role="alert">
+                          {% if form.errors %}
+                          {% for field in form %}
+                          {% if field.errors %}
+                          {% if field.label == "Firstname:" %}
+                          <p>{{ field.errors|striptags }}</p>
+                          {% endif %}
+                          {% endif %}
+                          {% endfor %}
+                          {% endif %}
+                      </div>
+                  </div>
+            </div>
+            <div class="block">
+                  <div class="label">{{ form.surname.label }}</div>
+                  <div  class="input">
+                      {{ form.surname }}
+                      <div class="alert" role="alert">
+                          {% if form.errors %}
+                          {% for field in form %}
+                          {% if field.errors %}
+                          {% if field.label == "Surname:" %}
+                          <p>{{ field.errors|striptags }}</p>
+                          {% endif %}
+                          {% endif %}
+                          {% endfor %}
+                          {% endif %}
+                      </div>
+                  </div>
+            </div>
+            <div class="block">
+              <div class="label">{{ form.mobile.label }}</div>
+              <div class="input">
+                  {{ form.mobile}}
+                  <div class="alert" role="alert">
+                      {% if form.errors %}
+                      {% for field in form %}
+                      {% if field.errors %}
+                      {% if field.label == "Phone no:" %}
+                      <p>{{ field.errors|striptags }}</p>
+                      {% endif %}
+                      {% endif %}
+                      {% endfor %}
+                      {% endif %}
+                  </div>
+              </div>
+            </div>
+            <div class="block">
+              <div class="label">{{ img.user_image.label }}</div>
+              <div class="input">
+                    {{ img.user_image}}
+              </div>
+            </div>
+            <div class="block">
+              <div class="label">
+                <button style="width:100%" type="submit">Submit</button></div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

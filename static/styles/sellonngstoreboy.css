@@ -1,0 +1,177 @@
+#page{
+    background-image: url("../images/site_images/others/image3.png");
+    background-size: cover;
+    width:100%;
+    height:50vh;
+    /*filter:grayscale(25%);*/
+    margin-bottom:50px;
+    z-index:1;
+}
+#page .main-container{
+    display:flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+#page .innerside-container{
+}
+#page .innerside-container p:nth-child(1) {
+    font-family:calibri;
+    font-weight:bold;
+    letter-spacing:30px;
+    background-color:blue;
+    color:rgba(255,255,255,1);
+    font-size:25px;
+    display:inline-block;
+    line-height:0px;
+    height:20px;
+}
+#page .inner-container p:nth-child(2){
+    font-family:calibri;
+    font-weight:700;
+    letter-spacing:30px;
+    color:#6d6d6d;
+    font-size:1.5rem;
+    letter-spacing:10px;
+    display:inline-block;
+    line-height:0px;
+    /*vertical-align:middle;*/
+}
+#box{
+    display:flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom:70px;
+    width:100%;
+    height:100%;
+}
+#box .top-box{
+    background-color:var(--normalwhite);
+    display:flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items: center;
+    width:89%;
+    margin-bottom:50px;
+}
+#box .top-box .head{
+    font-weight:600;
+    font-size:16px;
+    margin: 20px 0 20px 0;
+}
+#box .top-box .inner-box{
+    display:flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width:100%;
+    font-weight:600;
+    font-size:14px;
+}
+#box .top-box .inner-box .top1,
+#box .top-box .inner-box .top2,
+#box .top-box .inner-box .top3,
+#box .top-box .inner-box .top4{
+    background-color:gold;
+    width:20%;
+    height:50px;
+    margin:20px;
+    border-radius:5px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    color:#746D69;
+}
+
+
+
+
+
+
+
+
+
+
+
+#box .down-box{
+    background-color:var(--normalwhite);
+    display:flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items: center;
+    width:89%;
+}
+#box .down-box .head{
+    font-weight:600;
+    font-size:16px;
+    margin: 20px 0 20px 0;
+}
+#box .down-box .inner-box{
+    display:flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width:100%;
+    font-size:14px;
+}
+#box .down-box  .inner-box .down1,
+#box .down-box  .inner-box .down2,
+#box .down-box  .inner-box .down3,
+#box .down-box  .inner-box .down4{
+    margin:20px;
+    width:20%;
+    border-radius:5px;
+    display:flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items: center;
+    color:#746D69;
+    padding:10px;
+}
+#box .down-box  .inner-box .down1 .img,
+#box .down-box  .inner-box .down2 .img,
+#box .down-box  .inner-box .down3 .img,
+#box .down-box  .inner-box .down4 .img{
+    width:100px;
+    height:100px;
+    border-radius:50%;
+    margin-bottom:10px;
+}
+#box .down-box  .inner-box .down1 .img{
+    background-image: url("../images/site_images/others/ana-itonishvili-iM0_ZkaexlI-unsplash.jpg");
+    background-size: cover;
+}
+#box .down-box  .inner-box .down2 .img{
+    background-image: url("../images/site_images/others/xps-8pb7Hq539Zw-unsplash.png");
+    background-size: cover;
+}
+#box .down-box  .inner-box .down3 .img{
+    background-image: url("../images/site_images/others/igor-lypnytskyi-PobecUzsK4c-unsplash.png");
+    background-size: cover;
+}
+#box .down-box  .inner-box .down4 .img{
+    background-image: url("../images/site_images/others/skylake-studio-oeX3hyWcyWg-unsplash.jpg");
+    background-size: cover;
+}
+#box .down-box  .inner-box .down1 .text div:nth-child(1),
+#box .down-box  .inner-box .down2 .text div:nth-child(1),
+#box .down-box  .inner-box .down3 .text div:nth-child(1),
+#box .down-box  .inner-box .down4 .text div:nth-child(1){
+    font-size:16px;
+    color:var(--normalblack);
+    font-weight:500;
+    margin-bottom:10px;
+}
+#box .down-box button{
+    width:130px;
+    height:40px;
+
+    border-radius:5px;
+    font-size:14px;
+    font-weight:var(--md-btn-f-weight);
+    color:var(--md-btn-color);
+    background-color:var(--lg-btn-bg-color);
+    border:var(--md-btn-border);
+    box-shadow:var(--md-btn-shadow);
+}
+
+
+

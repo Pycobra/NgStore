@@ -1,0 +1,68 @@
+
+
+  <a href="{% url 'product_:product_detail_' i.category.slug i.slug %}" class="">
+      <div class="card">
+          <div class="card-img">
+              {% if i.discount_percent != 0 %}
+              <span>%{{ i.discount_percent }}</span>
+              {% endif %}
+
+              {% for image in i.product_images.all %}
+              {% if image.is_main %}
+                  <img src="{{ image.images.url }}" alt="{{ image.images.alt_text }}">
+              {% endif %}
+              {% endfor %}
+          </div>
+          <div class="card-text">
+              <strong class="title">{{ i.title|slice:":50" }}</strong>
+              {% if i.discount_price != 0 %}
+              <span class="money">
+                  <div>
+                      <strong class="discount">N{{ i.discount_price }} </strong>
+                      {% if i.price_difference != 0 %}
+                      <span>save N{{ i.price_difference }}</span>
+                      {% endif %}
+                  </div>
+                  <strike class="price" style="color:#ACADA8;">N{{ i.price }} </strike>
+              </span>
+              {% else %}
+              <strong class="price">N{{ i.price }} </strong>
+              {% endif %}
+          </div>
+          <button data-index="{{ i.id }}" class="add-to-cart-btn" value="{{ i.id }}"><i class="fa fa-cart-plus" style="font-size:30px;"></i></button>
+      </div>
+  </a>
+{% block scripts %}
+<script>
+$(document).ready(function(){
+    $('.add-to-cart-btn').on(
+        {click: function(e){
+            e.preventDefault();
+            // e.stopPropagation();
+            var prod_id=$(this).data('index');
+            $.ajax({
+                type:"POST",
+                url:"{% url 'cart_:cart_detail' %}",
+                data: {
+                    productQTY: "1",
+                    productID: $(this).data('index'),
+                    csrfmiddlewaretoken: "{{ csrf_token }}",
+                    mainAction: 'post',
+                    subAction: 'add'
+                },
+                success: function(json){
+                    $("a > .cart > .qty").text(json.cart_length);
+                },
+                error: function(xhr, errmsg, err){
+                    console.log('completed with error');
+                }
+            });
+
+        }}
+    )
+});
+</script>
+{% endblock %}
+
+
+

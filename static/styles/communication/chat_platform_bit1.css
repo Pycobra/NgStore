@@ -1,0 +1,7 @@
+
+@media screen and (max-width:768px){
+    #main-container .main-box .box .body-row .firstbox{
+        display:none;
+    }
+}
+

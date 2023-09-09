@@ -1,0 +1,103 @@
+{% extends 'core/base.html' %}
+
+{% block title %} Vendor admin | {{ vendor_view.store_name }}{% endblock %}
+<!-- {{ vendor.name }}vendor refer to {'vendor':vendor} in views || name is from name field at models -->
+{% block content %}
+    <div class="box">
+        <a href="{% url "message_:messages_history" request.user.which_vendor.unique_id %}">chats{% if unread_msg %} ({{ unread_msg }}) {% endif %}</a>
+        <h1 class="title"> Vendor Admin - {{ vendor_view.store_name }}</h1>
+
+        <div><strong>My Balance: </strong><span>${{ vendor.get_balance }}</span></div>
+        <div><strong>My paid amount: </strong><span>${{ vendor.get_paid_amount }}</span></div>
+
+        <a href="{% url 'vendor_:edit_vendor_' %}" class="button is-info is-uppercase" style="background-color:green;">Edit</a>
+        <a href="{% url 'account_:logout' %}" class="button is-danger is-uppercase">Log out</a>
+    </div>
+
+    <div class="box">
+        <h2 class="is-size-3">My Orders</h2>
+
+        {% if vendor_have_order %}
+            {% for order in vendor_have_order %}
+                <div class="{% if order.fully_paid %}has-background-success-light{% else %}has-background-into-light{% endif %} mb-2 p-4">
+                    <div class="columns is-multiline">
+                        <div class="column is-6">
+                            <h3 class="is-size-4">#{{ order.id }} - {{ order.first_name }} {{ order.last_name }}</h3>
+                        </div>
+                        <div class="column is-12">
+                            <b>Name:</b>{{ order.first_name }} {{ order.last_name }}<br>
+                            <b>Address:</b>{{ order.address }}<br>
+                            <b>Zip and Place:</b>{{ order.zipcode }} {{ order.place }}<br>
+                            <b>E-mail:</b>{{ order.email }}<br>
+                            <b>Phone:</b>{{ order.phone }}<br>
+
+                            <table class="table is-fullwidth">
+                                <thead>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Price</th>
+                                        <th>Quantity</th>
+                                        <th>Paid</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in order.items.all %}
+                                        {% if item.vendor == request.user.vendor %}
+                                            <tr>
+                                                <td>{{ item.product.title }}</td>
+                                                <td>${{ item.product.price }}</td>
+                                                <td>{{ item.quantity }}</td>
+                                                <td>{{ item.vendor_paid|yesno:"yes,No" }}</td>
+                                                <td>{{ item.get_total_price }}</td>
+                                            </tr>
+                                        {% endif %}
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>You have no order</p>
+        {% endif %}
+    </div>
+    <div class="box">
+        <h2 class="is-size-3 mb-4">My products</h2>
+        <a href="{% url 'vendor_:add_product_' %}" class="button is-dark is-uppercase mb-5">Add Product</a>
+        {% if request.user.is_superuser %}
+            <a href="{% url 'vendor_:add_category_' %}" class="button is-dark is-uppercase mb-5">Add Category</a>
+        {% endif %}
+        {% if productsss %}
+            <table class="table is-fullwidth">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for vendor_admin_html in productsss %}
+                        <tr>
+                            <a href="{% url 'product_:product_detail_' vendor_admin_html.category.slug vendor_admin_html.slug %}">
+                                {% for image in vendor_admin_html.product_images.all %}
+                                {% if image.is_main %}
+                                <img class="img-fluid mx-auto d-block" width="200px" alt="Responsive image" src="{{ image.images.url }}"
+                                alt="{{ image.images.alt_text }}">
+                                {% endif %}
+                                {% endfor %}
+                                <td>{{ vendor_admin_html.title }}</td>
+                                <td>${{ product_price }}</td>
+                            </a>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+        <p>You dont have any product yet...</p>
+        {% endif %}
+    </div>
+
+
+{% endblock %}
