@@ -96,9 +96,18 @@ ASGI_APPLICATION = 'mysite.asgi.application'
 #ASGI_APPLICATION = 'mysite.routing.application'
 
 
+REDIS_HOST = "localhost"
+REDIS_PORT = 6379
+
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
+        # 'NAME': 'mysiteDB',
+        # 'USER': 'postgres',
+        # "PASSWORD": 'guht9876',
+        # "HOST": 'localhost',
+        # "PORT": '5432',
         'URL': os.getenv("DATABASE_URL"),
         'NAME': os.getenv("PGDATABASE"),
         'USER': os.getenv("PGUSER"),
@@ -146,3 +155,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MPTT_ADMIN_LEVEL_INDENT = 20
+
+
+
+

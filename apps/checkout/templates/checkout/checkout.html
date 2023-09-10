@@ -32,11 +32,11 @@
 
 {% block scripts %}
     <script>
-    var paymentForm = document.getElementById('paystackPaymentForm');
-    paystackPaymentForm.addEventListener('submit', payWithPaystack.bind(this));
-    
-    //$('.pay').on('click', function(e) {
-    function payWithPaystack(e){
+        var paymentForm = document.getElementById('paystackPaymentForm');
+        paystackPaymentForm.addEventListener('submit', payWithPaystack.bind(this));
+        
+        //$('.pay').on('click', function(e) {
+        function payWithPaystack(e){
         e.preventDefault();
         $.ajax({
             url: "{% url 'checkout_:user_details_authenticated' %}",
