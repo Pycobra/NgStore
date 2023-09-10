@@ -40,22 +40,8 @@ dockerpty==0.4.1
 docopt==0.6.2
 email-validator==1.1.3
 eventlet==0.33.0
-Flask==2.0.2
-Flask-Babel==2.0.0
-Flask-Compress==1.10.1
-Flask-Gravatar==0.5.0
-Flask-Login==0.5.0
-Flask-Mail==0.9.1
-Flask-Migrate==3.1.0
-Flask-Paranoid==0.2.0
-Flask-Principal==0.4.0
-Flask-Security-Too==4.1.2
-Flask-SocketIO==5.1.1
-Flask-SQLAlchemy==2.5.1
-Flask-WTF==1.0.0
 greenlet==1.1.2
 gunicorn==21.2.0
-hiredis==2.0.0
 httpagentparser==1.9.2
 hyperlink==21.0.0
 idna==2.10
@@ -93,7 +79,6 @@ pywin32==227
 pywinpty==1.1.6
 PyYAML==5.4.1
 qrcode==7.3.1
-redis==2.6.2
 requests==2.25.1
 service-identity==21.1.0
 simplejson==3.17.6
@@ -113,6 +98,3 @@ user-agents==2.2.0
 websocket-client==0.59.0
 Werkzeug==2.0.2
 whitenoise==6.5.0
-WTForms==3.0.1
-zipp==3.7.0
-zope.interface==5.4.0
