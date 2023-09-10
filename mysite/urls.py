@@ -18,10 +18,15 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.generic.base import RedirectView
+from django.contrib.staticfiles.storage import staticfiles_storage
+
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', include('apps.core.urls', namespace='core_')),
+    path('favicon.ico', RedirectView.as_view(url=staticfiles_storage.url('img/favicon/home.png'))),
     path('vendors/', include('apps.vendor.urls', namespace='vendor_')),
     path('account/', include('apps.account.urls', namespace='account_')),
     path('cart/', include('apps.cart.urls', namespace='cart_')),
@@ -29,7 +34,6 @@ urlpatterns = [
     path('order/', include('apps.order.urls', namespace='order_')),
     path('checkout/', include('apps.checkout.urls', namespace='checkout_')),
     path('message/', include('apps.communication.urls', namespace='message_')),
-    path('', include('apps.core.urls', namespace='core_')),
     path('', include('apps.product.urls', namespace='product_')),
     # path('', include('apps.order.urls', namespace='order_')),
     path('__debug__/', include(debug_toolbar.urls)),
