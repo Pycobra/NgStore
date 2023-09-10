@@ -10,8 +10,9 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["127.0.0.1", "ng-store-4bvbdy90t-pycobra.vercel.app"]
-
+ALLOWED_HOSTS = ["127.0.0.1", ".vercel.app", ".now.sh"]
+#OR to allow all
+#ALLOWED_HOSTS = ["*"]
 
 AUTH_USER_MODEL='account.UserBase'
 LOGIN_URL='account_:login'
@@ -95,19 +96,9 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 ASGI_APPLICATION = 'mysite.asgi.application'
 #ASGI_APPLICATION = 'mysite.routing.application'
 
-
-REDIS_HOST = "localhost"
-REDIS_PORT = 6379
-
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        # 'NAME': 'mysiteDB',
-        # 'USER': 'postgres',
-        # "PASSWORD": 'guht9876',
-        # "HOST": 'localhost',
-        # "PORT": '5432',
         'URL': os.getenv("DATABASE_URL"),
         'NAME': os.getenv("PGDATABASE"),
         'USER': os.getenv("PGUSER"),
