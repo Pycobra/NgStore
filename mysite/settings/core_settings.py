@@ -70,7 +70,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'mysite.urls'
+ROOT_URLCONF = 'NgStore.urls'
 
 TEMPLATES = [
     {
@@ -92,9 +92,9 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'mysite.wsgi.application'
-ASGI_APPLICATION = 'mysite.asgi.application'
-#ASGI_APPLICATION = 'mysite.routing.application'
+WSGI_APPLICATION = 'NgStore.wsgi.application'
+ASGI_APPLICATION = 'NgStore.asgi.application'
+#ASGI_APPLICATION = 'NgStore.routing.application'
 
 DATABASES = {
     'default': {
