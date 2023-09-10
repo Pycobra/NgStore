@@ -8,9 +8,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'mysite.herokuapp.com']
+ALLOWED_HOSTS = []
 
 
 AUTH_USER_MODEL='account.UserBase'
