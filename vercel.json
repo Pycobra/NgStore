@@ -2,7 +2,7 @@
     'version': 2,
     'builds': [
         {
-            "src": "mysite/wsgi.py",
+            "src": "NgStore/wsgi.py",
             "use": "@vercel/python",
             "config": {"maxLambdaSize": "15mb", "runtime": "python3.8"}
         },
@@ -19,7 +19,7 @@
         },
         {
             "src": "/(.*)",
-            "dest": "mysite/wsgi.py",
+            "dest": "NgStore/wsgi.py",
         }
     ]
 }
