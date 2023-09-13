@@ -11,7 +11,10 @@ from django.http import JsonResponse, HttpResponseRedirect, HttpResponse
 from django.db.models import Q
 from django.core import serializers
 from django.core.mail import send_mail
+from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
 
+import smtplib
 
 """from apps.account.models import UserBase
 from apps.order.views import user_succesful_orders, vendor_succesful_orders
@@ -445,6 +448,8 @@ def delete_account(request):
     user.save()
     logout(request)
     return redirect('account_:delete_confirmation')
+
+@csrf_exempt
 def account_registration(request):
     if request.user.is_authenticated:
         logout(request)
@@ -461,14 +466,25 @@ def account_registration(request):
 
             current_site=get_current_site(request)
             subject = "Activate your Account"
-            message = render_to_string('account/registration/account_activation_email.html', {
+            msg = render_to_string('account/registration/account_activation_email.html', {
                       'user':user,
                       'domain': current_site.domain,
                       'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                       'token': account_activation_token.make_token(user),
             })
-            # user.email_user(subject=subject, message=message)
-            # send_email(subject=subject, message=message)
+            with smtplib.SMTP_SSL("smtp.gmail.com", 465) as connection:
+                email_address = settings.EMAIL_HOST_USER
+                email_password = settings.EMAIL_HOST_PASSWORD
+                reciever_email_address = registrationform.cleaned_data['email']
+
+                connection.login(email_address, email_password)
+                connection.sendmail(
+                    from_addr=email_address,
+                    to_addrs=reciever_email_address,
+                    msg=msg
+                )
+                # connection.quit()
+            return redirect("/")
     else:
         registrationform=RegistrationForm()
         print('yes3')
@@ -620,4 +636,3 @@ def user_orders(request):
     user_id = request.user.id
     orders = OrderReciept.objects.filter(user_id=user_id).filter(billing_status=True)
     return render(request, "account/dashboard/user_orders.html", {"orders": orders})
-
