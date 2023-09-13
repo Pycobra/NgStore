@@ -26,7 +26,7 @@ CART_SESSION_ID = 'cart'
 SUBCRIPTION_TIMEOUT = 3
 
 
-EMAIL_HOST = 'smtp.gmail.net'
+EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 EMAIL_PORT = 587
@@ -49,8 +49,8 @@ INSTALLED_APPS = [
     'apps.order',
     'apps.checkout',
     'apps.communication',
-    'rest_framework',
-    'crispy_forms',
+    # 'rest_framework',
+    # 'crispy_forms',
     'apps.product.templatetags.namify',
     'mptt',
     'channels',
@@ -96,18 +96,37 @@ WSGI_APPLICATION = 'NgStore2.wsgi.application'
 ASGI_APPLICATION = 'NgStore2.asgi.application'
 #ASGI_APPLICATION = 'NgStore2.routing.application'
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'URL': os.getenv("DATABASE_URL"),
+#         'NAME': os.getenv("PGDATABASE"),
+#         'USER': os.getenv("PGUSER"),
+#         "PASSWORD": os.getenv("PGPASSWORD"),
+#         "HOST": os.getenv("PGHOST"),
+#         "PORT": os.getenv("PGPORT"),
+#     }
+# }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': os.getenv("MSDATABASE"),
+#         'USER': os.getenv("MSUSER"),
+#         "PASSWORD": os.getenv("MSPASSWORD"),
+#         "HOST": os.getenv("MSHOST"),
+#         # "PORT": os.getenv("MSPORT"),
+#     }
+# }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'URL': os.getenv("DATABASE_URL"),
-        'NAME': os.getenv("PGDATABASE"),
-        'USER': os.getenv("PGUSER"),
-        "PASSWORD": os.getenv("PGPASSWORD"),
-        "HOST": os.getenv("PGHOST"),
-        "PORT": os.getenv("PGPORT"),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'myRestaurant',
+        'USER': 'postgres',
+        "PASSWORD": 'guht9876',
+        "HOST": 'localhost',
+        "PORT": '5432',
     }
 }
-
 
 AUTH_PASSWORD_VALIDATORS = [
     {

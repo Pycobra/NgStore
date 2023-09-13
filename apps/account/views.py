@@ -467,7 +467,7 @@ def account_registration(request):
                       'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                       'token': account_activation_token.make_token(user),
             })
-            user.email_user(subject=subject, message=message)
+            # user.email_user(subject=subject, message=message)
             # send_email(subject=subject, message=message)
     else:
         registrationform=RegistrationForm()
