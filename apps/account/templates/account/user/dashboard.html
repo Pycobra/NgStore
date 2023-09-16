@@ -106,16 +106,14 @@
                       {% if account.id == request.user.id %}
                       <div class="second-box">
                           <div class="inside">
-                              <span>My {% if account.which_vendor.count > 1 %} stores {% else %} store {% endif %}</span>
+                              <span>MyR {% if account.which_vendor.count > 1 %} stores {% else %} store {% endif %}</span>
                               {% if account.is_vendor %}
                               <div class="inner-box">
-                                  {% for i in account.which_vendor.vendor_image.all %}
                                   <a href="{% url "vendor_:vendor_admin_" account.which_vendor.unique_id %}">
-                                  <img class="" src="{{ i.image_value.images.url }}" alt="{{ i.vendor_image.images.alt_text }}">
-                                  <span class="name">{{ i.vendor.store_name }}</span>
+                                  <img class="" src="{{ account.which_vendor.vendor_image.url }}" alt="{{ account.which_vendor.vendor_image.alt_text }}">
+                                  <span class="name">{{ account.which_vendor.store_name }}</span>
                                   {% if unread_store_msg %} <span id="msg-no-bottom">{{ unread_store_msg }}</span> {% endif %}
                                   </a>
-                                  {% endfor %}
                               </div>
                               {% else %}
                               <a class="block" style="color:blue;" href="{% url "vendor_:become_vendor_" %}">

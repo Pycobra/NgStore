@@ -14,7 +14,7 @@ from apps.communication.forms import NewCommentForm
 
 
 from apps.product.models import Product, Comments
-from apps.vendor.models import Vendor, Subscriptions
+from apps.vendor.models import Vendor
 from apps.account.models import UserBase
 from .forms import MessageForm
 from .models import Messages

@@ -3,7 +3,7 @@ register = template.Library()
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
-from apps.vendor.models import Vendor, Subscriptions
+from apps.vendor.models import Vendor
 from ..models import Messages
 
 

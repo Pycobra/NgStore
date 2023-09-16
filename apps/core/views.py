@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 
 
 from apps.product.models import Product, Category
-from apps.vendor.models import Vendor, Follow, Subscriptions, SubscriptionType
+from apps.vendor.models import Vendor, Follow
 
 
 
