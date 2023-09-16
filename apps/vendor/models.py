@@ -12,10 +12,10 @@ import secrets
 class Vendor(models.Model):
     store_name = models.CharField(max_length=255, unique=True)
     unique_id =  models.CharField(max_length=50, unique=True)
-    """vendor_image = models.ImageField(verbose_name=_("profile image"),
+    vendor_image = models.ImageField(verbose_name=_("store image"),
                                    help_text=_("Upload a your image"),
                                    upload_to="images/uploads/profile/",
-                                   default="images/others/igor-lypnytskyi-PobecUzsK4c-unsplash.png")"""
+                                   default="images/site-images/shop.png")
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -77,71 +77,4 @@ class Follow(models.Model):
                 else:
                     return str() + str(self.created_at.day) + "/" +str(self.created_at.month) + "/" +str(self.created_at.year)
         return self.created_at
-
-
-
-class VendorImages(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='which_user', on_delete=models.CASCADE, null=True)
-    images = models.ImageField(verbose_name=_("image"),help_text=_("Upload a product image"),
-                               upload_to="images/uploads/store/", default="images/others/igor-lypnytskyi-PobecUzsK4c-unsplash.png")
-    alt_text = models.CharField(verbose_name=_("Alternative text"),
-                             help_text=_("Please add alternative text"),max_length=255)
-    created_at = models.DateTimeField(_("Created at"), auto_now_add=True, editable=False)
-    updated_at = models.DateTimeField(_("Updated at"), auto_now=True)
-
-    class Meta:
-        verbose_name =_("Vendor Image")
-        verbose_name_plural = _("Vendor Images")
-
-    def __str__(self):
-        return self.alt_text
-
-class VendorImageValue(models.Model):
-    vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE, related_name='vendor_image')
-    image_value = models.ForeignKey(VendorImages, on_delete=models.RESTRICT)
-    #created_at = models.DateTimeField(_("Created at"), auto_now_add=True, editable=False)
-    #updated_at = models.DateTimeField(_("Updated at"), auto_now=True)
-
-    class Meta:
-        verbose_name =_("Image Value")
-        verbose_name_plural = _("Images Values")
-    def __str__(self):
-        return self.vendor.store_name
-
-class SubscriptionType(models.Model):
-    DURATION_CHOICES = [
-        ("A", "30days"),
-        ("B", "90days"),
-        ("C", "1year"),
-    ]
-    PLAN_CHOICES = [
-        ("A", "PLATINUM"),
-        ("B", "GOLD"),
-        ("C", "SILVER"),
-    ]
-
-    vendor = models.ForeignKey(Vendor, related_name='vendor_subscription_type', on_delete=models.CASCADE)
-    duration = models.CharField(choices=DURATION_CHOICES, max_length=255)
-    amount = models.DecimalField(max_digits=5,decimal_places=2)
-    title = models.CharField(choices=PLAN_CHOICES, max_length=255)
-
-    def __str__(self):
-        return self.title
-
-class Subscriptions(models.Model):
-    suscriber = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='suscribee', on_delete=models.CASCADE)
-    vendor = models.ForeignKey(Vendor, related_name='vendor_suscribed', on_delete=models.CASCADE)
-    subscription_plan = models.ForeignKey(SubscriptionType, on_delete=models.RESTRICT, null=True)
-    is_active = models.BooleanField(default=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        verbose_name_plural = 'Subscriptions'
-        verbose_name = 'Subscription'
-        ordering=['-created_at']
-
-    def __str__(self):
-        return self.suscriber.user_name
-
 

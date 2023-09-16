@@ -79,15 +79,6 @@ class UserBase(AbstractBaseUser, PermissionsMixin):
                 self.unique_id = unique_id
         super().save(*args, **kwargs)
 
-
-    def email_user(self, subject, message):
-        send_mail(
-            subject,
-            message,
-            '1@1.com',
-            [self.email],
-            fail_silently=False,
-        )
     #dunder
     #to make this the models name at admin area || and how to reference this model
     def __str__(self):

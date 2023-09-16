@@ -29,7 +29,7 @@ from apps.communication.models import Messages
 from apps.order.forms import UserAddressForm, UserEditAddressForm
 from apps.order.views import user_succesful_orders, vendor_succesful_orders
 from apps.product.models import Product, Category
-from apps.vendor.models import Vendor, Follow, VendorImageValue,VendorImages
+from apps.vendor.models import Vendor, Follow
 from apps.order.models import OrderReciept, Address
 from apps.checkout.models import DeliveryOptions
 

@@ -34,11 +34,11 @@
                 </div>
             </div>
             <div class="block">
-              <div class="label">{{ imageForm.image_value.label }}</div>
+              <div class="label">{{ form.vendor_image.label }}</div>
                   <div class="input">
-                        {{ imageForm.image_value}}
+                        {{ form.vendor_image}}
                         <div class="alert" role="alert">
-                          {% if imageForm.errors %}
+                          {% if form.errors %}
                           {% for field in form %}
                           {% if field.errors %}
                           <p>{{ field.errors|striptags }}</p>

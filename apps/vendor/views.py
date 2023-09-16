@@ -22,9 +22,9 @@ from apps.cart.cart import Cart
 from apps.communication.models import Messages
 
 
-from .models import Vendor, Follow, Subscriptions, SubscriptionType, VendorImageValue
+from .models import Vendor, Follow
 from .forms import (ProductForm, ProductSpecForm, ProductImageForm, ProductImageForm2,
-                    VendorRegistrationForm, VendorEditForm, VendorImageForm)
+                    VendorRegistrationForm, VendorEditForm)
 
 
 
@@ -54,26 +54,22 @@ def become_vendor(request):
         #ImageFormSet = modelformset_factory(VendorImageValue, form=VendorImageForm, extra=2)
         if request.user.is_vendor == False:
             if request.method == "POST":
-                form = VendorRegistrationForm(request.POST)
-                #imageForm = ImageFormSet(request.POST, request.FILES,queryset=VendorImageValue.objects.none())
-                imageForm = VendorImageForm(request.POST, request.FILES)
-                if form.is_valid() and imageForm.is_valid():
-                    vendor = form.save(commit=False)
-                    vendor_img = imageForm.save(commit=False)
+                form = VendorRegistrationForm(request.POST, request.FILES)
+                if form.is_valid():
                     userbase = UserBase.objects.get(user_name=request.user)
-                    store = Vendor.objects.create(store_name=vendor.store_name, created_by=userbase, is_active=True)
-                    vendor_img.vendor = store
-                    vendor_img.save()
-
                     userbase.is_vendor = True
                     userbase.save()
-                    return redirect('vendor_:vendor_admin_', store.unique_id )
+
+                    vendor = form.save(commit=False)
+                    vendor.vendor_image  = form.cleaned_data['vendor_image']
+                    vendor.created_by  = userbase
+                    vendor.is_active = True
+                    vendor.save()
+
+                    return redirect('vendor_:vendor_admin_', vendor.unique_id )
             else:
                 form=VendorRegistrationForm()
-                #imageForm = ImageFormSet(queryset=VendorImageValue.objects.none())
-
-                imageForm=VendorImageForm()
-            return render(request, 'vendor/become_vendor.html', {'form':form, 'imageForm':imageForm})
+            return render(request, 'vendor/become_vendor.html', {'form':form})
         else:
             return redirect('core_:frontpage')
     else:
@@ -84,10 +80,6 @@ def become_vendor(request):
 def follow_unfollow(request):
     if request.POST.get('action') == 'post':
         vendor_id = request.POST.get('vendor_id')
-        """try:
-            user = UserBase.objects.get(unique_id=unique_id)
-        except:
-            user = Vendor.objects.get(unique_id=unique_id)"""
         follower = request.user
         following = Vendor.objects.get(id=vendor_id)
         already_follow = Follow.objects.filter(follower=follower, following=following)
@@ -118,22 +110,6 @@ def vendor_admin(request, unique_id):
         for followers in am_following:
             if followers.following == store:
                 stores_user_follow.append(followers.following)
-    
-    """orders = vendor.orderReciept.all()
-
-    for order in orders:
-        order.vendor_amount = 0
-        order.vendor_paid_amount = 0
-        order.fully_paid = True
-
-        for item in order.orderedItemsDetails.all():
-            #if the person logged in has any ordered item
-            if item.vendor == request.user.vendor:
-                if item.vendor_paid:
-                    order.vendor_paid_amount += item.get_total_price()
-                else:
-                    order.vendor_amount += item.get_total_price()
-                    order.fully_paid = False"""
     return render(request, 'vendor/vendor_dashboard.html', {'vendor':vendor, 'unread_msg':unread_msg, 'stores_user_follow':stores_user_follow,
                                                                 'vendor_categories':vendor_categories, 'all_vendor':all_vendor,
                                                             'my_followers':my_followers, 'am_following': am_following})
@@ -311,25 +287,15 @@ def add_category(request):
 @login_required
 def edit_vendor(request):
     vendor = request.user.which_vendor
-    vendee = VendorImageValue.objects.get(vendor=vendor)
     if request.method == "POST":
-        vendor_form = VendorEditForm(instance=vendor, data=request.POST)
-        imageForm = VendorImageForm(request.POST, instance=vendee)
-        #user_form = UserEditForm(instance=request.user, data=request.POST)
-        if vendor_form.is_valid() and imageForm.is_valid():
-            user=vendor_form
-            imageForm = imageForm.save(commit=False)
-
+        vendor_form = VendorEditForm(request.POST or None, request.FILES or None, instance=vendor)
+        if vendor_form.is_valid():
+            user=vendor_form.save(commit=False)
             user.save()
-            imageForm.save()
             return redirect('vendor_:vendor_admin_', vendor.unique_id)
     else:
         vendor_form = VendorEditForm(instance=vendor)
-        imageForm = VendorImageForm(instance=vendee)
-        #user_form=UserEditForm(instance=request.user)
-    return render(request, 'vendor/edit_vendor.html', {'form':vendor_form, 'imageForm':imageForm})
-    #return render(request, 'vendor/edit_vendor.html', {'form':vendor_form, 'edit_vendor':vendor, 'form2':user_form})
-
+    return render(request, 'vendor/edit_vendor.html', {'form':vendor_form})
 
 def vendors_list(request):
     #gets all d vendors in Vendor models

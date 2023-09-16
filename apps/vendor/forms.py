@@ -2,7 +2,7 @@ from django import forms
 from django.forms import inlineformset_factory, modelformset_factory
 
 from apps.product.models import Product, ProductSpecificationValue, ProductImages
-from apps.vendor.models import Vendor, VendorImageValue
+from apps.vendor.models import Vendor
 
 
 
@@ -98,28 +98,25 @@ class VendorEditForm(forms.ModelForm):
                               widget=forms.TextInput( attrs={'class': 'form-control', 'placeholder': 'Store name', 'id': 'login'
                                                                                                                         'edit-storename'}))
 
+    vendor_image = forms.ImageField(label='Choose image')
     class Meta:
         model= Vendor
-        fields=('store_name',)
+        fields=('store_name', "vendor_image")
 
-    def clean_store_name(self):
-        store_name = self.cleaned_data['store_name'].lower()
-        exists= Vendor.objects.filter(store_name=store_name)
-        if exists.count():
-            raise forms.ValidationError("This store name already taken")
-        return store_name
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['vendor_image'].widget.attrs.update(
+            {'class': 'image-control'})
 
 class VendorRegistrationForm(forms.ModelForm):
-    store_name = forms.CharField(label='Enter StoreName', min_length=4, max_length=255)
+    store_name = forms.CharField(label='Enter Store Name', min_length=4, max_length=255)
     class Meta:
         model= Vendor
-        fields=('store_name',)
+        fields=('store_name', "vendor_image")
 
     def clean_store_name(self):
         store_name = self.cleaned_data['store_name'].lower()
         in_exists= Vendor.objects.filter(store_name=store_name)
-        print('in_exists')
-        print(in_exists)
         if in_exists.count():
             raise forms.ValidationError("This storeName already taken")
         return store_name
@@ -128,19 +125,5 @@ class VendorRegistrationForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['store_name'].widget.attrs.update(
             {'class': 'form-control', 'placeholder': 'StoreName', 'id': 'store_name'})
-
-class VendorImageForm(forms.ModelForm):
-    class Meta:
-        model= VendorImageValue
-        fields=('image_value',)
-
-    """def clean_image_value(self):
-        image_value = self.cleaned_data['image_value']
-        print(image_value)
-        if image_value == "":
-            raise forms.ValidationError("pls choose an image")
-        return image_value"""
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['image_value'].widget.attrs.update(
-            {'class': 'form-control'})
+        self.fields['vendor_image'].widget.attrs.update(
+            {'class': 'image-control'})
