@@ -9,7 +9,7 @@
 {% block content %}
 <div id="form">
     <div id="form-inside" class="edit_address">
-        <form method="post" action="." id="vendor-form">
+        <form method="post" action="." id="vendor-form" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="head">
                 <h1>Create your store</h1>
@@ -31,11 +31,11 @@
             </div>
 
             <div class="block">
-              <div class="label">{{ imageForm.image_value.label }}</div>
+              <div class="label">{{ form.vendor_image.label }}</div>
                   <div class="input">
-                        {{ imageForm.image_value}}
+                        {{  form.vendor_image }}
                         <div class="alert" role="alert">
-                          {% if imageForm.errors %}
+                          {% if form.errors %}
                           {% for field in form %}
                           {% if field.errors %}
                           <p>{{ field.errors|striptags }}</p>
@@ -48,41 +48,6 @@
             <div class="block">
               <div class="label"><button class="edit_address" type="submit">Submit</button></div>
             </div>
-
-            <!--
-            <div id="spec" style="flex-direction:row;border-bottom:3px solid #f3f3f3;background-color:red;">
-                {{ imageForm.management_form }}
-                {% for form in imageForm %}
-                <div class="inner-block" style="background-color:green;">
-                    <div class="place1" style="width:100%">
-                        <div class="label">{{ form.image_value.label }}:</div>
-                        <div class="input">
-                            {{ form.image_value}}
-                            <div class="alert" role="alert">
-                                {{ form.image_value.errors }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-
-
-            <div class="body">
-                <div class="header">
-                    <div class="field">
-                        <div class="label"><label>{{ form.store_name.label }}<span>翸(Required)</span></label></div>
-                        <div class="input">{{ form.store_name }}</div>
-                    </div>
-                    <div class="field">
-                        <div class="label"><label>{{ form.is_active.label }}<span>(Required)</span></label></div>
-                        <div class="input">{{ form.is_active }}</div>
-                    </div>
-                </div>
-                <div class="footer">
-                    <button class="button" type="submit">Submit</button>
-                </div>
-            </div> -->
         </form>
     </div>
 </div>
