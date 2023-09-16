@@ -83,7 +83,7 @@ class Follow(models.Model):
 class VendorImages(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='which_user', on_delete=models.CASCADE, null=True)
     images = models.ImageField(verbose_name=_("image"),help_text=_("Upload a product image"),
-                               upload_to="images/uploads/store/", default="images/others/igor-lypnytskyi-PobecUzsK4c-unsplash.png")
+                               upload_to="images/uploads/store/", default="images/site-images/shop.png")
     alt_text = models.CharField(verbose_name=_("Alternative text"),
                              help_text=_("Please add alternative text"),max_length=255)
     created_at = models.DateTimeField(_("Created at"), auto_now_add=True, editable=False)

@@ -52,7 +52,7 @@ class UserBase(AbstractBaseUser, PermissionsMixin):
     surname = models.CharField(max_length=50, null=True)
     user_image= models.ImageField(verbose_name=_("profile image"),
                                help_text=_("Upload a your image"),
-                               upload_to="images/uploads/profile/", default="images/others/igor-lypnytskyi-PobecUzsK4c-unsplash.png")
+                               upload_to="images/uploads/profile/", default="images/site-images/user.png")
     mobile = models.CharField(max_length=20, blank=True)
     #following= models.ManyToManyField("Vendor", related_name="following", blank=True)
     is_active = models.BooleanField(default=False)

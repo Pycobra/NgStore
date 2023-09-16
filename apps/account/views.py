@@ -636,4 +636,3 @@ def user_orders(request):
     user_id = request.user.id
     orders = OrderReciept.objects.filter(user_id=user_id).filter(billing_status=True)
     return render(request, "account/dashboard/user_orders.html", {"orders": orders})
-
