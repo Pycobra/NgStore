@@ -385,7 +385,7 @@ def edit_profile9(request):
 def edit_profile(request):
     user=request.user
     if request.method == "POST":
-        user_form = VendorEditForm(request.POST or None, request.FILES or None, instance=vendor)
+        user_form = ProfileEditForm(request.POST or None, request.FILES or None, instance=user)
         if user_form.is_valid():
             user=user_form.save(commit=False)
             user.email=user_form.cleaned_data['firstname']
