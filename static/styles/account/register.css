@@ -80,6 +80,7 @@
     display: flex;
     justify-content: space-between;
     background-color:var(--lg-btn-bg-color);
+    padding: 10px;
 }
 #register form .btn1:hover{
     color:var(--darkblue);
