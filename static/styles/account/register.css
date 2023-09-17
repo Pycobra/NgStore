@@ -77,6 +77,8 @@
     box-shadow:var(--lg-btn-shadow);
 }
 #register form .btn1{
+    display: flex;
+    justify-content: space-between;
     background-color:var(--lg-btn-bg-color);
 }
 #register form .btn1:hover{
