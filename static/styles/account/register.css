@@ -78,6 +78,7 @@
 }
 #register form .btn1{
     display: flex;
+    position: relative;
     justify-content: space-between;
     background-color:var(--lg-btn-bg-color);
     padding: 10px;
