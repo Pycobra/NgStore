@@ -25,8 +25,6 @@ class Cart(object):
             item['total_price'] = total
             yield item
 
-    """i.chats.product.category.slug
-    {'chats': {'5': {'id': '5', 'quantity': 1, 'price': 1, 'total_price': 1, 'product':}}"""
     def __len__(self):
         return sum(int(item['quantity']) for item in self.cart.values())
 

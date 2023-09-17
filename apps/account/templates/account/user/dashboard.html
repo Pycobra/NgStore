@@ -78,29 +78,17 @@
                               </div>
                           </div>
                       </div>
-                      <div class="first-box">
-                          <div class="block1">
-                              <span>Name:</span>
-                              <span>Username:</span>
-                              <span>E-mail:</span>
-                              <span>Phone no:</span>
-                              <span>Activity Status:</span>
-                              <span>User Status:</span>
-                              <span>Seller Status:</span>
-                              <span>Account Created:</span>
-                              <span>Last Update:</span>
-                          </div>
-                          <div class="block2">
-                              <span>{{account.firstname}} {{account.lastname}}</span>
-                              <span>{{account.user_name}}</span>
-                              <span>{{account.email}}</span>
-                              <span>{{account.mobile}}</span>
-                              <span>{% if account.is_active %} Active {% else %} Inactive {% endif %}</span>
-                              <span>{% if account.is_staff %} Admin {% else %} User {% endif %}</span>
-                              <span>{% if account.is_vendor %} Seller {% else %} User {% endif %}</span>
-                              <span>{{account.created_at}}</span>
-                              <span>{{account.updated_at}}</span>
-
+                      <div class="first-box">=
+                          <div class="block">
+                              <div class="row"><span>Name:</span><span>{{account.firstname}} {{account.lastname}}</span></div>
+                              <div class="row"><span>Username:</span><span>{{account.user_name}}</span></div>
+                              <div class="row"><span>E-mail:</span><span>{{account.email}}</span></div>
+                              <div class="row"><span>Phone no:</span><span>{{account.mobile}}</span></div>
+                              <div class="row"><span>Activity Status:</span><span>{% if account.is_active %} Active {% else %} Inactive {% endif %}</span></div>
+                              <div class="row"><span>User Status:</span><span>{% if account.is_staff %} Admin {% else %} User {% endif %}</span></div>
+                              <div class="row"><span>Seller Status:</span><span>{% if account.is_vendor %} Seller {% else %} User {% endif %}</span></div>
+                              <div class="row"><span>Account Created:</span><span>{{account.created_at}}</span></div>
+                              <div class="row"><span>Last Update:</span><span>{{account.updated_at}}</span></div>
                           </div>
                       </div>
                       {% if account.id == request.user.id %}

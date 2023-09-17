@@ -27,7 +27,6 @@ from .forms import (ProductForm, ProductSpecForm, ProductImageForm, ProductImage
                     VendorRegistrationForm, VendorEditForm)
 
 
-
 @login_required
 def become_vendor(request):
     if request.user.is_authenticated:

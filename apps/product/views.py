@@ -33,30 +33,13 @@ def show_category(request,hierarchy= None):
     brands = ProductType.objects.all()
     return render(request, 'product/search.html', {'product_search': product, 'product_search_query': instance
                                                    , 'brands':brands})
-    """
-    category_slug = hierarchy.split('/')
-    parent = None
-    root = Category.objects.all()
-
-    for slug in category_slug[:-1]:
-        parent = root.get(parent=parent, slug = slug)
-    try:
-        instance = Category.objects.get(parent=parent,slug=category_slug[-1])
-    except:
-        instance = get_object_or_404(Product, slug = category_slug[-1])
-        return render(request, "productLink.html", {'instance':instance})
-    else:
-        return render(request, 'product/category.html', {'instance':instance})"""
 
 def parent_child_check(request):
-    print("categories1")
     if request.POST.get('mainAction') == 'post':
-        print("categories2")
         id = request.POST.get('category_id')
         categories = Category.objects.filter(level=0)
         for i in categories:
             categories = Category.objects.get(id=i.id).get_descendants(include_self=True)
-            print(categories)
         response = JsonResponse({'categories': "rr"})
         return response
 
@@ -108,32 +91,21 @@ def filter_page(request):
             if instance:
                 for all in instance:
                     name_list.append(all.name)
-        """
-         product = Product.objects.filter(Q(discount_percent__in=discount_percent) | Q(product_type__name__in=query) |
-             has_brand                            Q(category__in=Category.objects.filter(name__in=name_list).get_descendants(include_self=True)))
-        """
         if 'has_category' in query and "has_brand" in query and "has_discount" in query:
-            print('weed1')
             product = Product.objects.filter(Q(discount_percent__in=discount_percent, product_type__name__in=query,
                                                category__in=Category.objects.filter(name__in=name_list).get_descendants(include_self=True)))
         elif 'has_category' in query and "has_brand" in query:
-            print('weed2')
             product = Product.objects.filter(Q(product_type__name__in=query,
                                                category__in=Category.objects.filter(name__in=name_list).get_descendants(include_self=True)))
         elif 'has_category' in query and "has_discount" in query:
-            print('weed3')
             product = Product.objects.filter(Q(discount_percent__in=discount_percent,
                                                category__in=Category.objects.filter(name__in=name_list).get_descendants(include_self=True)))
         elif "has_brand" in query and "has_discount" in query:
-            print('weed4')
             product = Product.objects.filter(Q(discount_percent__in=discount_percent, product_type__name__in=query))
         elif 'has_category' in query:
-            print('weed5')
             product = Product.objects.filter(Q(category__in=Category.objects.filter(name__in=name_list).get_descendants(include_self=True)))
         elif "has_brand" in query:
-            print('weed6')
             product = Product.objects.filter(Q(product_type__name__in=query))
-            print(product)
         elif "has_discount" in query:
             product = Product.objects.filter(Q(discount_percent__in=discount_percent))
 
@@ -161,7 +133,6 @@ def filter_page(request):
             query.remove('has_size')
         if ('has_color' in query):
             query.remove('has_color')
-        #print(product)
 
         return render(request, 'product/filter_page.html', {'product_search': product, 'product_search_query': query
                                                        , 'brands':brands, 'user_chose_spec':user_chose_spec})
@@ -188,12 +159,8 @@ register = template.Library()
 def search_single(request):
     if request.method == "GET":
         query = request.GET.get('query', '')
-        print(query)
         product_search = Product.objects.filter(Q(title__icontains=query) |
                         Q(description__icontains=query) | Q(id__icontains=query))
-        print('product_search')
-        print(product_search)
-        print('product_search')
         brands = ProductType.objects.all()
 
         response = JsonResponse({'product_search': list(product_search)})
@@ -202,34 +169,9 @@ def search_single(request):
 def search_single2(request):
     if request.GET.get('action') == 'get':
         query = request.GET.get('productID')
-        print(query)
-        """(category, category_id, created_at, description, discount_price, , slug, title
-         id, in_stock, is_active, likes, orderItemDetails, price, 
-         product, product_images, product_type, product_type_id, 
-         productspecificationvalue, updated_at, 
-         users_wishlist, vendor, vendor_id)"""
         product_search = Product.objects.filter(Q(title__icontains=query) |
                         Q(description__icontains=query) | Q(id__icontains=query)).values()
-        print('product_search')
-        print(product_search)
-        print('product_search')
         brands = ProductType.objects.all()
-        #'    in_stock is_active created_at updated_at users_wishlist likes
-
-        """from django.forms.models import model_to_dict
-        data=self.queryset()
-        for i in data:
-            i['product'] = model_to_dict(i['product'])
-        return HttpResponse(json.simplejson.dumps(data), mimetype="application/json")
-
-        queryset=model.object.filter(some__filter="some_value").values()
-        return JsonResponse({'models_to_return':list(queryset)})
-
-        queryset=list(my_queryset.values('col1','col2'))
-        return HttpResponse(json.dumps(queryset))
-
-        return JsonResponse(model_to_dict(modelInstance))"""
-
         product = """
             <div class="box-body">
                 {% for i in product_search %}
@@ -262,7 +204,6 @@ def product_detail(request, category_slugz, product_slugz):
     stores_user_follow=[]
     for i in products.vendor.vendor_follower.all():
         stores_user_follow.append(i.follower)
-    print(stores_user_follow)
 
     wishlist = products.users_wishlist.all().count()
     likes = products.likes.all().count()
@@ -287,13 +228,6 @@ def product_detail(request, category_slugz, product_slugz):
         wishlist_boolean=True
     if products.likes.filter(id=request.user.id).exists():
         like_boolean=True
-    #----------------------------------------------------------
-    """if request.method == 'POST':
-        form = AddToCartForm(request.POST)
-        if form.is_valid():
-            quantity = form.cleaned_data['quantity']
-            chats.add(product_id=products.id, product=products, quantity=quantity, update_quantity=False)
-            messages.success(request, 'The product was successfully added to the account')"""
     if request.method == 'POST':
         comment_form = NewCommentForm(request.POST)
         if comment_form.is_valid():
@@ -422,8 +356,6 @@ def add_category(request):
         return redirect('core_:frontpage')
 
 def category_list(request, category_slug):
-    #either of them works
-    #category = get_object_or_404(Product, category__slug=category_slug)
     category = get_object_or_404(Category, slug=category_slug)
     return render(request, 'product/category.html', {'category_in_product_view': category})
 
@@ -434,99 +366,8 @@ def vendor_category(request):
         product = Product.objects.filter(
             Product, category__in=Category.objects.get(name=category_slug).get_descendants(include_self=True)
         )
-        info=f"""<div class="second-block" id="top-selliing-container">
-            {{ if product }}
-            <div class="inner-box">
-                <div class="head">
-                    <div class="place1"><span>All</span><span style="font-size:15px;font-weight:normal;"> ({{ vendor.vendors_products.count }}) items found</span></div>
-                    <div class="place2"><span style="font-size:15px;font-weight:normal;">1 of 3 pages</span></div>
-                </div>
-                <div class="body">
-                    {{ for i in product }}
-                    <a href="{{ url 'product_:product_detail_' i.category.slug i.slug }}" class="">
-                        <div class="card">
-                            {{ for image in i.product_images.all }}
-                            {{ if image.is_main }}
-                            <div class="card-img">
-                                <img src="{{ image.images.url }}" alt="{{ image.images.alt_text }}">
-                            </div>
-                            <div class="card-text">
-                                <strong class="description">{{ i.description|slice:":67" }}</strong>
-                                {{ if i.discount_price != 0 }}
-                                <span>
-                                    <strike class="price" style="color:#ACADA8;">{{ i.price }} </strike>
-                                    <strong class="discount_price">{{ i.discount_price }} </strong>
-                                </span>
-                                {{ else }}
-                                <strong class="price">{{ i.price }} </strong>
-                                {{ endif }}
-                            </div>
-                            {{ endif }}
-                            {{ endfor }}
-                        </div>
-                    </a>
-                    {{ endfor }}
-                </div>
-                <footer>
-                     <span>1 of 3 pages</span>
-                </footer>
-            </div>
-            {{ endif }}
-        </div>"""
-        info="""<div class="second-block" id="top-selliing-container">
-            {% if vendor.vendors_products %}
-            <div class="inner-box">
-                <div class="head">
-                    <div class="place1"><span>All</span><span style="font-size:15px;font-weight:normal;"> ({{ vendor.vendors_products.count }}) items found</span></div>
-                    <div class="place2"><span style="font-size:15px;font-weight:normal;">1 of 3 pages</span></div>
-                </div>
-                <div class="body">
-                    {% for i in vendor.vendors_products.all %}
-                    <a href="{% url 'product_:product_detail_' i.category.slug i.slug %}" class="">
-                        <div class="card">
-                            {% for image in i.product_images.all %}
-                            {% if image.is_main %}
-                            <div class="card-img">
-                                <img src="{{ image.images.url }}" alt="{{ image.images.alt_text }}">
-                            </div>
-                            <div class="card-text">
-                                <strong class="description">{{ i.description|slice:":67" }}</strong>
-                                {% if i.discount_price != 0 %}
-                                <span>
-                                    <strike class="price" style="color:#ACADA8;">{{ i.price }} </strike>
-                                    <strong class="discount_price">{{ i.discount_price }} </strong>
-                                </span>
-                                {% else %}
-                                <strong class="price">{{ i.price }} </strong>
-                                {% endif %}
-                            </div>
-                            {% endif %}
-                            {% endfor %}
-                        </div>
-                    </a>
-                    {% endfor %}
-                </div>
-                <footer>
-                     <span>1 of 3 pages</span>
-                </footer>
-            </div>
-            {% endif %}
-        </div>"""
         response = JsonResponse({'product': product})
         return response
-
-
-
-"""
-def category_mttp(request, category_slug):
-    category = get_object_or_404(Category, slug=category_slug)
-    #line 73 used to join & get all parent and descendants
-    product = Product.objects.filter(category__in=Category.objects.get(name=category_slug).get_descendants(include_self=True))
-    for i in product:
-        product_price =  str(i.price)
-    return render(request, 'product/category.html', {'category_in_product_view': product,
-                                                     'product_price': product_price})
-"""
 
 @login_required
 def likes_add_and_remove(request, id):
@@ -541,9 +382,6 @@ def likes_add_and_remove(request, id):
             product_exist = False
             action_text='<i class="fa fa-heart-o" id="icon2" style="color:var(--lightblue);"> unlike</i>'
         likes = product.likes.all().count()
-        print('likes')
-        print(likes)
-        print('likes')
         response = JsonResponse({'likes_no': str(likes), 'action_text':action_text, 'product_exist':product_exist})
         return response
 
@@ -563,10 +401,8 @@ def remove_from_likes(request):
 def add_product(request):
     vendor = request.user.which_vendor
     if request.method == "POST":
-        print('77777777')
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
-            print('qqqqqqqqqq77777777')
             product = form.save(commit=False)
 
             product.vendor = vendor
@@ -578,17 +414,9 @@ def add_product(request):
             product.in_stock = True
             product.is_active = True
             product.save()
-
-            """product=form.save(commit=False)
-            product.vendor= vendor
-            product.slug = slugify(product.title)
-            Decimal
-            product.save()"""
             return redirect('vendor_:vendor_admin_')
     else:
-        #if request isnt POST this GET the empty form
         form=ProductForm()
-    #{'form':form} part is to show the form in d frontend
     return render(request,'vendor/add_product.html', {'form':form})
 
 @login_required

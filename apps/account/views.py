@@ -16,12 +16,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 import smtplib
 
-"""from apps.account.models import UserBase
-from apps.order.views import user_succesful_orders, vendor_succesful_orders
-from apps.product.models import Product, Category
-from apps.vendor.models import Vendor"""
-
-from .forms import RegistrationForm, ProfileEditForm, UserLoginForm, ImageEditForm
+from .forms import RegistrationForm, ProfileEditForm, UserLoginForm
 from .models import UserBase
 from .token import account_activation_token
 
@@ -83,16 +78,6 @@ def registration_check2(request):
                     return JsonResponse({'exists': it_exists})
         else:
             return JsonResponse({'exists': it_exists})
-        # re.search(r"content{1}", "geeks")
-        # {p} Matches the expression to its left p times, and not less.
-        # \w Matches alphanumeric characters, that is a - z, A - Z, 0 - 9, and underscore(_)
-        # \W Matches non - alphanumeric characters, that is except a - z, A - Z, 0 - 9 and _
-        # \d Matches digits, from 0-9.
-        # \D Matches any non-digits.
-        # \s Matches whitespace characters, which also include the \t, \n, \r, and space characters.
-        # \S Matches non-whitespace characters.
-        # [a-z0-9]Matches characters from a to z or from 0 to 9.
-        # [(+*)]Special characters become literal inside a set, so this matches (, +, *, or )
     if request.GET.get('action') == 'check_password':
         it_exists = UserBase.objects.filter(password__exact=content).exists()
         if ends_with != None:
@@ -231,38 +216,14 @@ def dashboard(request):
         vendor = "no_vendor"
 
     return render(request, 'account/user/dashboard.html', {'account': user, 'my_followers': my_followers,
-                                                           'imageForm': ImageEditForm, 'all_account': all_account,
+                                                           'all_account': all_account,
                                                            'vendor': vendor,
                                                            'unread_account_msg': unread_account_msg,
                                                            'unread_store_msg': unread_store_msg,
                                                            'am_following': am_following})
-
-
-# @login_required
-# def dashboard(request, username, unique_id):
-#     user = UserBase.objects.get(unique_id=request.user.unique_id)
-#     all_account = UserBase.objects.all().exclude(unique_id=user.unique_id).order_by('-created_at')[:5]
-#     am_following = Follow.objects.filter(follower=request.user)
-#     unread_account_msg = Messages.objects.filter(reciever_id_unique=user.unique_id, is_seen=False).count()
-#     my_followers = {}
-#     unread_store_msg = {}
-#     if request.user.is_vendor:
-#         vendor = user.which_vendor
-#         unread_store_msg = Messages.objects.filter(reciever_id_unique=user.which_vendor.unique_id, is_seen=False).count()
-#         my_followers = Follow.objects.filter(following=user.which_vendor)
-#     else:
-#         vendor = "no_vendor"
-#
-#     return render(request, 'account/user/dashboard.html', {'account':user, 'my_followers':my_followers,
-#                                     'imageForm':ImageEditForm, 'all_account':all_account, 'vendor':vendor,
-#                                     'unread_account_msg':unread_account_msg, 'unread_store_msg':unread_store_msg,
-#                                     'am_following':am_following})
-#
-
 @login_required
 def users_dashboard(request, id):
     if request.method == "POST":
-        form = ImageEditForm(data=request.POST)
         if form.is_valid():
             form = form.save(commit=False)
             form.save()
@@ -280,7 +241,7 @@ def users_dashboard(request, id):
         my_followers = Follow.objects.filter(following=users.which_vendor)
     else:
         vendor = "no_vendor"
-    return render(request, 'account/user/dashboard.html', {'account':users, 'my_followers':my_followers, 'imageForm':ImageEditForm,
+    return render(request, 'account/user/dashboard.html', {'account':users, 'my_followers':my_followers,
                                     'all_account':all_account, 'vendor':vendor, 'unread_account_msg':unread_account_msg,
                                                            'unread_store_msg':unread_store_msg, 'am_following':am_following})
     #return render(request, 'account/user/dashboard.html', {user_order:user_order})
@@ -304,8 +265,6 @@ def search_account(request):
           </div>
           {% endfor %}
         """
-        #return render(request, 'account/user/dashboard.html', {'account': account, 'all_account': all_account,
-        #                                                       'searches': search_account, 'vendor':vendor})
         response = JsonResponse({'searches':searches})
         return response
 
@@ -405,11 +364,8 @@ def vendor_dashboard(request):
 def edit_profile9(request):
     user = request.user
     print(user.user_image)
-    #images/uploads/profile/ian-dooley-TT-ROxWj9nA-unsplash_orFcwHz.png
-    #images/uploads/profile/christian-bolt-VW5VjskNXZ8-unsplash.jpg
     if request.method == "POST":
         user_form = ProfileEditForm(request.POST, request.FILES, instance= user)
-        #user_form = ProfileEditForm(data=request.POST, instance=request.user)
         firstname = request.POST.get('firstname', '')
         surname = request.POST.get('surname', '')
         user_image = request.POST.get('user_image', '')
@@ -429,18 +385,18 @@ def edit_profile9(request):
 def edit_profile(request):
     user=request.user
     if request.method == "POST":
-        user_form = ProfileEditForm(data=request.POST, instance=user)
-        img = ImageEditForm(request.POST, instance=user)
-        if user_form.is_valid() and img.is_valid():
+        user_form = VendorEditForm(request.POST or None, request.FILES or None, instance=vendor)
+        if user_form.is_valid():
             user=user_form.save(commit=False)
+            user.email=user_form.cleaned_data['firstname']
+            user.email=user_form.cleaned_data['surname']
+            user.email=user_form.cleaned_data['mobile']
             user.save()
-            img.save()
             return redirect('account_:dashboard')
     else:
         user_form = ProfileEditForm(instance=user)
-        img = ImageEditForm(instance=user)
 
-    return render(request, 'account/user/edit_profile.html', {'form':user_form, 'img':img})
+    return render(request, 'account/user/edit_profile.html', {'form':user_form})
 @login_required
 def delete_account(request):
     user = UserBase.objects.get(user_name=request.user)
@@ -454,10 +410,8 @@ def account_registration(request):
     if request.user.is_authenticated:
         logout(request)
     if request.method == "POST":
-        print('yes1')
         registrationform = RegistrationForm(request.POST)
         if registrationform.is_valid():
-            print('yes2')
             user=registrationform.save(commit=False)
             user.email=registrationform.cleaned_data['email']
             user.set_password(registrationform.cleaned_data['password'])
@@ -484,7 +438,8 @@ def account_registration(request):
                     msg=msg
                 )
                 # connection.quit()
-            return redirect("/")
+            messages.success(request, "You successfully created an account, a mail was sent for confirmation")
+            return redirect("/account/login/")
     else:
         registrationform=RegistrationForm()
         print('yes3')
@@ -525,8 +480,7 @@ def wishlist_add_and_remove(request, id):
         users_wishlist = product.users_wishlist.all().count()
         response = JsonResponse({'wishlist_no': str(users_wishlist), 'action_text':action_text, 'product_exist':product_exist})
         return response
-        #return HttpResponseRedirect(request.META["HTTP_REFERER"])
-
+        
 @login_required
 def remove_from_wishlist(request):
     if request.GET.get('action') == 'get':
@@ -570,7 +524,6 @@ def view_address2(request):
             return HttpResponseRedirect(reverse("account_:addresses"))
     else:
         address_form = UserAddressForm(instance=request.user)
-    #addresses = Address.objects.filter(customer=request.user)
     return render(request, "account/user/addresses.html", {"form": address_form})
 
 @login_required
@@ -584,7 +537,6 @@ def add_address(request):
             if "address" not in session:
                 session["address"] = {"address_id": str(address_form.pk)}
             address_form.save()
-            #return HttpResponseRedirect(reverse("chats/chats.html"))
             return redirect('cart_:cart_detail')
         return redirect('.')
     else:
@@ -615,21 +567,6 @@ def set_default(request):
 
     response = JsonResponse({'address_id':address_id})
     return response
-"""
-def set_default(request):
-    if request.POST.get('action') == 'post':
-        address_id = request.POST.get('address_id')
-        Address.objects.filter(customer=request.user, default=True).update(default=False)
-        Address.objects.filter(id=address_id, customer=request.user).update(default=True)
-
-    previous_url = request.META.get("HTTP_REFERER")
-
-    if "delivery_address" in previous_url:
-        return redirect("checkout:delivery_address")
-
-    response = JsonResponse({'address_id':address_id})
-    return response
-"""
 
 @login_required
 def user_orders(request):

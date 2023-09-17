@@ -54,3 +54,26 @@
 
 
 {% endblock %}
+
+SECRET_KEY = 'django-insecure-5!q(lb_zwd-k55ua7##t2!tr(%c@@^!gu44lsf2aw_0(1s^o(b'
+PAYSTACK_PUBLIC_KEY = 'pk_test_1bd3d130cbb6f84a90e8cdb0e13a82a659ebbedc'
+PAYSTACK_SECRET_KEY = 'sk_test_8c231ece81620c5dfe92377a418f6165acec884d'
+EMAIL_HOST_USER = 'megabright007@gmail.com'
+EMAIL_HOST_PASSWORD = 'oggz vogh isrg vnpy'
+
+MSDATABASE=Pycobra$default
+MSUSER="Pycobra"
+MSPASSWORD="Guht987619/"
+MSHOST="Pycobra.mysql.pythonanywhere-services.com"
+MSPORT= '3306'
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.getenv("MSDATABASE"),
+        'USER': os.getenv("MSUSER"),
+        "PASSWORD": os.getenv("MSPASSWORD"),
+        "HOST":  os.getenv("MSHOST"),
+        "PORT":  os.getenv("MSPORT"),
+    }
+}

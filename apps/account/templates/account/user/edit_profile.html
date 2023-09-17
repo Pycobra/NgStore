@@ -8,7 +8,7 @@
 {% block content %}
 <div id="form">
     <div id="form-inside">
-        <form method="post" class="" action="{% url 'account_:edit_profile' %}">
+        <form method="post" class="" action="{% url 'account_:edit_profile' %}" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="head">
                 <h1>Edit your profile</h1>
@@ -65,9 +65,9 @@
               </div>
             </div>
             <div class="block">
-              <div class="label">{{ img.user_image.label }}</div>
+              <div class="label">{{ form.user_image.label }}</div>
               <div class="input">
-                    {{ img.user_image}}
+                    {{ form.user_image}}
               </div>
             </div>
             <div class="block">

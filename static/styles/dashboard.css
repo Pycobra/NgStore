@@ -386,132 +386,29 @@
     background-size: cover;
     border-radius:0 0 20px 20px;
     margin-bottom:80px;
-    /*background-image: url("../images/site_images/others/use.PNG");*/
-    /*background-size: cover;*/
     background-color:var(--normalwhite);
     width:95%;
     height:440px;
 }
-#main-container .box .inside-box .main-block .first-box .block1{
+#main-container .box .inside-box .main-block .first-box .block{
     display: flex;
     flex-direction:column;
     justify-content: center;
-    align-items: flex-start;
+    /* align-items: flex-start; */
     padding:15px;
     border-radius:20px;
     color:var(--normalblack);
     font-size:16px;
-
 }
-#main-container .box .inside-box .main-block .first-box .block2{
+#main-container .box .inside-box .main-block .first-box .block .row{
     display: flex;
-    flex-direction:column;
-    justify-content: center;
-    align-items: flex-start;
-    padding:15px;
-    border-radius:20px;
-    color:var(--normalblack);
-    font-size:16px;
-
-}
-#main-container .box .inside-box .main-block .first-box .block1 span,
-#main-container .box .inside-box .main-block .first-box .block2 span{
-    margin-bottom:10px;
-    width: 200px;
-}
-
-/*
-#main-container .box .inside-box .main-block .first-box .block1 .innerblock1{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow-y:hidden;
-    overflow-x:hidden;
-}
-#main-container .box .inside-box .main-block .first-box .block1 .innerblock1 img{
-    width:180px;
-    height:180px;
-    object-fit:cover;
-    border-radius:100px;
-    margin:5px;
-    border:5px solid var(--normalwhite);
-    -webkit-transition: background, 800ms ease-in-out;
-    -moz-transition: background, 800ms ease-in-out;
-    -ms-transition: background, 800ms ease-in-out;
-    -o-transition: background, 800ms ease-in-out;
-}
-#main-container .box .inside-box .main-block .first-box .block1 .innerblock1 img:hover{
-    -webkit-transform: scale(1.05);
-    -moz-transform: scale(1.05);
-    -o-transform: scale(1.05);
-}
-#main-container .box .inside-box .main-block .first-box .block1 .username{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width:100%;
-    margin-top:22px;
-    font-size:20px;
-    font-size:25px;
-    color:var(--lightgrey);
-}
-#main-container .box .inside-box .main-block .first-box .block2{
-    display: flex;
-    flex-direction:column;
-    justify-content: center;
-    align-items: center;
-    padding:15px 15px 0 45px;
-    flex-grow:1;
-    border-radius:20px;
-    width:75%;
-    height:100%;
-}
-#main-container .box .inside-box .main-block .first-box .block2 .innerblock{
-    display: flex;
-    flex-direction:column;
     justify-content: space-between;
-    align-items: space-between;
-    width:100%;
-    height:100%;
+    margin-bottom:10px;
+    gap: 30px;
 }
-#main-container .box .inside-box .main-block .first-box .block2 .innerblock .name{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-size:50px;
-    color:var(--lightgrey);
-    letter-spacing:5px;
+#main-container .box .inside-box .main-block .first-box .block .row span:last-child{
+    text-align: end;
 }
-#main-container .box .inside-box .main-block .first-box .block2 .innerblock #button{
-    width:100%;
-    margin-top:60px;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-}
-#main-container .box .inside-box .main-block .first-box .block2 .innerblock #button button:nth-child(1){
-    border-radius:30px;
-    height:50px;
-    width:170px;
-    border:1px solid var(--darkblue);
-    background-color:var(--darkblue);
-}
-.fa-phone:hover,
-.fa-mobile-phone:hover{
-	-webkit-animation: shake 500ms linear 100ms 2 normal;
-    -moz-animation: shake 500ms linear 100ms 2 normal;
-    -ms-animation: shake 500ms linear 100ms 2 normal;
-    -o-animation: shake 500ms linear 100ms 2 normal;
-}
-#main-container .box .inside-box .main-block .first-box .block2 .innerblock #button button:nth-child(2){
-    background-image: url("../images/site_images/others/use.PNG");
-    background-size: cover;
-    border-radius:30px;
-    height:50px;
-    width:170px;
-    border:1px solid var(--darkgrey);
-}
-*/
 
 
 #main-container .box .inside-box .main-block .second-box{
