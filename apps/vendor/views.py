@@ -28,26 +28,6 @@ from .forms import (ProductForm, ProductSpecForm, ProductImageForm, ProductImage
 
 
 
-"""use this when using django inbuilt user model not UserBase model
-def become_vendor(request):
-    if request.user.is_authenticated:
-        if request.method == "POST":
-            form = UserCreationForm(request.POST)
-            if form.is_valid():
-                user=form.save()
-                login(request, user)
-                Vendor.objects.create(store_name=user.username, created_by=user)
-
-                userbase = UserBase.objects.get(user_name=request.user)
-                userbase.is_vendor = True
-                userbase.save()
-                return redirect('core_:frontpage')
-        else:
-            form=UserCreationForm()
-        return render(request, 'vendor/become_vendor.html', {'form':form})
-    else:
-        return redirect('account_:register')"""
-
 @login_required
 def become_vendor(request):
     if request.user.is_authenticated:

@@ -125,6 +125,7 @@ DATABASES = {
         "PASSWORD": os.getenv("MSPASSWORD"),
         "HOST":  os.getenv("MSHOST"),
         "PORT":  os.getenv("MSPORT"),
+        "sql_mode": 'STRICT_TRANS_TABLES'
     }
 }
 
