@@ -62,30 +62,6 @@ class UserLoginForm(AuthenticationForm):
         model= UserBase
         fields=('username', 'password')
 
-    """def clean_password(self):
-        passwords = self.cleaned_data
-        if UserBase.objects.filter(user=request.user).exists():
-        if passwords['password'] != passwords['password2']:
-            raise forms.ValidationError("Both passwords do not match")
-        return passwords['password2']
-
-    def clean_email(self):
-        email = self.cleaned_data['email'].lower()
-        if UserBase.objects.filter(email=email).exists():
-            raise forms.ValidationError("Email already taken, please use another Email0")
-        return email"""
-
-class ImageEditForm(forms.ModelForm):
-    class Meta:
-        model= UserBase
-        fields=('user_image',)
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['user_image'].widget.attrs.update(
-            {'class':'none', 'id':'none', 'help-text': ''})
-
-
 class ProfileEditForm(forms.ModelForm):
     firstname = forms.CharField(label='Firstname:', min_length=4, max_length=100, widget=forms.TextInput(
             attrs={'class': 'form-control', 'placeholder': 'firstname', 'id': 'login'
@@ -93,34 +69,15 @@ class ProfileEditForm(forms.ModelForm):
     surname = forms.CharField(label='Surname:', min_length=4, max_length=100, widget=forms.TextInput(
             attrs={'class': 'form-control', 'placeholder': 'surname', 'id': 'login'
                                                                               'edit-username'}))
-    """user_name = forms.CharField(label='Username*', min_length=4, max_length=100, widget=forms.TextInput(
-            attrs={'class': 'form-control', 'placeholder': 'username', 'id': 'login'
-                                                                              'edit-username'}))"""
     mobile = forms.CharField(label='Phone no:', min_length=7, max_length=15, widget=forms.TextInput(
             attrs={'class': 'form-control', 'placeholder': 'Phone no', 'id': 'login'
                                                                           'edit-phone'}))
 
     class Meta:
         model= UserBase
-        fields=('firstname', 'surname', 'mobile',)
+        fields=('firstname', 'surname', "user_image", 'mobile',)
 
     def clean_firstname(self):
-        """
-
-        #[x for x in mylist if not any(c.isdigit() for c in x)]
-        mylist=['hello', 'we12', 'reset', '909', 'q00q']
-        def isalpha(mylist):
-            return [s for s in mylist if not s.isalpha()]
-        def fisalpha(mylist):
-            return filter(str.isalpha.mylist)
-        def reregex(mylist, myregex = re.compile(r'\d')):
-            return [s for s in mylist if not myregex.search(s)]
-        def isdigit(mylist, myregex = re.compile(r'\d')):
-            return [x for x in mylist if not any(c.isdigit() for c in x)]
-
-        for func in ('isalpha', 'fisalpha', 'reregex', 'isdigit'):
-            print func, timeit.timeit(func+'(my_list)', 'from __main__ import my_list,'+func)
-        """
         firstname = self.cleaned_data['firstname']
         if not firstname.isalpha():
             raise forms.ValidationError("firstname cannot contain digits or character")
@@ -130,23 +87,12 @@ class ProfileEditForm(forms.ModelForm):
         if not surname.isalpha():
             raise forms.ValidationError("surname cannot contain digits or character")
         return surname
-    """def clean_user_name(self):
-        username = self.cleaned_data['user_name'].lower()
-        #if UserBase.objects.filter(user_name=request.user.username).exists():
-        #    raise forms.ValidationError("you have used this username already, please use another username")
-        if UserBase.objects.filter(user_name=username).exists():
-            raise forms.ValidationError("username already taken, please use another username")
-        return username"""
-
     def clean_mobile(self):
         mobile = self.cleaned_data['mobile']
         if not mobile.isdigit():
             raise forms.ValidationError("phone no cannot contain alphabets or character")
         return mobile
 
-    """def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['email'].required = True"""
 
 
 class UserAddressForm(forms.ModelForm):

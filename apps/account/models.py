@@ -10,11 +10,6 @@ import uuid
 from django.core.mail import send_mail
 
 
-#from apps.vendor.models import Vendor
-
-#from .paystack import Paystack
-
-
 class CustomAccountManager(BaseUserManager):
 
     def create_superuser(self, email, user_name, password, **other_fields):

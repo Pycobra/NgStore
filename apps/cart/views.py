@@ -19,42 +19,12 @@ from apps.order.models import Address
 #import stripe
 @login_required
 def complete_payment(request):
-    print('allaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+    print('')
 def shopping_cart(request):
     cart = Cart(request)
 
     if request.method == 'POST':
         form = CheckoutForm(request.POST)
-        """if form.is_valid():
-            stripe.api_key = settings.STRIPE_SECRET_KEY
-
-            stripe_token = form.cleaned_data['stripe_token']
-            
-            try:
-                charge = stripe.Charge.create(
-                    amount=int(account.get_total_cost() * 100),
-                    currency='USD',
-                    description='Charge from eCommerce',
-                    source=stripe_token
-                )
-                first_name = form.cleaned_data['first_name']
-                last_name = form.cleaned_data['last_name']
-                email = form.cleaned_data['email']
-                phone = form.cleaned_data['phone']
-                address = form.cleaned_data['address']
-                zipcode = form.cleaned_data['zipcode']
-                place = form.cleaned_data['place']
-    
-                orderReciept = checkout(request, first_name, last_name, email, address, zipcode, place, phone, account.get_total_cost())
-                account.clear()
-
-                email_notify_vendor(orderReciept)
-                email_notify_customer(orderReciept)
-                
-                return redirect('cart_:success_')
-
-            except Exception:
-                messages.error(request, 'There was something wrong with the payment')"""
 
     else:
         form = CheckoutForm()
