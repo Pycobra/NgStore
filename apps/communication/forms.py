@@ -24,8 +24,8 @@ class NewCommentForm(forms.ModelForm):
         fields = ('made_by', 'name', 'email', 'made_on', 'parent', 'content')
 
         widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control'}),
-            'email': forms.TextInput(attrs={'class': 'form-control'}),
+            'name': forms.TextInput(attrs={'class': 'form-control', "required": False}),
+            'email': forms.TextInput(attrs={'class': 'form-control', "required": False}),
             'content': forms.Textarea(attrs={'class': 'form-text-control', 'placeholder':'write a comment'}),
         }
 

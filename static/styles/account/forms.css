@@ -60,6 +60,9 @@
 #form-inside form .block .input{
     width:70%;
 }
+#form-inside form .block .input input{
+    width: 100%;
+}
 #form-inside form .block #textarea{
     width:100%;
     height:120px;
@@ -182,8 +185,7 @@
     margin-right:20px;
 }
 #form-inside form .block .inner-block1 .place3{
-    display: flex;
-    flex-direction:row;
+    display: grid;
     justify-content: space-between;
     align-items: flex-start;
 }
@@ -200,20 +202,13 @@
     color:#746D69;
     padding:0;
 }
-#form-inside form .block .inner-block1 .place1 .label{
-    width:100%;
-    font-size:16px;
-    font-weight:550;
-}
-#form-inside form .block .inner-block1 .place2 .label{
+#form-inside form .block .inner-block1 .label{
     width:100%;
     font-size:16px;
     font-weight:550;
 }
 #form-inside form .block .inner-block1 .place3 .label{
     width:90%;
-    font-size:16px;
-    font-weight:550;
 }
 /*=====================================================*/
 
@@ -396,6 +391,21 @@
 /*=============================surface duo============================*/
 
 @media screen and (max-width:540px){
+
+    #form-inside form .block .input{
+        font-size:12px;
+    }
+    #form-inside form .block .label {
+        font-size: 13px;
+        font-weight: 800;
+    }
+    #form-inside form h1{
+        font-size: 20px;
+    }
+    #form-inside form #spec .inner-block .label,
+    #form-inside form .block .inner-block1 .label{
+        font-size:14px;
+    }
 }
 /*-------------------------------------------------------*/
 

@@ -39,7 +39,7 @@
           <h1>Your Account</h1>
           <div class="left">
               <div class="myBtn"><span style="margin-right:3px;">Following</span><span style="margin-right:bold;">{% if am_following %}({{am_following.count}}){% else %}(0){% endif %}</span></div>
-              <span style="margin:0 10px">|</span>
+              <span class="split-line" style="margin:0 10px">|</span>
               <a href="{% url "message_:messages_history" request.user.unique_id %}">
                 <span>Message</span>
                 <i class="fa fa-envelope"></i>{% if unread_account_msg %} <span id="msg-no-top">{{ unread_account_msg }}</span> {% endif %}
@@ -78,7 +78,7 @@
                               </div>
                           </div>
                       </div>
-                      <div class="first-box">=
+                      <div class="first-box">
                           <div class="block">
                               <div class="row"><span>Name:</span><span>{{account.firstname}} {{account.lastname}}</span></div>
                               <div class="row"><span>Username:</span><span>{{account.user_name}}</span></div>
@@ -86,7 +86,7 @@
                               <div class="row"><span>Phone no:</span><span>{{account.mobile}}</span></div>
                               <div class="row"><span>Activity Status:</span><span>{% if account.is_active %} Active {% else %} Inactive {% endif %}</span></div>
                               <div class="row"><span>User Status:</span><span>{% if account.is_staff %} Admin {% else %} User {% endif %}</span></div>
-                              <div class="row"><span>Seller Status:</span><span>{% if account.is_vendor %} Seller {% else %} User {% endif %}</span></div>
+                              <div class="row"><span>Seller Status:</span><span>{% if account.is_vendor %} Vendor {% else %} User {% endif %}</span></div>
                               <div class="row"><span>Account Created:</span><span>{{account.created_at}}</span></div>
                               <div class="row"><span>Last Update:</span><span>{{account.updated_at}}</span></div>
                           </div>
@@ -94,7 +94,7 @@
                       {% if account.id == request.user.id %}
                       <div class="second-box">
                           <div class="inside">
-                              <span>MyR {% if account.which_vendor.count > 1 %} stores {% else %} store {% endif %}</span>
+                              <h2>My {% if account.which_vendor.count > 1 %} stores {% else %} Store {% endif %}</h2>
                               {% if account.is_vendor %}
                               <div class="inner-box">
                                   <a href="{% url "vendor_:vendor_admin_" account.which_vendor.unique_id %}">
@@ -119,12 +119,10 @@
                           <div class="inside">
                               <span>{{account.user_name}} {% if account.which_vendor.count > 1 %} stores {% else %} store {% endif %}</span>
                               <div class="inner-box">
-                                  {% for i in account.which_vendor.vendor_image.all %}
                                   <a href="{% url "vendor_:vendor_admin_" account.which_vendor.unique_id %}">
-                                  <img class="" src="{{ i.image_value.images.url }}" alt="{{ i.vendor_image.images.alt_text }}">
-                                  <span>{{ i.vendor.store_name }}</span>
+                                  <img class="" src="{{ account.which_vendor.vendor_image.url }}" alt="{{ account.which_vendor.vendor_image.alt_text }}">
+                                  <span>{{ account.which_vendor.store_name }}</span>
                                   </a>
-                                  {% endfor %}
                               </div>
                           </div>
                       </div>
@@ -139,13 +137,13 @@
                                   <div class="block1">
                                       <a href="{% url "order_:user_orders" request.user.user_name request.user.unique_id %}">
                                       <div class="box1">
-                                          <span class="icon"><i class="fa fa-shopping-bag" style="font-weight:500;font-size:50px;color:var(--lightgrey)"></i></span>
+                                          <span class="icon"><i class="fa fa-shopping-bag"></i></span>
                                           <div class="text"><span>Order</span><span>View, Track, Or Buy Again</span></div>
                                       </div>
                                       </a>
                                       <a href="{% url "account_:edit_profile" %}">
                                       <div class="box3">
-                                          <span class="icon"><i class="fa fa-lock" style="font-weight:500;font-size:50px;color:var(--lightgrey)"></i></span>
+                                          <span class="icon"><i class="fa fa-lock"></i></span>
                                           <div class="text"><span>Edit Profile</span><span>Edit your name, profile image, username and phone number</span></div>
                                       </div>
                                       </a>
@@ -153,13 +151,13 @@
                                   <div class="block2">
                                       <a href="{% url "account_:addresses" %}">
                                       <div class="box1">
-                                          <span class="icon"><i class="fa fa-pencil" style="font-weight:500;font-size:50px;color:var(--lightgrey)"></i></span>
+                                          <span class="icon"><i class="fa fa-pencil"></i></span>
                                           <div class="text"><span>Your Address</span><span>View, add & edit your shipping address</span></div>
                                       </div>
                                       </a>
                                       <a href="{% url "account_:likes_and_wishlist" %}">
                                       <div class="box2">
-                                          <span class="icon"><i class="fa fa-cart-plus" style="font-weight:500;font-size:50px;color:var(--lightgrey)"></i></span>
+                                          <span class="icon"><i class="fa fa-cart-plus"></i></span>
                                           <div class="text"><span>Your likes & wishlist</span><span>View & remove items from your wishlist & liked item</span></div>
                                       </div>
                                       </a>
@@ -277,13 +275,11 @@
               {% for i in am_following %}
               <div class="inside" data-index="{{ i.following.unique_id }}">
                   <div class="inner">
-                      {% for img in i.following.vendor_image.all %}
-                      <img src="{{ img.image_value.images.url }}" alt="profile-image">
-                      {% endfor %}
+                      <img src="{{ i.following.vendor_image.url }}" alt="profile-image">
                     <span class="active"></span>
                     <div class="name">{{i.following.store_name}} store</div>
                   </div>
-                  <span>{{i.created_at.day}}/ {{i.created_at.month}}/ {{i.created_at.year}}</span>
+                  <span style="margin:10px;font-size:13px;">{{i.created_at.day}}/ {{i.created_at.month}}/ {{i.created_at.year}}</span>
               </div>
               {% endfor %}
               {% else %}

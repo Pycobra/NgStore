@@ -204,7 +204,7 @@ class Comments(MPTTModel):
     made_by = models.ForeignKey(UserBase, related_name='commentator', null=True, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     email = models.EmailField(max_length=150)
-    default_image = models.ImageField(default="images/others/igor-lypnytskyi-PobecUzsK4c-unsplash.png")
+    default_image = models.ImageField(default="images/site-images/user.png")
     made_on = models.ForeignKey(Product, related_name='comments', on_delete=models.CASCADE)
     parent = TreeForeignKey("self", related_name='children', blank=True, null=True, on_delete=models.CASCADE)
     content =  models.TextField(max_length=255)

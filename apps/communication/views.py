@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponseRedirect
 from django.core import serializers
+from django.views.decorators.csrf import csrf_exempt
 
 import random
 from apps.cart.cart import Cart
@@ -25,8 +26,6 @@ from .models import Messages
 
 @login_required
 def messages_history(request, user_or_vendor_unique_id):
-    for i in request.user.which_vendor.vendor_follower.all():
-        print(i.follower.user_name)
     all_sender_list = []
     msg_sender_data = []
     unread_msg = Messages.objects.filter(reciever_id_unique=user_or_vendor_unique_id, is_seen=False).order_by('-created_at')
@@ -54,7 +53,7 @@ def messages_history(request, user_or_vendor_unique_id):
                 online = sender.created_by.is_authenticated
                 print('place--------2')
                 print(online)
-                msg_sender_data.append([sender, sender.unique_id, sender.store_name, sender.vendor_image.all(), i.content, i.get_date, msg_count, 'a_user'])
+                msg_sender_data.append([sender, sender.unique_id, sender.store_name, sender.vendor_image, i.content, i.get_date, msg_count, 'a_user'])
 
     for i in read_msg:
         if i.sender_id_unique not in all_sender_list:
@@ -70,7 +69,7 @@ def messages_history(request, user_or_vendor_unique_id):
                 online = sender.created_by.is_authenticated
                 print('place--------4')
                 print(online)
-                msg_sender_data.append([sender, sender.unique_id, sender.store_name, sender.vendor_image.all(), i.content, i.get_date, 0, 'a_user'])
+                msg_sender_data.append([sender, sender.unique_id, sender.store_name, sender.vendor_image, i.content, i.get_date, 0, 'a_user'])
     form = MessageForm()
     print(msg_sender_data)
 
@@ -99,7 +98,7 @@ def get_message(request, user_unique_id, logged_in_user_unique_id):
                 msg_sender_data.append([sender.unique_id, sender.user_name, sender.user_image, i.content, i.get_date, msg_count, 'a_vendor'])
             except:
                 sender = Vendor.objects.get(unique_id=i.sender_id_unique)
-                msg_sender_data.append([sender.unique_id, sender.store_name, sender.vendor_image.all(), i.content, i.get_date, msg_count, 'a_user'])
+                msg_sender_data.append([sender.unique_id, sender.store_name, sender.vendor_image, i.content, i.get_date, msg_count, 'a_user'])
 
 
     for i in read_msg:
@@ -111,7 +110,7 @@ def get_message(request, user_unique_id, logged_in_user_unique_id):
 
             except:
                 sender = Vendor.objects.get(unique_id=i.sender_id_unique)
-                msg_sender_data.append([sender, sender.unique_id, sender.store_name, sender.vendor_image.all(), i.content, i.get_date, 0, 'a_user'])
+                msg_sender_data.append([sender, sender.unique_id, sender.store_name, sender.vendor_image, i.content, i.get_date, 0, 'a_user'])
 
     user_or_vendor_id = [user_unique_id, logged_in_user_unique_id]
     our_chat = Messages.objects.filter(sender_id_unique__in=user_or_vendor_id, reciever_id_unique__in=user_or_vendor_id).values(
@@ -147,7 +146,7 @@ def send_message(request, user_unique_id, logged_in_user_unique_id):
                 msg_sender_data.append([sender, sender.unique_id, sender.user_name, sender.user_image, i.content, i.get_date, msg_count, 'a_vendor'])
             except:
                 sender = Vendor.objects.get(unique_id=i.sender_id_unique)
-                msg_sender_data.append([sender, sender.unique_id, sender.store_name, sender.vendor_image.all(), i.content, i.get_date, msg_count, 'a_user'])
+                msg_sender_data.append([sender, sender.unique_id, sender.store_name, sender.vendor_image, i.content, i.get_date, msg_count, 'a_user'])
 
 
     for i in read_msg:
@@ -158,7 +157,7 @@ def send_message(request, user_unique_id, logged_in_user_unique_id):
                 msg_sender_data.append([sender, sender.unique_id, sender.user_name, sender.user_image, i.content, i.get_date, 0, 'a_vendor'])
             except:
                 sender = Vendor.objects.get(unique_id=i.sender_id_unique)
-                msg_sender_data.append([sender, sender.unique_id, sender.store_name, sender.vendor_image.all(), i.content, i.get_date, 0, 'a_user'])
+                msg_sender_data.append([sender, sender.unique_id, sender.store_name, sender.vendor_image, i.content, i.get_date, 0, 'a_user'])
 
     user_or_vendor_id = [user_unique_id, logged_in_user_unique_id]
     our_chat = Messages.objects.filter(sender_id_unique__in=user_or_vendor_id, reciever_id_unique__in=user_or_vendor_id).values(
@@ -181,8 +180,7 @@ def send_fleet_message(request):
         for unique_id in unique_id_list:
             Messages.objects.create(sender_id_unique=request.user.which_vendor.unique_id,
                                 reciever_id_unique=unique_id, content=sent_fleet_msg)
-        print("BIG MESSA?Ge ?BOY")
-        response = JsonResponse()
+        response = JsonResponse({})
         return response
 
 
@@ -209,7 +207,7 @@ def get_message_ajax(request, id):
     #return response
     return HttpResponseRedirect(request.META["HTTP_REFERER"])
 
-
+@csrf_exempt
 def make_comment2(request):
     cart = Cart(request)
     if request.POST.get('action') == 'post':
@@ -292,8 +290,14 @@ def make_comment(request):
             parent = Comments.objects.get(id=parent)
 
         if request.user.is_authenticated:
-            cmt = Comments.objects.create(made_by=request.user, name=request.user.firstname + " " + request.user.surname,
-                         email=request.user.email, default_image=request.user.user_image, made_on=product, parent=parent, content=comment)
+            name =""
+            if request.user.firstname:
+                name +=request.user.firstname
+            if request.user.surname:
+                name += " " + request.user.surname
+            cmt = Comments.objects.create(made_by=request.user, name=name,
+                         email=request.user.email, default_image=request.user.user_image,
+                         made_on=product, parent=parent, content=comment)
         else:
             if not request.user.is_authenticated and name != "" and email != "":
                 cmt = Comments.objects.create(name=name, email=email,
@@ -313,18 +317,14 @@ def make_comment(request):
         for i in comments:
             image = i.default_image.url
             made_by = i.made_by
+            if made_by:
+                made_by = i.made_by.user_name
 
         serialized_queryset = serializers.serialize('python', comments)
         comments = {}
         comments['result'] = 'Comment made successfully!'
         comments['table'] = serialized_queryset
-        """{'model': 'product.comments', 'pk': '854edb04-8388-4b64-920d-82fab08eac7d',
-         'fields': {'made_by': 1, 'name': 'bright orji', 'email': '1@1.com',
-         'default_image': 'images/uploads/ian-dooley-TT-ROxWj9nA-unsplash.png', 'made_on': 41,
-         'parent': None, 'content': 'qwerrtr',
-                    'made_at': datetime.datetime(2022, 1, 12, 22, 14, 41, 39362,
-                                                 tzinfo= < UTC >), 'lft': 1, 'rght': 2, 'tree_id': 3, 'level': 0}}"""
-        response = JsonResponse({'error':True,'comments': comments, 'image':image, 'made_by':str(made_by)})
+        response = JsonResponse({'error':True,'comments': comments, 'image':image, 'made_by':made_by})
         return response
 
 

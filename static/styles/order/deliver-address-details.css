@@ -264,5 +264,11 @@
     }
 }
 
+@media screen and (max-width:540px){
+    #main-container .main-box .lower-block .first-box .block .head span:nth-child(1) {
+        font-size: 21px;
+    }
+}
+
 
 

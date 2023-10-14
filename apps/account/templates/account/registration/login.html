@@ -35,18 +35,19 @@
           <!--<label class="form-label">{{ form.password.label}}</label>-->
           <div class="input password">
               {{ form.password}}
-              <i class="fa fa-eye-slash"></i>
+              <!--<i class="fa fa-eye-slash"></i>-->
               <div class="alert" role="alert" data-index="email">
                   <p>{{ form.password.errors }}</p>
               </div>
           </div>
-          <div class="block">
-              <span style="font-size:13px;"><input type="checkbox" style="font-size:15px;"/>Remember me</span>
-              <span style="font-size:14px;font-weight:700;"><a style="color:var(--darkblue);" href="{% url "account_:password_reset" %}">Forgotten Your Password?</a></span>
+          <div class="block" style="display: flex;align-items: center;">
+              <span style="font-size:13px;display: flex;align-items: center;"><input type="checkbox" style="font-size:15px;"/>Remember me</span>
+              <span style="font-size:11px;font-weight:700;"><a style="color:var(--blue);" href="{% url "account_:password_reset" %}">Forgotten Your Password?</a></span>
           </div>
           <input type="hidden" name="next" value="{{ next }}">
           <button class="btn1" type="submit" value="Log-in"><i class="fa fa-sign-in" style="font-weight:500;font-size:25px;margin:0 28% 0 10px"></i>Sign in</button>
-          <button class="btn2" type="submit" value="Log-in"><i class="fa fa-facebook" style="font-weight:500;font-size:25px;margin:0 28% 0 10px"></i>Sign in With Facebook</button>
+          <!--<button class="btn2" type="submit" value="Log-in"><i class="fa fa-facebook" style="font-weight:500;font-size:25px;margin:0 28% 0 10px"></i>Sign in With Facebook</button>-->
+          <a class="to-sign-up" href="{% url "account_:register" %}"><span>Dont have an account?</span> <span>Sign Up</span></a>
         </form>
             <!-- <div class="columns">
                 <div class="column is-6">
@@ -96,7 +97,7 @@
           </div>
 
           <a href="{% url "account_:register" %}"><button class="btn1" type="submit" value="Log-in"><i class="fa fa-sign-in" style="font-weight:500;font-size:25px;margin:0 22% 0 10px"></i>Create&nbsp;An&nbsp;Account</button></a>
-          <a><button class="btn2" type="submit" value="Log-in"><i class="fa fa-facebook" style="font-weight:500;font-size:25px;margin:0 10% 0 10px"></i>Register&nbsp;With&nbsp;Facebook</button></a>
+          <!--<a><button class="btn2" type="submit" value="Log-in"><i class="fa fa-facebook" style="font-weight:500;font-size:25px;margin:0 10% 0 10px"></i>Register&nbsp;With&nbsp;Facebook</button></a>-->
         </div>
     </div>
 </div>

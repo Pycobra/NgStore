@@ -92,14 +92,14 @@
                                   <span style="width:100%;height:1px;background-color:rgba(0,0,0,0.1);"></span>
                                   <div class="second-line">
                                       {% if product.discount_price != 0 %}
-                                      <span class="discount"><strong style="margin:12px 0;font-size:23px;font-weight:900;color:var(--normalblack);">N {{ product.discount_price }} </strong></span>
+                                      <span class="discount"><strong>N {{ product.discount_price }} </strong></span>
                                       <span class="price"><strike>N {{ product.price }} </strike>
                                           <span class="percent">- {{ product.discount_percent }}%</span>
                                       </span>
                                       {% else %}
                                       <span class="price"><strong class="price" style="margin:12px 0;font-size:26px;font-weight:900;color:var(--normalblack);">{{ product.price }}</strong></span>
                                       {% endif %}
-                                      <span class="tax" style="margin:12px 0;font-size:16px;color:var(--normalblack);">+ includes tax</span>
+                                      <span class="tax" style="margin:12px 0;color:var(--normalblack);">+ includes tax</span>
                                       <input style="display:none;" type="number" name="quantity" id="add-to-cart-input" value="1" class="input" min="1">
                                   </div>
                                   <span style="width:100%;height:1px;background-color:rgba(0,0,0,0.1);"></span>
@@ -109,9 +109,9 @@
                                   </div>
                                   <button data-index="{{ product_id }}" class="button" id="add-to-cart-btn" value="{{ product_id }}"><i class="fa fa-cart-plus" style="font-weight:500;font-size:25px;margin-right:30%"></i>Add to basket</button>
                                   <span style="width:100%;height:1px;background-color:rgba(0,0,0,0.1);margin-top:10px;"></span>
-                                  <div class="promo" style="margin:8px 0;font-size:16px;color:var(--normalblack);font-weight:900;">PRODUCT PROMOTIONS</div>
-                                  <div class="promo1" style="margin:8px 0 0 8px;font-size:16px;color:var(--lightblue);"><i class="fa fa-star"></i> Enjoy cheaper shipping fees when you select a PickUp station at checkout</div>
-                                  <div class="promo2" style="margin:10px 0 0 8px;font-size:16px;color:var(--lightblue);"><i class="fa fa-star"></i> Borrow to buy</div>
+                                  <div class="promo" style="margin:8px 0;color:var(--normalblack);font-weight:900;">PRODUCT PROMOTIONS</div>
+                                  <div class="promo1" style="margin:8px 0 0 8px;color:var(--lightblue);"><i class="fa fa-star"></i> Enjoy cheaper shipping fees when you select a PickUp station at checkout</div>
+                                  <div class="promo2" style="margin:10px 0 0 8px;color:var(--lightblue);"><i class="fa fa-star"></i> Borrow to buy</div>
                               </div>
                           </div>
                       </div>
@@ -195,23 +195,40 @@
                               <div id="comment-notification1" class="notification-success">
                                   <div id="comment-message1"></div>
                               </div>
-                                <div id="newForm" class="form">
+                                <form id="newForm" class="form">
                                     {% csrf_token %}
-                                    <div class="block" {% if node.level == 0 %} style="width:50%; {% else %} style="width:100%; {% endif %}">
-                                        <div class="label"><label for="id_name">Name:</label></div>
-                                        <div class="input"><input type="text" name="name2" class="form-control" maxlength="50" id="id_name"></div>
-                                    </div>
-                                    <div class="block" style="width:100%;"><div class="label"><label for="id_email">Email:</label></div>
-                                    <div class="input"><input type="text" name="email2" class="form-control" maxlength="254" id="id_email"></div></div>
-                                    <div class="block" style="width:100%;">
-                                        <div class="input" style="width:100%;">
-                                            <textarea class="form-text-control2" placeholder="write a comment" name="content2" cols="40" rows="5" required id="id_content"></textarea>
+                                    <div class="block name" style="z-index:1;">
+                                        <div class="label"><span>{{ comment_form.name.label }}:</span>
+                                            {% if request.user.is_authenticated %}<span style="font-weight:none;margin-left:5px;font-size:14px;color:#ACADA8">(not required)</span>{% endif %}</div>
+                                        <div class="input">
+                                            {{ comment_form.name}}
+                                            <div class="warning">
+                                                {{ comment_form.name.errors }}
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="btn-place" style="width:100%;display:flex;justify-content:flex-end;">
-                                      <button type="submit" id="reply-submit">Submit</button>
+                                    <div class="block email" style="z-index:1;">
+                                      <div class="label"><span>{{ comment_form.email.label }}:</span>
+                                            {% if request.user.is_authenticated %}<span style="font-weight:none;margin-left:5px;font-size:14px;color:#ACADA8">(not required)</span>{% endif %}</div>
+                                        <div class="input">
+                                            {{ comment_form.email}}
+                                            <div class="warning">
+                                                {{ comment_form.email.errors }}
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
+                                    <div class="block">
+                                        <div class="input">
+                                            {{ comment_form.content}}
+                                            <div class="warning">
+                                                {{ comment_form.content.errors }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="width:100%;display:flex;justify-content:flex-end;">
+                                        <button id="reply-submit" type="submit">submit</button>
+                                    </div>
+                                </form>
                           </div>
 
                             <div id="sample" class="children place-0" style="display:none;">
@@ -223,8 +240,8 @@
                                               <span class="place-2"><img style="width:60px;height:60px;" src="" alt=""></span>
                                               <div class="div1" style="margin-left:10px;">
                                                   <div class="div2" style="margin:0 10px 8px 0">
-                                                      <span class="place-3" style="margin-right:10px;font-size:16px;font-weight:bold;"></span>
-                                                      <span class="place-4" style="font-size:11px;font-weight:bold;"></span>
+                                                      <span class="place-3"></span>
+                                                      <span class="place-4"></span>
                                                   </div>
                                                   <span class="place-5" style="font-size:16px;"></span>
                                                   <div class="btn" style="margin-top:30px;">
@@ -248,8 +265,8 @@
                                           <span class="place-2"><img style="width:60px;height:60px;" class="" src="{{ node.default_image.url }}" alt="{{ node.made_by.alt_text }}"></span>
                                           <div class="div1" style="margin-left:10px;">
                                               <div class="div2" style="margin:0 10px 8px 0">
-                                                  <span class="place-3" style="margin-right:10px;font-size:16px;font-weight:bold;">{% if node.made_by != None %} {{ node.made_by }} {% else %} {{ node.name }} {% endif %}</span>
-                                                  <span class="place-4" style="font-size:11px;font-weight:bold;">{{ node.made_at }}</span>
+                                                  <span class="place-3">{% if node.made_by != None %} {{ node.made_by }} {% else %} {{ node.name }} {% endif %}</span>
+                                                  <span class="place-4">{{ node.made_at }}</span>
                                               </div>
                                               <span class="place-5" style="font-size:16px;">{{ node.content }}</span>
                                               <div class="btn" style="margin-top:30px;">
@@ -304,7 +321,7 @@
                           <span class="head">Make a comment</span>
                           <form id="myForm" method="post" action="">
                                 {% csrf_token %}
-                                <div class="block" style="z-index:1;">
+                                <div class="block name" style="z-index:1;">
                                     <div class="label"><span>{{ comment_form.name.label }}:</span>
                                         {% if request.user.is_authenticated %}<span style="font-weight:none;margin-left:5px;font-size:14px;color:#ACADA8">(not required)</span>{% endif %}</div>
                                     <div class="input">
@@ -314,7 +331,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="block" style="z-index:1;">
+                                <div class="block email" style="z-index:1;">
                                   <div class="label"><span>{{ comment_form.email.label }}:</span>
                                         {% if request.user.is_authenticated %}<span style="font-weight:none;margin-left:5px;font-size:14px;color:#ACADA8">(not required)</span>{% endif %}</div>
                                     <div class="input">
@@ -341,24 +358,24 @@
       </div>
   </div>
 </section>
-<hr>
-<section>
-    {% if similar_products %}
-    <div class="category-box-inline" id="team-container">
-        <div class="box-header">
-            <div class="item-1">Wears</div>
-            <div class="item-2">Wears</div>
-        </div>
-        <div class="box-body-flex">
-            {% for product_html_frontpage_html_category_html in similar_products %}
-                  {% include 'product/parts/list_item.html' %}
-            {% endfor %}
-        </div>
-    </div>
-    {% else %}
-          <p>This item has no similar item</p>
-    {% endif %}
-</section>
+<!--<hr>-->
+<!--<section>-->
+<!--    {% if similar_products %}-->
+<!--    <div class="category-box-inline" id="team-container">-->
+<!--        <div class="box-header">-->
+<!--            <div class="item-1">Wears</div>-->
+<!--            <div class="item-2">Wears</div>-->
+<!--        </div>-->
+<!--        <div class="box-body-flex">-->
+<!--            {% for product_html_frontpage_html_category_html in similar_products %}-->
+<!--                  {% include 'product/parts/list_item.html' %}-->
+<!--            {% endfor %}-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    {% else %}-->
+<!--          <p>This item has no similar item</p>-->
+<!--    {% endif %}-->
+<!--</section>-->
 
 {% endblock %}
 
@@ -415,37 +432,6 @@ $(document).ready(function(){
         }}
     );
 
-    $('#add-to-cart-btn').on(
-        {click: function(e){
-            e.preventDefault();
-            var prod_id=$(this).data('index');
-            $.ajax({
-                type:"POST",
-                url:"{% url 'cart_:cart_detail' %}",
-                data: {
-                    productQTY: $('#add-to-cart-input').val(),
-                    productID: $(this).data('index'),
-                    csrfmiddlewaretoken: "{{ csrf_token }}",
-                    mainAction: 'post',
-                    subAction: 'add'
-                },
-                success: function(json){
-                    $("a > .cart > .qty").text(json.cart_length);
-                    if (json.product_exist == true) {
-                        $('#notification-message').html('<i class="fa fa-info"></i><span>This item already exists in your cart</span>')
-                    }
-                    else {
-                        $('#notification-message').html('<i class="fa fa-info"></i><span>item has been added to cart</span>>')
-                    }
-                    $('#head-notification').slideDown(500).delay(2000).slideUp(500);
-                },
-                error: function(xhr, errmsg, err){
-                    console.log('completed with error');
-                }
-            });
-
-        }}
-    )
 
     $('#wishlist').on(
         {click: function(e){
@@ -525,8 +511,6 @@ $(document).ready(function(){
             if (document.contains(document.getElementById("myDIV2"))) {
                 $("#myDIV2").remove()
             }
-            console.log('comment_id')
-            console.log(comment_id)
             $('#' + comment_id).append(comment_box)
 
             /* var comment = document.getElementById(comment_id);
@@ -548,6 +532,7 @@ $(document).ready(function(){
             */
             //document.querySelector('#id_parentt [value="' + id + '"]').selected = true;
 
+
         }}
   )
   $('#myForm').trigger("reset");
@@ -557,100 +542,142 @@ $(document).ready(function(){
             e.preventDefault();
             var parent =$(this).attr('data-index');
             var element_level =$(this).attr('data-level');
-            var name = $('.form-control[name="name2"]').val()
-            var email = $('.form-control[name="email2"]').val()
-            var comment = $(".form-text-control2").val()
+            var name = $('.make-comment2 form .block.name .input .form-control[name="name"]').val()
+            var email = $('.make-comment2 form .block.email .input .form-control[name="email"]').val()
+            var comment = $(".make-comment2 form .block .input .form-text-control").val()
             var product_id = "{{product.id}}"
-            $.ajax({
-                type:"POST",
-                url:" {% url 'message_:make_comment' %}",
-                data: {
-                    name: name,
-                    email: email,
-                    comment: comment,
-                    product_id: product_id,
-                    parent: parent,
-                    csrfmiddlewaretoken: "{{ csrf_token }}",
-                    action: 'post'
-                },
-                success: function(json){
-                if (json.error == true) {
-                    //var comment_parent = document.getElementById(parent);
-                    $(json.comments.table).each(function(index, values){
-                        var made_by=values.fields.made_by
-                        var id=values.id
-                        var name=values.fields.name
-                        var email=values.fields.email
-                        var default_image=values.fields.default_image
-                        var made_on=values.fields.made_on
-                        var parent=values.fields.parent
-                        var content=values.fields.content
-                        var made_at=values.fields.made_at
+            const is_authenticated = "{{request.user.is_authenticated}}"
+            if (comment.length && (is_authenticated==="True" || (is_authenticated==="False" && name.length && email.length))) {
+                $.ajax({
+                    type:"POST",
+                    url:" {% url 'message_:make_comment' %}",
+                    data: {
+                        name: name,
+                        email: email,
+                        comment: comment,
+                        product_id: product_id,
+                        parent: parent,
+                        csrfmiddlewaretoken: "{{ csrf_token }}",
+                        action: 'post'
+                    },
+                    success: function(json){
+                    if (json.error == true) {
+                        //var comment_parent = document.getElementById(parent);
+                        $(json.comments.table).each(function(index, values){
+                            var made_by=values.fields.made_by
+                            var id=values.id
+                            var name=values.fields.name
+                            var email=values.fields.email
+                            var default_image=values.fields.default_image
+                            var made_on=values.fields.made_on
+                            var parent=values.fields.parent
+                            var content=values.fields.content
+                            var made_at=values.fields.made_at
 
-                        // assigning data to the dummy
-                        $("#sample.place-0").attr('data-index','' + parent + '')
-                        $("#sample.place-0 > .place-1").attr('data-index','' + values.pk + '')
-                        $("#sample.place-0 > .place-1 > .parent > .content > .top > .place-2 > img").attr('src', json.image)
-                        console.log(values.fields.name)
-                        if (json.made_by == 'null'){
-                            $("#sample.place-0 > .place-1 > .parent > .content > .top > .div1 > .div2 > .place-3").text(values.fields.name)
-                        }
-                        else {
-                            $("#sample.place-0 > .place-1 > .parent > .content > .top > .div1 > .div2 > .place-3").text(values.fields.made_by)
-                        }
-                        $("#sample.place-0 > .place-1 > .parent > .content > .top > .div1 > .div2 > .place-4").text(values.fields.made_at)
-                        $("#sample.place-0 > .place-1 > .parent > .content > .top > .div1 > .place-5").text(content)
-                        $("#sample.place-0 > .place-1 > .parent > .content > .top > .div1 > .btn > .place-8").attr('data-index','' + values.pk  + '')
-                        $("#sample.place-0 > .place-1 > .parent > .content > .top > .div1 > .btn > .place-8").attr('data-level','leve1-1')
+                            // assigning data to the dummy
+                            $("#sample.place-0").attr('data-index','' + parent + '')
+                            $("#sample.place-0 > .place-1").attr('data-index','' + values.pk + '')
+                            $("#sample.place-0 > .place-1 > .parent > .content > .top > .place-2 > img").attr('src', json.image)
+                            if (!json.made_by){
+                                $("#sample.place-0 > .place-1 > .parent > .content > .top > .div1 > .div2 > .place-3").text(values.fields.name)
+                            }
+                            else {
+                                $("#sample.place-0 > .place-1 > .parent > .content > .top > .div1 > .div2 > .place-3").text(json.made_by)
+                            }
+                            $("#sample.place-0 > .place-1 > .parent > .content > .top > .div1 > .div2 > .place-4").text(values.fields.made_at)
+                            $("#sample.place-0 > .place-1 > .parent > .content > .top > .div1 > .place-5").text(content)
+                            $("#sample.place-0 > .place-1 > .parent > .content > .top > .div1 > .btn > .place-8").attr('data-index','' + values.pk  + '')
+                            $("#sample.place-0 > .place-1 > .parent > .content > .top > .div1 > .btn > .place-8").attr('data-level','leve1-1')
 
-                        $("#sample.place-0").css('display','flex')
-                        $("#sample.place-0 > .place-1 > hr").css('display','block')
-                        var box = $("#sample.place-0").clone(true)
-                        box.attr('id','' + values.pk + '')
+                            $("#sample.place-0").css('display','flex')
+                            $("#sample.place-0 > .place-1 > hr").css('display','block')
+                            var box = $("#sample.place-0").clone(true)
+                            box.attr('id','' + values.pk + '')
 
-                        // returning th dummy to a dummy state
-                        $("#sample.place-0").removeAttr('data-index')
-                        $("#sample.place-0 > .place-1").removeAttr('id').removeAttr('data-index')
-                        $("#sample.place-0").css('display','none')
+                            // returning th dummy to a dummy state
+                            $("#sample.place-0").removeAttr('data-index')
+                            $("#sample.place-0 > .place-1").removeAttr('id').removeAttr('data-index')
+                            $("#sample.place-0").css('display','none')
 
-                        $('.body[data-index="' + parent + '"]').css('border-left','1px solid #CCCDC6').css('border-bottom','1px solid #CCCDC6').css('margin-bottom','5px')
-                        $('.body[data-index="' + parent + '"]').append(box)
-                        $("#myDIV2").css('display','none')
-                        /* $('.children[data-index="' + parent + '"]').prepend('<div class="body" id="' +  parent + '" style="margin-bottom:20px;"> \
-                              <div class="parent"> \
-                                  <div class="content"> \
-                                      <div class="top"> \
-                                          <span><img style="width:60px;height:60px;" class="" src="' + json.image + '" alt=""></span> \
-                                          <div style="margin-left:10px;"> \
-                                              <div style="margin:0 10px 8px 0"><span style="margin-right:10px;font-size:16px;font-weight:bold;">' + json.made_by + '</span><span style="font-size:11px;font-weight:bold;">' + values.fields.made_at + '</span></div> \
-                                              <span  style="font-size:16px;">' + content + '</span> \
-                                              <div class="btn" style="margin-top:30px;"> \
-                                                  <button class="button">like</button> \
-                                                  <button class="button">unlike</button> \
-                                                  <button class="reply-btn" data-index="' + parent + '">Reply</button> \
+                            $('.body[data-index="' + parent + '"]').css('border-left','1px solid #CCCDC6').css('border-bottom','1px solid #CCCDC6').css('margin-bottom','5px')
+                            $('.body[data-index="' + parent + '"]').append(box)
+                            $("#myDIV2").css('display','none')
+                            /* $('.children[data-index="' + parent + '"]').prepend('<div class="body" id="' +  parent + '" style="margin-bottom:20px;"> \
+                                  <div class="parent"> \
+                                      <div class="content"> \
+                                          <div class="top"> \
+                                              <span><img style="width:60px;height:60px;" class="" src="' + json.image + '" alt=""></span> \
+                                              <div style="margin-left:10px;"> \
+                                                  <div style="margin:0 10px 8px 0"><span style="margin-right:10px;font-size:16px;font-weight:bold;">' + json.made_by + '</span><span style="font-size:11px;font-weight:bold;">' + values.fields.made_at + '</span></div> \
+                                                  <span  style="font-size:16px;">' + content + '</span> \
+                                                  <div class="btn" style="margin-top:30px;"> \
+                                                      <button class="button">like</button> \
+                                                      <button class="button">unlike</button> \
+                                                      <button class="reply-btn" data-index="' + parent + '">Reply</button> \
+                                                  </div> \
                                               </div> \
                                           </div> \
                                       </div> \
                                   </div> \
-                              </div> \
-                          </div>'); */
-                    });
-                }
-                else if (json.error == false) {
+                              </div>'); */
+                        });
+                    }
+                    else if (json.error == false) {
 
-                    console.log('na lie')
-                    $('#comment-message1').html('<i class="fa fa-info"></i><span>non signedup users need a name & address</span>')
-                    $('#comment-notification1').slideDown(500).delay(2000).slideUp(500);
-                }
-                },
-                error: function(xhr, errmsg, err){
-                    console.log('completed with error');
-                }
-            });
+                        console.log('na lie')
+                        $('#comment-message1').html('<i class="fa fa-info"></i><span>non signedup users need a name & address</span>')
+                        $('#comment-notification1').slideDown(500).delay(2000).slideUp(500);
+                    }
+                    },
+                    error: function(xhr, errmsg, err){
+                        console.log('completed with error');
+                    }
+                });
+            }
+            if (!comment.length) {
+                const elem = this.parentElement.previousElementSibling
+                elem.querySelector(".warning").textContent = "comment cannot be empty"
+                elem.querySelector(".warning").style.color = "red"
+                elem.querySelector(".form-text-control").style.border = "1px solid red"
+            }
+            if (is_authenticated==="False" && !name.length) {
+                const did = this.parentElement.closest(".make-comment")
+                did.querySelector(".block.name").querySelector(".warning").textContent = "name cannot be empty"
+                did.querySelector(".block.name").querySelector(".warning").style.color = "red"
+                did.querySelector(".block.name").querySelector(".form-control").style.border = "1px solid red"
+
+            }
+            if (is_authenticated==="False" && !email.length) {
+                const did = this.parentElement.closest(".make-comment")
+                did.querySelector(".block.email").querySelector(".warning").textContent = "email cannot be empty"
+                did.querySelector(".block.email").querySelector(".warning").style.color = "red"
+                did.querySelector(".block.email").querySelector(".form-control").style.border = "1px solid red"
+
+            }
 
         }}
     )
 
+    $('.form-control[name="name"]').on(
+        {click: function(e){
+            this.closest(".block").querySelector(".warning").textContent = ""
+            this.style.border = "1px solid #BBBCB6"
+
+        }}
+    )
+    $('.form-control[name="email"]').on(
+        {click: function(e){
+            this.closest(".block").querySelector(".warning").textContent = ""
+            this.style.border = "1px solid #BBBCB6"
+
+        }}
+    )
+    $(".form-text-control").on(
+        {click: function(e){
+            this.closest(".block").querySelector(".warning").textContent = ""
+            this.style.border = "1px solid #BBBCB6"
+        }}
+    )
     $('#comment-submit').on(
         {click: function(e){
             e.preventDefault();
@@ -660,86 +687,109 @@ $(document).ready(function(){
             var product_id = "{{product.id}}"
             var product_cat_slug = "{{product.category.slug}}"
             var product_slug = "{{product.slug}}"
-            $.ajax({
-                type:"POST",
-                url:" {% url 'message_:make_comment' %}",
-                data: {
-                    name: name,
-                    email: email,
-                    comment: comment,
-                    product_id: product_id,
-                    parent: "",
-                    csrfmiddlewaretoken: "{{ csrf_token }}",
-                    action: 'post'
-                },
-                success: function(json){
-                    //document.getElementById("all-comment").remove();
-                    var d1 = document.getElementById("all-comment");
+            const is_authenticated = "{{request.user.is_authenticated}}"
+            if (comment.length && (is_authenticated==="True" || (is_authenticated==="False" && name.length && email.length))) {
+                $.ajax({
+                    type:"POST",
+                    url:" {% url 'message_:make_comment' %}",
+                    data: {
+                        name: name,
+                        email: email,
+                        comment: comment,
+                        product_id: product_id,
+                        parent: "",
+                        csrfmiddlewaretoken: "{{ csrf_token }}",
+                        action: 'post'
+                    },
+                    success: function(json){
+                        //document.getElementById("all-comment").remove();
+                        var d1 = document.getElementById("all-comment");
 
-                    $(json.comments.table).each(function(index, values){
-                        var made_by=values.fields.made_by
-                        var id=values.id
-                        var name=values.fields.name
-                        var email=values.fields.email
-                        var default_image=values.fields.default_image
-                        var made_on=values.fields.made_on
-                        var parent=values.fields.parent
-                        var content=values.fields.content
-                        var made_at=values.fields.made_at
+                        $(json.comments.table).each(function(index, values){
+                            var made_by=values.fields.made_by
+                            var id=values.id
+                            var name=values.fields.name
+                            var email=values.fields.email
+                            var default_image=values.fields.default_image
+                            var made_on=values.fields.made_on
+                            var parent=values.fields.parent
+                            var content=values.fields.content
+                            var made_at=values.fields.made_at
 
-                        // assigning data to the dummy
-                        $("#sample.place-0 > .place-1").attr('data-index','' + values.pk + '')
-                        $("#sample.place-0 > .place-1 > .parent > .content > .top > .place-2 > img").attr('src', json.image)
-                        console.log(values.fields.name)
-                        if (json.made_by == 'null'){
-                            $("#sample.place-0 > .place-1 > .parent > .content > .top > .div1 > .div2 > .place-3").text(values.fields.name)
-                        }
-                        else {
-                            $("#sample.place-0 > .place-1 > .parent > .content > .top > .div1 > .div2 > .place-3").text(values.fields.made_by)
-                        }
-                        $("#sample.place-0 > .place-1 > .parent > .content > .top > .div1 > .div2 > .place-4").text(values.fields.made_at)
-                        $("#sample.place-0 > .place-1 > .parent > .content > .top > .div1 > .place-5").text(content)
-                        $("#sample.place-0 > .place-1 > .parent > .content > .top > .div1 > .btn > .place-8").attr('data-index','' + values.pk  + '')
-                        $("#sample.place-0 > .place-1 > .parent > .content > .top > .div1 > .btn > .place-8").attr('data-level','leve1-1')
+                            // assigning data to the dummy
+                            $("#sample.place-0 > .place-1").attr('data-index','' + values.pk + '')
+                            $("#sample.place-0 > .place-1 > .parent > .content > .top > .place-2 > img").attr('src', json.image)
+                            console.log(values.fields.name)
+                            if (!json.made_by){
+                                $("#sample.place-0 > .place-1 > .parent > .content > .top > .div1 > .div2 > .place-3").text(name)
+                            }
+                            else {
+                                $("#sample.place-0 > .place-1 > .parent > .content > .top > .div1 > .div2 > .place-3").text(json.made_by)
+                            }
+                            $("#sample.place-0 > .place-1 > .parent > .content > .top > .div1 > .div2 > .place-4").text(made_at)
+                            $("#sample.place-0 > .place-1 > .parent > .content > .top > .div1 > .place-5").text(content)
+                            $("#sample.place-0 > .place-1 > .parent > .content > .top > .div1 > .btn > .place-8").attr('data-index','' + values.pk  + '')
+                            $("#sample.place-0 > .place-1 > .parent > .content > .top > .div1 > .btn > .place-8").attr('data-level','leve1-1')
 
-                        $("#sample.place-0 > .place-1 > hr").css('display','none')
-                        $("#sample.place-0 > .place-1").css('display','flex')
-                        var box = $("#sample.place-0 > .place-1").clone(true)
-                        box.attr('id','' + values.pk + '')
+                            $("#sample.place-0 > .place-1 > hr").css('display','none')
+                            $("#sample.place-0 > .place-1").css('display','flex')
+                            var box = $("#sample.place-0 > .place-1").clone(true)
+                            box.attr('id','' + values.pk + '')
 
-                        // returning th dummy to a dummy state
-                        $("#sample.place-0").removeAttr('data-index')
-                        $("#sample.place-0 > .place-1").removeAttr('id').removeAttr('data-index')
-                        $("#sample.place-0").css('display','none')
+                            // returning th dummy to a dummy state
+                            $("#sample.place-0").removeAttr('data-index')
+                            $("#sample.place-0 > .place-1").removeAttr('id').removeAttr('data-index')
+                            $("#sample.place-0").css('display','none')
 
-                        box.css('border-top','3px solid #ACADA8').css('margin-bottom','20px')
-                        $('#all-comment').prepend(box)
+                            box.css('border-top','3px solid #ACADA8').css('margin-bottom','20px')
+                            $('#all-comment').prepend(box)
 
-                        /*d1.insertAdjacentHTML('afterBegin', '<div class="body" id="' +  id + '" style="border-top:3px solid #ACADA8; margin-bottom:20px;"> \
-                              <div class="parent"> \
-                                  <div class="content"> \
-                                      <div class="top"> \
-                                          <span><img style="width:60px;height:60px;" class="" src="' + json.image + '" alt=""></span> \
-                                          <div style="margin-left:10px;"> \
-                                              <div style="margin:0 10px 8px 0"><span style="margin-right:10px;font-size:16px;font-weight:bold;">' + json.made_by + '</span><span style="font-size:11px;font-weight:bold;">' + values.fields.made_at + '</span></div> \
-                                              <span  style="font-size:16px;">' + content + '</span> \
-                                              <div class="btn" style="margin-top:30px;"> \
-                                                  <button class="button">like</button> \
-                                                  <button class="button">unlike</button> \
-                                                  <button class="reply-btn" data-index="' + id + '">Reply</button> \
+                            /*d1.insertAdjacentHTML('afterBegin', '<div class="body" id="' +  id + '" style="border-top:3px solid #ACADA8; margin-bottom:20px;"> \
+                                  <div class="parent"> \
+                                      <div class="content"> \
+                                          <div class="top"> \
+                                              <span><img style="width:60px;height:60px;" class="" src="' + json.image + '" alt=""></span> \
+                                              <div style="margin-left:10px;"> \
+                                                  <div style="margin:0 10px 8px 0"><span style="margin-right:10px;font-size:16px;font-weight:bold;">' + json.made_by + '</span><span style="font-size:11px;font-weight:bold;">' + values.fields.made_at + '</span></div> \
+                                                  <span  style="font-size:16px;">' + content + '</span> \
+                                                  <div class="btn" style="margin-top:30px;"> \
+                                                      <button class="button">like</button> \
+                                                      <button class="button">unlike</button> \
+                                                      <button class="reply-btn" data-index="' + id + '">Reply</button> \
+                                                  </div> \
                                               </div> \
                                           </div> \
                                       </div> \
                                   </div> \
-                              </div> \
-                          </div>'); */
-                    });
+                              </div>'); */
+                        });
 
-                },
-                error: function(xhr, errmsg, err){
-                    console.log('completed with error');
-                }
-            });
+                    },
+                    error: function(xhr, errmsg, err){
+                        console.log('completed with error');
+                    }
+                });
+            }
+            if (!comment.length) {
+                const elem = this.parentElement.previousElementSibling
+                elem.querySelector(".warning").textContent = "comment cannot be empty"
+                elem.querySelector(".warning").style.color = "red"
+                elem.querySelector(".form-text-control").style.border = "1px solid red"
+            }
+            if (is_authenticated==="False" && !name.length) {
+                const did = this.parentElement.closest(".make-comment")
+                did.querySelector(".block.name").querySelector(".warning").textContent = "name cannot be empty"
+                did.querySelector(".block.name").querySelector(".warning").style.color = "red"
+                did.querySelector(".block.name").querySelector(".form-control").style.border = "1px solid red"
+
+            }
+            if (is_authenticated==="False" && !email.length) {
+                const did = this.parentElement.closest(".make-comment")
+                did.querySelector(".block.email").querySelector(".warning").textContent = "email cannot be empty"
+                did.querySelector(".block.email").querySelector(".warning").style.color = "red"
+                did.querySelector(".block.email").querySelector(".form-control").style.border = "1px solid red"
+
+            }
 
         }}
     )

@@ -386,7 +386,7 @@ a{
 .modal .modal-content .body{
     display: flex;
     flex-direction:column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     width:auto;
     overflow-y:auto;
@@ -483,10 +483,6 @@ a{
 
 
 
-
-
-
-
 @media screen and (max-width:1100px){
     #main-container .main-box .box .body-row .secondbox .block1 .inside .msg_amt{
         top:0;
@@ -517,3 +513,31 @@ a{
         border-top:2px solid #F3F3F3;
     }
 }
+@media screen and (max-width:540px){
+    .modal {
+      top: 10vh;
+    }
+    .modal-content {
+        width: 70%;
+    }
+    .modal .modal-content .line1{
+        font-size: 13px;
+    }
+    .modal .modal-content form textarea {
+        font-size: 14px;
+    }
+    .modal .modal-content .body p {
+        font-size: 15px;
+    }
+    #main-container .main-box {
+        font-size: 12px;
+    }
+    #main-container .main-box .box .body-row .secondbox .block2 .inside span:nth-child(2) {
+        font-size: 17px;
+    }
+    #main-container .main-box .box .body-row .firstbox .block2 .no-msg {
+        font-size: 17px;
+    }
+    #main-container .main-box .box .body-row .firstbox .block1 {
+        font-size: 17px;
+    }
