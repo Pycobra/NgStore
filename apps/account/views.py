@@ -309,13 +309,13 @@ def dashboard_ajax(request):
         item['table'] = serialized_queryset
 
         #this block is just to pick out a vendorimg & inject it into his serialized vendor fields
-        for i in item['table']:
-            img_holder = VendorImageValue.objects.filter(vendor__id = i['pk'])
-            for img in img_holder:
-                img = VendorImages.objects.filter(alt_text = img.image_value)
-                serialized_ = serializers.serialize('python', img)
-                for s in serialized_:
-                    i['fields']['images']= s['fields']['images']
+        # for i in item['table']:
+        #     img_holder = VendorImageValue.objects.filter(vendor__id = i['pk'])
+        #     for img in img_holder:
+        #         img = VendorImages.objects.filter(alt_text = img.image_value)
+        #         serialized_ = serializers.serialize('python', img)
+        #         for s in serialized_:
+        #             i['fields']['images']= s['fields']['images']
 
         response = JsonResponse({'item': item, 'stores_user_follow':stores_user_follow})
     return response
@@ -365,7 +365,7 @@ def vendor_dashboard(request):
 def edit_profile(request):
     user=request.user
     if request.method == "POST":
-        user_form = VendorEditForm(request.POST or None, request.FILES or None, instance=vendor)
+        user_form = ProfileEditForm(request.POST or None, request.FILES or None, instance=user)
         if user_form.is_valid():
             user=user_form.save(commit=False)
             user.email=user_form.cleaned_data['firstname']
@@ -418,7 +418,7 @@ def account_registration(request):
                     msg=msg
                 )
                 # connection.quit()
-            messages.success(request, "You successfully created an account, a mail was sent for confirmation")
+            messages.success(request, "Account successfully created, check your mail for confirmation link")
             return redirect("/account/login/")
     else:
         registrationform=RegistrationForm()
@@ -426,6 +426,7 @@ def account_registration(request):
     return render(request, 'account/registration/register.html', {'form':registrationform})
 
 def account_activation(request, uidb64, token):
+    user=None
     try:
         uid = force_text(urlsafe_base64_decode(uidb64))
         user=UserBase.objects.get(pk=uid)
@@ -460,7 +461,7 @@ def wishlist_add_and_remove(request, id):
         users_wishlist = product.users_wishlist.all().count()
         response = JsonResponse({'wishlist_no': str(users_wishlist), 'action_text':action_text, 'product_exist':product_exist})
         return response
-        
+
 @login_required
 def remove_from_wishlist(request):
     if request.GET.get('action') == 'get':

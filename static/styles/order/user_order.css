@@ -80,9 +80,7 @@
     margin-bottom:10px;
 }
 #main-container .box .body-row .first-block .innerblock1{
-    display: flex;
-    flex-direction:column;
-    justify-content: center;
+    display: grid;
     align-items: flex-start;
     background-color:var(--lightgrey);
     border-radius:10px;
@@ -90,17 +88,17 @@
     margin:10px;
 }
 #main-container .box .body-row .first-block .innerblock1 .main{
-    display: flex;
-    flex-direction:column;
-    justify-content: space-between;
+    display: grid;
+    /* flex-direction: column; */
+    /* justify-content: space-between; */
     align-items: flex-start;
-    background-color:var(--normalwhite);
-    color:#746D69;
-    box-shadow:1px 1px 1px 1px #BBBCB6;
-    border-radius:40px;
-    padding:15px;
-    position:relative;
-    width:50%;
+    background-color: var(--normalwhite);
+    color: #746D69;
+    box-shadow: 1px 1px 1px 1px #BBBCB6;
+    border-radius: 40px;
+    padding: 15px;
+    position: relative;
+    width: 50%;
 }
 .fa-check, .fa-times{
     font-size:30px;
@@ -382,7 +380,11 @@
 
 
 
-
+@media screen and (max-width:540px){
+    #main-container .box .body-row .first-block .innerblock1 .main {
+        width:auto;
+    }
+}
 
 
 
@@ -461,14 +463,14 @@
     #main-container .box .body-row .first-block .innerblock2{
         width:100%;
     }
-    #main-container .box .body-row .first-block .innerblock1 .main{
-        width:95%;
-    }
 }
 
 /*=============================surface duo============================*/
 
 @media screen and (max-width:540px){
+    #main-container .main-box .box .empty {
+        font-size: 15px;
+    }
 }
 /*-------------------------------------------------------*/
 

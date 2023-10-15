@@ -528,10 +528,6 @@
 /*=============================surface duo============================*/
 
 @media screen and (max-width:540px){
-}
-/*-------------------------------------------------------*/
-
-@media screen and (max-width:500px){
     #main-container .other-box .innerbox-row{
         flex-wrap:wrap;
     }
@@ -543,6 +539,20 @@
         margin-top:20px;
         width:100%;
     }
+    .other-box .inner-box .box-header span {
+        letter-spacing:0;
+        font-size:12px;
+    }
+    #main-container .main-box .main-head h3 {
+        font-size: 14px;
+    }
+    #main-container .main-box .main-head h2 {
+        font-size: 12px;
+    }
+}
+/*-------------------------------------------------------*/
+
+@media screen and (max-width:500px){
 }
 /*-------------------------------------------------------*/
 

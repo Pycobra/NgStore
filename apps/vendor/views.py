@@ -96,7 +96,7 @@ def vendor_admin(request, unique_id):
 
 @login_required
 def vendor_admin2(request, vendor_id, category_slug):
-    vendor = Vendor.objects.get_object_or_404(unique_id=vendor_id)
+    vendor = Vendor.objects.get(unique_id=vendor_id)
     vendor_categories = Category.objects.filter(level=0)
     all_vendor = Vendor.objects.all().exclude(unique_id=vendor.unique_id)
     unread_msg = Messages.objects.filter(reciever_id_unique=vendor.unique_id, is_seen=False).count()
@@ -110,9 +110,6 @@ def vendor_admin2(request, vendor_id, category_slug):
     instance = Category.objects.get(slug=category_slug)
     product = Product.objects.filter(
         category__in=Category.objects.get(name=instance.name).get_descendants(include_self=True), vendor=vendor)
-    for i in product:
-        print("category_slug[:-1]")
-        print(i)
     return render(request, 'vendor/vendor_dashboard2.html', {'vendor':vendor, 'unread_msg':unread_msg, 'vendor_product': product,
                                                                 'vendor_categories':vendor_categories, 'all_vendor':all_vendor,
                                                              'my_followers': my_followers})

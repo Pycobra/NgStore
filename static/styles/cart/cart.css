@@ -350,6 +350,19 @@
         width:40%;
         margin-left:10px;
     }
+    #main-container .box .body-row .first-block .block2 .innerblock .second-line button span{
+        font-size:16px;
+        display:none;
+    }
+    .fa-minus, .fa-plus-circle, .item-qty {
+        font-size:16px;
+    }
+    .fa-minus {
+        font-size:10px;
+    }
+    #main-container .box .body-row .first-block .block2 .innerblock .second-line i {
+        margin-right: 0;
+    }
 }
 /*-------------------------------------------------------*/
 

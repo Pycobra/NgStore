@@ -77,4 +77,3 @@ class Follow(models.Model):
                 else:
                     return str() + str(self.created_at.day) + "/" +str(self.created_at.month) + "/" +str(self.created_at.year)
         return self.created_at
-

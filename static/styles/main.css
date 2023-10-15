@@ -35,8 +35,8 @@
     --lg-btn-border:none;
     --lg-btn-shadow:1px 1px 5px rgba(0,0,0,0.4);
 
-    
-    --blue1: #0a626a !important; 
+
+    --blue1: #0a626a !important;
     --blue2: #166970;
     --blue3: #054146;
     --blue4: #0c314d;
@@ -62,7 +62,7 @@
     --grayish-milk: linear-gradient(to right, var(--default), cornsilk, var(--default));
     --button-inset-color: linear-gradient(to right, var(--mask), rgb(255, 255, 255), var(--mask));
 
-    
+
     font-family: "Arial", serif;
     font-size: 16px;
 }
@@ -360,7 +360,7 @@ body {
 .third #slide-account ul span{
     font-size:14px;
     font-weight:550;
-    color:var(--lightblue);
+    color: #85aecf;
     margin-bottom:22px;
 }
 .third #slide-account ul li:first-child{
@@ -393,8 +393,11 @@ body {
     border:var(--lg-btn-border);
     box-shadow:var(--lg-btn-shadow);
 }
-.third #slide-account ul i{
-    color:var(--normalblack);
+.third #slide-account ul a i{
+    color: var(--normal);
+    font-weight: 600;
+    margin-right: 10px;
+    font-size: 20px;
 }
 .third #slide-account hr{
     color:var(--lightgrey);
@@ -421,11 +424,8 @@ body {
     color:var(--normalorange);
     position:relative;
 }
-.third #slide-account ul span i:nth-child(1){
-    position:relative;
-    top:1px;
-    left:0;
-    font-size:22px;
+.third #slide-account ul span i{
+    font-size:20px;
 }
 .third #slide-account a strong{
     line-height:30px;
@@ -444,7 +444,7 @@ body {
     padding:2.5px;
     position:relative;
     top:-15px;
-    margin-left:-10px;
+    margin-left: -21px
 }
 
 /* =======================END======================== */
@@ -845,7 +845,8 @@ a, ul, li{
     justify-content: flex-end;
     align-items: center;
 }
-#nav4 .main-nav .cart{
+#nav4 .main-nav .cart,
+.fixed-cart-icon .cart{
     position: relative;
     display: flex;
     justify-content: space-between;
@@ -866,7 +867,8 @@ a, ul, li{
     margin-left:15px;
     align-items: flex-end;
 }
-#nav4 .main-nav .cart .qty{
+#nav4 .main-nav .cart .qty,
+.fixed-cart-icon .cart .qty{
     background-color:var(--normalwhite);
     color:var(--normalblack);
     position: absolute;
@@ -1142,6 +1144,7 @@ a, ul, li{
     align-items:flex-start;
     margin:0;
     background-color:var(--normalwhite);
+    overflow: hidden;
     overflow-x: auto;
 }
 #topmost1 .box-body{
@@ -1723,21 +1726,22 @@ footer .second-side section hr{
 
 
 
-/*        MY STATIC ICONS ON THE RIGHT SIDE   */
-.social-icons2 a:hover{
+/*        MY FIXED ICONS ON THE RIGHT SIDE   */
+
+.fixed-cart-icon{
+    display:none;
+    z-index:5;
+    position:fixed;
+    top:85%;
+    right:10px;
+}
+.fixed-cart-icon a:hover{
     background-color:#262525;
     box-shadow:2px 2px 12px rgba(0,0,0,0.2);
     transition:all ease 0.5s;
     color:white;
 }
-.social-icons2{
-    z-index:2;
-    position:fixed;
-    top:50%;
-    right:0px;
-    transform:translateX(-0px,-50%);
-}
-.social-icons2 a{
+.fixed-cart-icon a{
     display:flex;
     justify-content:center;
     align-items:center;
@@ -1751,12 +1755,16 @@ footer .second-side section hr{
     color:#2b2b2b;
     text-decoration:none;
     font-weight:bold;
+    border-radius:50px;
 }
-.social-icons2 a:nth-child(1){
-    border-radius:20px 0 0 0;
+
+.fixed-cart-icon .cart{
+    color:orange;
 }
-.social-icons2 a:nth-child(4){
-    border-radius:0 0 0 20px;
+.fixed-cart-icon .cart .qty{
+    background-color: orange;
+    color: white;
+    border: 1px solid white;
 }
 .account-navbar1 {
     position:absolute;
@@ -1801,53 +1809,6 @@ footer section hr{
 #topmost .outside-box{
     margin:0 5.7% 0 6%;
 }
-
-/*
-.box,
-#nav1 .first-nav,
-#nav1 .main-nav,
-#nav2 .first-nav,
-#nav2 .main-nav,
-footer #inside1,
-footer #inside2{
-    background-color:red;
-}
-.site-logo{
-    background-color:green;
-}
-.contact{
-    background-color:green;
-}
-.download-app{
-    background-color:green;
-}
-.box-body .card{
-    background-color:grey;
-}
-*/
-
-
-
-
-
-/*                 COLOURING THAT USED TO GET MY FOOTER ALIGNMENT
-footer .block1 .site-logo,
-footer .block2 .about{
-    background-color: blue;
-}
-footer .block1 .newletter,
-footer .block2 .make-money{
-    background-color: red;
-}
-footer .block2  .countries .names{
-    background-color:green;
-}
-footer .block1 .download-app .inner-block1,
-footer .block1 .download-app .inner-block2,
-footer .block2  .countries{
-    background-color:brown;
-}
-*/
 
 
 
@@ -2000,7 +1961,7 @@ footer .block2  .countries{
     }
     #nav1 .main-nav #menutimes{
        display:none;
-       font-size:53px;
+       font-size:35px;
     }
     .third{
        display:flex;
@@ -2020,6 +1981,9 @@ footer .block2  .countries{
     }
     #section-container{
         top:20vh;
+    }
+    #homepage {
+        height: 40vh;
     }
     #homepage .inner-container p:nth-child(1){
         letter-spacing:25px;
@@ -2050,12 +2014,29 @@ footer .block2  .countries{
     }
 }
 
-@media screen and (max-width:464px){
+@media screen and (max-width:540px){
     #top-selling .box-body .card{
         width:180px;
     }
     #top-selling .box-body .card .card-img img{
         width:160px;
+    }
+    .third #slide-account li a {
+        font-size: 14px;
+    }
+    .third #slide-account li i{
+        font-size:15px;
+    }
+    #topmost .box-header span {
+        font-size: 18px;
+    }
+    #topmost .box-body .card {
+        width: 150px;
+        height: 340px;
+    }
+    #topmost .box-body .card-img img {
+        width: 130px;
+        height: 180px;
     }
 }
 /*==========================iphone 6/7/8 plus=========================*/
@@ -2078,6 +2059,9 @@ footer .block2  .countries{
     }
     .third #slide-account ul form{
         display:flex;
+    }
+    .fixed-cart-icon{
+        display:block;
     }
 }
 /*==============Galaxy s5, moto G4=360px, iphone 6/7/8/x==============*/

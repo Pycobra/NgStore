@@ -25,6 +25,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 7px;
 }
 #main-container .main-box .main-head .myBtn{
     cursor: pointer;
@@ -45,10 +46,10 @@
     position:relative;
     color: rgba(0,0,0,0.8);
 }
-.fa-envelope{
+#main-container .main-box .main-head .fa-envelope{
     font-weight:500;
-    font-size:20px;
-    color:var(--lightblue);
+    font-size:16px;
+    color:var(--blue);
     margin-left:5px;
 }
 #msg-no-top{
@@ -150,6 +151,7 @@
     z-index:2;
     position:absolute;
     bottom:-150px;
+    gap: 5px;
 }
 #main-container .box .inside-box .main-block .first-box1 .block1 .innerblock1{
     display: flex;
@@ -186,7 +188,7 @@
     width:100%;
     font-size:15px;
     font-weight:550;
-    color:var(--lightgrey);
+    color:var(--gray);
 }
 #main-container .box .inside-box .main-block .first-box1 .block1 #button{
     width:50%;
@@ -319,7 +321,7 @@
 .modal .modal-content .inside{
     display: flex;
     justify-content: space-between;
-    align-items: center;
+        align-items: flex-end;
     width:100%;
     margin:2.5px 0 10px 0;
 }
@@ -380,15 +382,14 @@
 
 
 #main-container .box .inside-box .main-block .first-box{
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
+    display: grid;
+    align-items: end;
     background-size: cover;
-    border-radius:0 0 20px 20px;
-    margin-bottom:80px;
-    background-color:var(--normalwhite);
-    width:95%;
-    height:440px;
+    border-radius: 0 0 20px 20px;
+    margin-bottom: 80px;
+    background-color: var(--normalwhite);
+    width: 95%;
+    height: 440px;
 }
 #main-container .box .inside-box .main-block .first-box .block{
     display: flex;
@@ -398,7 +399,7 @@
     padding:15px;
     border-radius:20px;
     color:var(--normalblack);
-    font-size:16px;
+    font-size:12px;
 }
 #main-container .box .inside-box .main-block .first-box .block .row{
     display: flex;
@@ -427,7 +428,7 @@
     margin:20px;
     width:100%;
 }
-#main-container .box .inside-box .main-block .second-box span{
+#main-container .box .inside-box .main-block .second-box h2{
     font-size: 20px;
     font-weight:550;
     margin-bottom:10px;
@@ -456,15 +457,13 @@
 }
 #main-container .box .inside-box .main-block .second-box .inner-box a .name{
     display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    position:absolute;
-    margin-bottom:15px;
-    width:100%;
-    height:150px;
-    color:var(--normalwhite);
-    top:0;
-    right:0;
+    position: absolute;
+    margin-bottom: 5px;
+    color: var(--normalwhite);
+    bottom: 0;
+    right: 0;
+    background: var(--disabled);
+    padding: 2px;
 }
 #main-container .box .inside-box .main-block .second-box .inner-box a #msg-no-bottom{
     display: flex;
@@ -529,11 +528,11 @@
     align-items: center;
     padding:20px;
     width:auto;
+    gap: 20px;
 }
 #main-container .box .body-row .main-block .third-box span{
     font-size: 20px;
     font-weight:550;
-    margin-bottom:10px;
     width:100%;
 }
 #main-container .box .body-row .main-block .third-box .inner-box{
@@ -542,6 +541,7 @@
     justify-content: space-between;
     align-items: center;
     width:100%;
+    gap: 20px;
 }
 #main-container .box .body-row .main-block .third-box .block1{
     display: flex;
@@ -550,6 +550,7 @@
     align-items: flex-start;
     width:50%;
     margin-right:20px;
+    gap:20px;
 }
 #main-container .box .body-row .main-block .third-box a{
     display: flex;
@@ -566,7 +567,6 @@
     justify-content: flex-start;
     align-items: center;
     width:100%;
-    margin-bottom:20px;
 }
 #main-container .box .body-row .main-block .third-box .block1 a .box1 .icon,
 #main-container .box .body-row .main-block .third-box .block1 a .box2 .icon,
@@ -580,8 +580,13 @@
     padding:10px;
     margin-right:10px;
     background-color:var(--lightblue);
-    height:60px;
-    width:60px;
+    height: 35px;
+    width: 40px;
+}
+#main-container .box .body-row .main-block .third-box .icon i{
+    font-weight: 500;
+    font-size: 40px;
+    color: var(--lightgrey);
 }
 #main-container .box .body-row .main-block .third-box .block1 a .box1 .text,
 #main-container .box .body-row .main-block .third-box .block1 a .box2 .text,
@@ -593,11 +598,12 @@
     justify-content: center;
     align-items: flex-start;
     border-radius:0 10px 10px 0;
-    padding:10px;
+    padding:5px;
     color:var(--normalblack);
     background-color:var(--normalwhite);
     box-shadow: inset 0.5px 0.5px 0.5px rgba(0,0,0,0.2);
     width:75%;
+    gap: 5px;
 }
 #main-container .box .body-row .main-block .third-box .block1 a .box1 .text span:nth-child(1),
 #main-container .box .body-row .main-block .third-box .block1 a .box2 .text span:nth-child(1),
@@ -606,7 +612,6 @@
 #main-container .box .body-row .main-block .third-box .block2 a .box2 .text span:nth-child(1){
     font-weight:550;
     font-size:15px;
-    margin-bottom:10px;
 }
 #main-container .box .body-row .main-block .third-box .block1 a .box1 .text span:nth-child(2),
 #main-container .box .body-row .main-block .third-box .block1 a .box2 .text span:nth-child(2),
@@ -623,6 +628,7 @@
     justify-content: space-between;
     align-items: flex-start;
     width:50%;
+    gap: 20px;
 }
 
 
@@ -715,6 +721,7 @@
     background-color:var(--lightgrey);
     width:100%;
     margin: 5px 5px 50px 0;
+    gap: 10px;
 }
 #main-container .box .inside-box .side-block .block2 .head{
     width:98%;
@@ -729,8 +736,7 @@
     align-items: flex-start;
     width:98%;
     font-weight:550;
-    font-size:16px;
-    margin-bottom:10px;
+    font-size:14px;
     border-radius:15px;
     background-color:var(--normalwhite);
 }
@@ -738,19 +744,19 @@
     height:70px;
     width:70px;
     object-fit:cover;
-    margin-right:10px;
     font-size:20px;
     border:1px solid darkgrey;
     border:none;
 }
 #main-container .box .inside-box .side-block .block2 .top-buyers .text{
     display: flex;
-    flex-direction:column;
+    flex-direction: column;
     justify-content: space-around;
     align-items: flex-start;
-    width:70%;
-    height:70px;
-    padding-left:5px;
+    width: 70%;
+    /* height: 70px; */
+    padding-left: 5px;
+    gap: 10px;
 }
 #main-container .box .inside-box .side-block .block2 .top-buyers .text .name{
 }
@@ -977,8 +983,6 @@
 /*================================ipad================================*/
 
 @media screen and (max-width:768px){
-}
-@media screen and (max-width:700px){
     #main-container .main-box .box  .inside-box .body-row{
         flex-wrap:wrap;
     }
@@ -1001,6 +1005,12 @@
     #main-container .box .inside-box .main-block .third-box .block2{
         width:100%;
     }
+    #main-container .box .inside-box .main-block .first-box .block{
+        font-size:14px;
+    }
+    .modal-content {
+      width: 50%;
+    }
 }
 /*-------------------------------------------------------*/
 
@@ -1009,7 +1019,83 @@
 /*=============================surface duo============================*/
 
 @media screen and (max-width:540px){
+    #main-container .box .inside-box .main-block .second-box .block .create-store{
+        width:auto;
+    }
+    #main-container .box .inside-box .main-block .first-box .block{
+        font-size:12px;
+    }
+    #main-container .box .body-row .main-block .third-box .block1 a .box1 .text span:nth-child(2),
+    #main-container .box .body-row .main-block .third-box .block1 a .box2 .text span:nth-child(2),
+    #main-container .box .body-row .main-block .third-box .block1 a .box3 .text span:nth-child(2),
+    #main-container .box .body-row .main-block .third-box .block2 a .box1 .text span:nth-child(2),
+    #main-container .box .body-row .main-block .third-box .block2 a .box2 .text span:nth-child(2){
+        font-size:12px;
+    }
+    .modal-content {
+      width: 70%;
+    }
+    #main-container .main-box .main-head {
+        display: grid;
+         justify-content: unset;
+         height: auto;
+        font-size: 12px;
+        margin-bottom: 7px;
+    }
+    #main-container .main-box .main-head .left{
+        display: grid;
+        grid-template-columns:auto auto;
+    }
+    #main-container .main-box .main-head .left .split-line{
+        display: none;
+    }
+    #main-container .main-box .main-head .myBtn span:nth-child(2) {
+        font-size: 14px;
+    }
+    #main-container .main-box .main-head .fa-envelope {
+        font-size: 16px;
+    }
+    #main-container .main-box .main-head .myBtn,
+    #main-container .main-box .main-head .left a{
+        color: var(--gray);
+    }
+    #main-container .box .body-row .main-block .third-box .icon i{
+        font-size: 25px;
+    }
+    #main-container .box .body-row .main-block .third-box .block1 a .box1 .icon,
+    #main-container .box .body-row .main-block .third-box .block1 a .box2 .icon,
+    #main-container .box .body-row .main-block .third-box .block1 a .box3 .icon,
+    #main-container .box .body-row .main-block .third-box .block2 a .box1 .icon,
+    #main-container .box .body-row .main-block .third-box .block2 a .box2 .icon {
+        height: 30px;
+        width: 45px;
+    }
+    #main-container .box .inside-box .side-block .block2 .top-buyers img {
+        height: 50px;
+        width: 50px;
+    }
+    #main-container .box .inside-box .main-block .first-box1 .bg-image {
+        height: 200px;
+    }
+    #main-container .box .inside-box .main-block .first-box1 .block1 .innerblock1 img {
+        width: 100px;
+        height: 100px;
+    }
+    #main-container .box .inside-box .side-block .block3 .other-account a img {
+        height: 50px;
+        width: 50px;
+    }
+    #main-container .box .inside-box .side-block .block3 .other-account .text {
+         height: auto;
+    }
+    #main-container .box .inside-box .side-block .block1 .activity-log {
+        font-size: 12px;
+    }
+    #main-container .box .inside-box .main-block .first-box1 .block1 {
+        bottom: -130px;
+    }
 }
+
 /*-------------------------------------------------------*/
 
 @media screen and (max-width:500px){
@@ -1032,6 +1118,9 @@
 /*==========================iphone 6/7/8 plus=========================*/
 
 @media screen and (max-width:414px){
+    .modal {
+        top: 10vh;
+    }
 }
 /*==============Galaxy s5, moto G4=360px, iphone 6/7/8/x==============*/
 

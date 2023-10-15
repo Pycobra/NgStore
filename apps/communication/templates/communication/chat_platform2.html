@@ -28,20 +28,7 @@
                         <input class="clicked-user" type="hidden" value="{{user_id.0.unique_id}}">
                         <a class="inside" data-index="{{sender.1}}" {% if sender.7 == 'a_vendor' %} href="{% url 'message_:chat_platform2' sender.1 request.user.which_vendor.unique_id %}" {% else %} href="{% url 'message_:chat_platform2' sender.1 request.user.unique_id %}" {% endif %}>
                             <div class="inner">
-                                {% if sender.7 == 'a_vendor' %}
                                 <img src="{{ sender.3.url }}" alt="profile-image">
-                                {% elif sender.7 == 'a_user' %}
-                                {% for sender in sender.3 %}
-                                <img src="{{ sender.image_value.images.url }}" alt="profile-image">
-                                {% endfor %}
-                                <!--
-                                {% for sender in sender.3 %}
-                                {% if sender.is_main %}
-                                <img src="{{ sender.image_value.images.url }}" alt="profile-image">
-                                {% endif %}
-                                {% endfor %}
-                                {% endif %}
-                                -->
                                 <span class="active"></span>
                             </div>
                             <div class="chat-lines">
@@ -67,9 +54,7 @@
                       <div class="block1">
                           <div class="inside">
                             <div class="inner">
-                                {% for img in user_id.0.vendor_image.all %}
-                                <img src="{{ img.image_value.images.url }}" alt="profile-image">
-                                {% endfor %}
+                                <img src="{{ user_id.0.vendor_image.url }}" alt="profile-image">
                                 <span class="active"></span>
                             </div>
                             <div class="chat-lines">
@@ -128,12 +113,6 @@
 {% endblock %}
 
 {% block scripts %}
-
-/*window.onload = function() {
-    document.getElementById("ta").onkeyup = function() {
-      FitToContent( this, 500 )
-    };
-}*/
     <script>
     $(document).ready(function(){
         /*$("textarea").each(function () {

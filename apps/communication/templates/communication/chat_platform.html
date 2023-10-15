@@ -25,13 +25,7 @@
                         {% for sender in msg_sender_data %}
                         <a class="inside" data-index="{{sender.1}}" {% if sender.7 == 'a_vendor' %} href="{% url 'message_:chat_platform2' sender.1 request.user.which_vendor.unique_id %}" {% else %} href="{% url 'message_:chat_platform2' sender.1 request.user.unique_id %}" {% endif %}>
                             <div class="inner">
-                                {% if sender.7 == 'a_vendor' %}
                                 <img src="{{ sender.3.url }}" alt="profile-image">
-                                {% else %}
-                                {% for sender in sender.3%}
-                                <img src="{{ sender.image_value.images.url }}" alt="profile-image">
-                                {% endfor %}
-                                {% endif %}
                                 <span class="active"></span>
                             </div>
                             <div class="chat-lines">
@@ -78,7 +72,7 @@
           <form method="post" action="">
               {% csrf_token %}
               <textarea rows="5" wrap="hard soft" autofocus="autofocus" placeholder="Write a message" name="sent_message"></textarea>
-              <button class="msg-btn" type="submit"><i class="fa fa-caret-right"></i></button>
+              <button class="msg-btn" type="submit"><i class="fa fa-location-arrow"></i></button>
           </form>
           <div class="body">
               {% if request.user.is_authenticated %}
@@ -108,39 +102,37 @@
 {% block scripts %}
     <script>
     $(document).ready(function(){
-        // $('.msg-btn').on(
-        //     {click: function(e){
-        //         e.preventDefault();
-        //         var unique_id_list = []
-        //         sent_fleet_msg = $('textarea').val()
-        //         $('.search-input').each(function(index, values){
-        //             console.log(index, values)
-        //             if ($(this).is(":checked")){
-        //                 unique_id=$(this).data('index');
-        //                 unique_id_list.push(unique_id)
-        //             }
-        //         })
-        //         alert('popopopopopoopopo')
-        //         $.ajax({
-        //             type:"POST",
-        //             url:"{% url 'message_:send_fleet_message' %}",
-        //             data: {
-        //                 unique_id_list: unique_id_list,
-        //                 sent_fleet_msg: sent_fleet_msg,
-        //                 csrfmiddlewaretoken: "{{ csrf_token }}",
-        //                 do_action: 'post_it'
-        //             },
-        //             success: function(json){
-        //                 console.log('completed with success');
-        //             },
-        //             error: function(xhr, errmsg, err){
-        //                 console.log('completed with error');
-        //             }
-        //         });
-        //         console.log(unique_id_list)
-        //         console.log(sent_fleet_msg)
-        //     }}
-        // )
+        $('.msg-btn').on(
+            {click: function(e){
+                e.preventDefault();
+                var unique_id_list = []
+                sent_fleet_msg = $('textarea').val()
+                $('.search-input').each(function(index, values){
+                    console.log(index, values)
+                    if ($(this).is(":checked")){
+                        unique_id=$(this).data('index');
+                        unique_id_list.push(unique_id)
+                    }
+                })
+                $.ajax({
+                    type:"POST",
+                    url:"{% url 'message_:send_fleet_message' %}",
+                    data: {
+                        unique_id_list: unique_id_list,
+                        sent_fleet_msg: sent_fleet_msg,
+                        csrfmiddlewaretoken: "{{ csrf_token }}",
+                        do_action: 'post_it'
+                    },
+                    success: function(json){
+                        console.log('completed with success');
+                        location.reload()
+                    },
+                    error: function(xhr, errmsg, err){
+                        console.log('completed with error');
+                    }
+                });
+            }}
+        )
 
 
         var modal = document.getElementById("myModal");

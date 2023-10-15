@@ -76,8 +76,8 @@
                   </div>
             </div>
             <button class="btn1" type="submit">
-                <i class="fa fa-sign-in" style="font-weight:500;font-size:25px;margin:0 35% 0 10px"></i>
-                Create Account
+                <i class="fa fa-sign-in" style="font-weight:500;font-size:25px"></i>
+                <div class="text">Create Account</div>
             </button>
             <div class="footer">
                 <span class="terms-condition">By proceeding you agree to our
@@ -145,11 +145,11 @@
                     success: function(json){
                         if (json.msg_type == true){
                             $('#signup-username').css('border-bottom','1px solid green')
-                            $('.alert[data-index="username"]').html('<p>' + json.msg + '</p><span style="margin-right:3px;color:green;">Good <i class="fa fa-check-circle""></i></span>')
+                            $('.alert[data-index="username"]').html('<p>' + json.msg + '</p><span style="color:green;">Good <i class="fa fa-check-circle""></i></span>')
                         }
                         if (json.msg_type == false){
                             $('#signup-username').css('border-bottom','1px solid red')
-                            $('.alert[data-index="username"]').html('<p>' + json.msg + '</p><span style="margin-right:3px;">Wrong <i class="fa fa-times-circle" style="color:red;"></i></span>')
+                            $('.alert[data-index="username"]').html('<p>' + json.msg + '</p><span>Wrong <i class="fa fa-times-circle" style="color:red;"></i></span>')
                         }
                     },
                     error: function(xhr, errmsg, err){
@@ -175,11 +175,11 @@
                     success: function(json){
                         if (json.msg_type == true){
                             $('#signup-email').css('border-bottom','1px solid green')
-                            $('.alert[data-index="email"]').html('<p>' + json.msg + '</p><span style="margin-right:3px;color:green;">Good <i class="fa fa-check-circle""></i></span>')
+                            $('.alert[data-index="email"]').html('<p>' + json.msg + '</p><span style="color:green;">Good <i class="fa fa-check-circle""></i></span>')
                         }
                         if (json.msg_type == false){
                             $('#signup-email').css('border-bottom','1px solid red')
-                            $('.alert[data-index="email"]').html('<p>' + json.msg + '</p><span style="margin-right:3px;color:red;">Wrong <i class="fa fa-times-circle""></i></span>')
+                            $('.alert[data-index="email"]').html('<p>' + json.msg + '</p><span style="color:red;">Wrong <i class="fa fa-times-circle""></i></span>')
                         }
                     },
                     error: function(xhr, errmsg, err){

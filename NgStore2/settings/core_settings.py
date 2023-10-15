@@ -119,12 +119,13 @@ ASGI_APPLICATION = 'NgStore2.asgi.application'
 # }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'myRestaurant',
-        'USER': 'postgres',
-        "PASSWORD": 'guht9876',
-        "HOST": 'localhost',
-        "PORT": '5432',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.getenv("MSDATABASE"),
+        'USER': os.getenv("MSUSER"),
+        "PASSWORD": os.getenv("MSPASSWORD"),
+        "HOST":  os.getenv("MSHOST"),
+        "PORT":  os.getenv("MSPORT"),
+        "sql_mode": 'STRICT_TRANS_TABLES'
     }
 }
 

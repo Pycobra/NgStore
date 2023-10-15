@@ -18,7 +18,6 @@
     justify-content: space-between;
     align-items: center;
     width:100%;
-    height:10vh;
     font-weight:bold;
     font-size:14px;
 }
@@ -26,6 +25,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 7px;
 }
 #main-container .main-box .main-head .myBtn{
     cursor: pointer;
@@ -35,7 +35,7 @@
 }
 #main-container .main-box .main-head .left .myBtn span:nth-child(2){
     font-weight:bold;
-    font-size:17px;
+    font-size: 14px;
     color:#ACADA8;
 }
 #main-container .main-box .main-head .left a{
@@ -46,10 +46,10 @@
     position:relative;
     color: rgba(0,0,0,0.8);
 }
-.fa-envelope{
+#main-container .main-box .main-head .fa-envelope{
     font-weight:500;
-    font-size:20px;
-    color:var(--lightblue);
+    font-size: 16px;
+    color:var(--blue);
     margin-left:5px;
 }
 #msg-no-top{
@@ -90,13 +90,13 @@
     width:100%;
     padding-right:5px;
     border-right:4px solid rgba(0,0,0,0.1);
+    gap: 70px;
 }
 #main-container .box .body-row .main-block .first-box{
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius:20px;
-    margin-bottom:80px;
     position:relative;
     width:100%;
     z-index:1;
@@ -135,12 +135,13 @@
     height:100%;
 }
 #main-container .box .body-row .main-block .first-box .block2 .innerblock .name{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-size:50px;
-    color:var(--lightgrey);
-    letter-spacing:5px;
+    background: var(--lightwhite);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    color: var(--gray);
+    letter-spacing: 5px;
 }
 #main-container .box .body-row .main-block .first-box .block2 .innerblock #button{
     width:100%;
@@ -268,7 +269,7 @@
 .modal .modal-content .inside{
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-end;
     width:100%;
     margin:2.5px 0 10px 0;
 
@@ -330,12 +331,9 @@
 
 
 #main-container .box .body-row .main-block .second-box{
-    display: flex;
-    flex-direction:column;
-    justify-content: center;
+    display: grid;
     align-items: center;
     width:100%;
-    margin:2.5px 0 10px 0;
 }
 #main-container .box .body-row .main-block .second-box p{
     display: flex;
@@ -353,6 +351,12 @@
     font-weight:550;
     margin-bottom:10px;
     width:100%;
+}
+#main-container .box .body-row .main-block .second-box span{
+    font-size: 18px;
+}
+#main-container .box .body-row .main-block .second-box span{
+    font-size: 18px;
 }
 #main-container .box .body-row .main-block .second-box .inner-block{
     display: flex;
@@ -416,6 +420,7 @@
     justify-content: flex-start;
     align-items: flex-start;
     width:20%;
+    overflow: hidden;
 }
 #main-container .box .body-row .main-block .second-box .first-block ul,
 .top .side1 ul{
@@ -459,10 +464,9 @@
 }
 #main-container .box .body-row .main-block .second-box img{
     height:150px;
-    width:150px;
+    width: 100%;
     object-fit:cover;
     border-radius:5px;
-    margin:5px;
 }
 #main-container .box .body-row .main-block .second-box .inner-block .second-block{
     display: flex;
@@ -508,10 +512,7 @@
     justify-content:center;
     align-items:center;
     background-color:var(--normalwhite);
-    width:155px;
     height:250px;
-    margin:3px;
-    margin: .5rem .5rem 1rem 0;
     border-radius:5px;
     -webkit-transition: background, 800ms ease-in-out;
     -moz-transition: background, 800ms ease-in-out;
@@ -530,6 +531,7 @@
     position: relative;
     z-index:1;
     border-radius:10px;
+    width: 140px;
 }
 .second-block .inner-box .body .card .card-img .pop{
     display: flex;
@@ -637,14 +639,14 @@
     flex-direction:column;
     justify-content: center;
     align-items: center;
-    margin-bottom:80px;
     width:100%;
     z-index:1;
+    margin-bottom:70px;
+    gap:20px;
 }
 #main-container .box .body-row .main-block .third-box span{
     font-size: 20px;
     font-weight:550;
-    margin-bottom:10px;
     width:100%;
 }
 #main-container .box .body-row .main-block .third-box .inner-box{
@@ -653,6 +655,7 @@
     justify-content: space-between;
     align-items: center;
     width:100%;
+    gap: 20px;
 }
 #main-container .box .body-row .main-block .third-box .block1{
     display: flex;
@@ -661,12 +664,18 @@
     align-items: flex-start;
     width:50%;
     margin-right:20px;
+    gap:20px;
 }
 #main-container .box .body-row .main-block .third-box a{
     display: flex;
     justify-content: center;
     align-items: center;
     width:100%;
+}
+#main-container .box .body-row .main-block .third-box i{
+    font-weight: 500;
+    font-size: 35px;
+    color: var(--lightgrey);
 }
 #main-container .box .body-row .main-block .third-box .block1 a .box1,
 #main-container .box .body-row .main-block .third-box .block1 a .box2,
@@ -677,7 +686,6 @@
     justify-content: flex-start;
     align-items: center;
     width:100%;
-    margin-bottom:20px;
 }
 #main-container .box .body-row .main-block .third-box .block1 a .box1 .icon,
 #main-container .box .body-row .main-block .third-box .block1 a .box2 .icon,
@@ -690,9 +698,9 @@
     border-radius:5px;
     padding:10px;
     margin-right:10px;
-    background-color:var(--lightblue);
-    height:60px;
-    width:60px;
+    background-color:var(--blue);
+    height: 30px;
+    width: 45px;
 }
 #main-container .box .body-row .main-block .third-box .block1 a .box1 .text,
 #main-container .box .body-row .main-block .third-box .block1 a .box2 .text,
@@ -704,11 +712,12 @@
     justify-content: center;
     align-items: flex-start;
     border-radius:0 10px 10px 0;
-    padding:10px;
+    padding:5px;
     color:var(--normalblack);
     background-color:var(--lightgrey);
     box-shadow: inset 0.5px 0.5px 0.5px rgba(0,0,0,0.2);
     width:75%;
+    gap: 5px;
 }
 #main-container .box .body-row .main-block .third-box .block1 a .box1 .text span:nth-child(1),
 #main-container .box .body-row .main-block .third-box .block1 a .box2 .text span:nth-child(1),
@@ -717,7 +726,6 @@
 #main-container .box .body-row .main-block .third-box .block2 a .box2 .text span:nth-child(1){
     font-weight:550;
     font-size:15px;
-    margin-bottom:10px;
 }
 #main-container .box .body-row .main-block .third-box .block1 a .box1 .text span:nth-child(2),
 #main-container .box .body-row .main-block .third-box .block1 a .box2 .text span:nth-child(2),
@@ -734,6 +742,7 @@
     justify-content: space-between;
     align-items: flex-start;
     width:50%;
+    gap: 20px;
 }
 
 
@@ -841,9 +850,9 @@
     width:100%;
     font-weight:550;
     font-size:16px;
-    margin-bottom:10px;
     border-radius:15px;
     background-color:var(--normalwhite);
+    overflow: hidden;
 }
 #main-container .box .body-row .side-block .block3 .top-buyers img{
     height:70px;
@@ -934,6 +943,7 @@
     margin-bottom:10px;
     border-radius:15px;
     background-color:var(--normalwhite);
+    overflow: hidden;
 }
 #main-container .box .body-row .side-block .block4 .other-stores a{
     display: flex;
@@ -954,9 +964,9 @@
     justify-content: space-around;
     align-items: flex-start;
     width:70%;
-    height:70px;
     padding-left:5px;
     color:var(--normalblack);
+    gap: 5px
 }
 #main-container .box .body-row .side-block .block4 .other-stores .text button{
     width:70%;
@@ -1076,10 +1086,6 @@
 /*================================ipad================================*/
 
 @media screen and (max-width:768px){
-    #button button:nth-child(1),
-    #button button:nth-child(2){
-        width:20vw;
-    }
     #main-container .main-box .box .body-row {
         flex-wrap:wrap;
     }
@@ -1117,6 +1123,9 @@
         overflow-y:scroll;
 
     }
+    .modal-content {
+        width: 50%;
+    }
 }
 /*-------------------------------------------------------*/
 
@@ -1125,6 +1134,80 @@
 /*=============================surface duo============================*/
 
 @media screen and (max-width:540px){
+    #main-container .box .body-row .main-block .second-box p {
+        font-size: 14px;
+        color: var(--pale-gray);
+    }
+
+    #main-container .box .body-row .main-block .third-box .block1 a .box1 .text span:nth-child(2),
+    #main-container .box .body-row .main-block .third-box .block1 a .box2 .text span:nth-child(2),
+    #main-container .box .body-row .main-block .third-box .block1 a .box3 .text span:nth-child(2),
+    #main-container .box .body-row .main-block .third-box .block2 a .box1 .text span:nth-child(2),
+    #main-container .box .body-row .main-block .third-box .block2 a .box2 .text span:nth-child(2){
+        font-size:12px;
+    }
+    .modal-content {
+        width: 70%;
+    }
+    #main-container .main-box .main-head {
+        display: grid;
+        justify-content: unset;
+    }
+    #main-container .main-box .main-head .myBtn,
+    #main-container .main-box .main-head .left a {
+        color: var(--gray);
+        font-size: 13px;
+    }
+    #main-container .main-box .main-head .fa-envelope{
+        font-size:15px;
+    }
+    #main-container .main-box .main-head .split-line{
+        display:none;
+        margin:0 10px;
+    }
+    #main-container .box .body-row .main-block .second-box span,
+    #main-container .box .body-row .main-block .third-box span {
+        font-size: 16px;
+    }
+
+    #main-container .box .body-row .main-block .third-box i{
+        font-size: 25px;
+    }
+    #main-container .box .body-row .side-block .block1 .other-info,
+    #main-container .box .body-row .side-block .block2 .activity-log {
+        font-size: 13px;
+    }
+    #main-container .box .body-row .side-block .block3 .top-buyers {
+        font-size: 14px;
+    }
+    #button button:nth-child(1),
+    #button button:nth-child(2){
+        height: auto;
+        width: auto;
+        padding: 10px;
+        font-size: 13px;
+    }
+    #main-container .box .body-row .side-block .block3 .top-buyers img {
+        height: 50px;
+        width: 50px;
+    }
+    #main-container .box .body-row .side-block .block4 .other-stores a img {
+        height: 50px;
+        width: 50px;
+    }
+    #main-container .box .body-row .side-block .block4 .other-stores {
+        font-size: 14px;
+    }
+    #main-container .box .body-row .side-block .block4 .other-stores .text button {
+        width: auto;
+        height: auto;
+        padding: 7px 12px;
+        font-size: 12px;
+    }
+    #main-container .box .body-row .main-block .first-box .block2 .innerblock .name {
+        font-size: 24px;
+        font-weight: 900;
+    }
 }
 /*-------------------------------------------------------*/
 
@@ -1137,6 +1220,9 @@
 /*==========================iphone 6/7/8 plus=========================*/
 
 @media screen and (max-width:414px){
+    .modal {
+        top: 10vh;
+    }
 }
 /*==============Galaxy s5, moto G4=360px, iphone 6/7/8/x==============*/
 

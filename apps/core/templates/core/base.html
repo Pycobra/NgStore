@@ -13,6 +13,13 @@ fa-arrow-down-->
     <meta charset="UTF-8">
     <title>{% block title %} MultiVendorSite {% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src = "{% static 'scripts/channels/reconnecting-websocket.min.js' %}"> </script>
+    <!-- <script src = "{% static 'scripts/channels/new_user.js' %}"> </script> -->
+    <script src="https://js.paystack.co/v1/inline.js"></script>
+    <script type="text/javascript" language="JavaScript" src="{% static 'scripts/jQuery-3.2.1.min.js' %}"></script>
+    <!--<script src="https://code.jquery.com/jquery-3.2.1.js"-->
+    <!--    integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>-->
+    <script type="text/javascript" language="JavaScript" src="{% static 'scripts/main.js' %}"></script>
     <link rel="stylesheet" href="{% static 'styles/font-awesome-4.7.0/css/font-awesome.min.css' %}">
     <!-- <script type="text/javascript" language="JavaScript" src="{% static 'scripts/jQuery-3.2.1.min.js' %}"></script>
     <script type="text/javascript" language="JavaScript" src="{% static 'scripts/learner.js' %}"></script> -->
@@ -23,11 +30,6 @@ fa-arrow-down-->
     <link rel="stylesheet" href="{% block stylesheet2 %}{% endblock %}">
     <link rel="stylesheet" href="{% block stylesheet3 %}{% endblock %}">
     <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
-    <script src = "{% static 'scripts/channels/reconnecting-websocket.min.js' %}"> </script>
-    <!-- <script src = "{% static 'scripts/channels/new_user.js' %}"> </script> -->
-    <script src="https://js.paystack.co/v1/inline.js"></script>
-    <script type="text/javascript" language="JavaScript" src="{% static 'scripts/jQuery-3.2.1.min.js' %}"></script>
-    <script type="text/javascript" language="JavaScript" src="{% static 'scripts/main.js' %}"></script>
 
 </head>
 <body>
@@ -152,7 +154,7 @@ fa-arrow-down-->
                     </li>
                     {% if request.user.is_authenticated %}
                     <li>
-                        <a href="{% url "account_:dashboard" %}"><i class="fa fa-dashboard" style="font-weight:600;margin-right:10px;font-size:20px;"></i>My Dashboard</a>
+                        <a href="{% url "account_:dashboard" %}"><i class="fa fa-dashboard"></i>My Dashboard</a>
                     </li>
                     <li>
                         <a href="{% url "message_:messages_history" request.user.unique_id %}">
@@ -227,7 +229,7 @@ fa-arrow-down-->
 
                     <div id="menuwrap1">
                         <i class="fa fa-bars" id="menubars"></i>
-                        <i class="fa fa-times-rectangle" id="menutimes"></i>
+                        <i class="fa fa-times" id="menutimes"></i>
                     </div>
                 </div>
             </nav>
@@ -302,6 +304,9 @@ fa-arrow-down-->
         <section id="section-container">
             <div id="container">
                 {% block content %}
+                {% endblock %}
+
+                {% block scripts %}
                 {% endblock %}
             </div>
         </section>
@@ -438,177 +443,17 @@ fa-arrow-down-->
             </div>
             <hr>
         </section>
-
-
-        <!--<section>
-            <div class="block1">
-                <h3 class="is-size-4 mb-4">Copyright By BrightCode</h3>
-                <div class="admin">
-                   {% if request.user.is_authenticated %}
-                        <a href="{% url "vendor_:become_vendor_" %}">Make a vendor</a>
-                   {% else %}
-                        <a href="{% url "vendor_:become_vendor_" %}">Become a vendor</a>
-                   {% endif %}
-                    <a href=""> Site vendors</a>
-                </div>
-            </div>
-
-            <div class="block2">
-                <div class="contact">
-                    <p>Contacts</p>
-                    <div class="social-icons">
-                        <a class="" href="{% url 'core_:contact' %}"><i class="fa fa-facebook-square"></i></a>
-                        <a href="{% url 'core_:contact' %}"><i class="fa fa-twitter-square"></i></a>
-                        <a href="{% url 'core_:contact' %}"><i class="fa fa-instagram"></i></a>
-                        <a href="{% url 'core_:contact' %}"><i class="fa fa-linkedin-square"></i></a>
-                    </div>
-                </div>
-            </div>
-            <p class="copyright">Copyright By BrightCode</p>
-        </section>-->
     </footer>
-    <div class="social-icons2">
-        <a class="" href="{% url 'core_:contact' %}"><i class="fa fa-facebook-square"></i></a>
-        <a href="{% url 'core_:contact' %}"><i class="fa fa-twitter-square"></i></a>
-        <a href="{% url 'core_:contact' %}"><i class="fa fa-instagram"></i></a>
-        <a href="{% url 'core_:contact' %}"><i class="fa fa-linkedin-square"></i></a>
-    </div>
-
-    {% block scripts %}
-        <script>
-const getPostion1 = (opts) => {
-    const promise = new Promise((resolve,reject) => {
-        navigator.geolocation.getCurrentPosition(success => {
-            resolve(success)
-        }, error => {
-            reject(error)
-        }, opts)
-    })
-    return promise
-}
-const setTimer_ = (duration) => {
-    const promise = new Promise((resolve,reject) => {
-        setTimeout(() => {
-           resolve(() => {console.log("Skipped 11!!")})
-         }, duration)
-    })
-    return promise
-}
-function trackUser1() {
-    let positionData
-    getPostion1()
-    .then(posData => {
-        console.log('skipped 1!!')
-        return setTimer(2000)
-    })
-    .catch(err => {
-        console.log('data, positionData')
-        return err
-    })
-    .then(data => console.log(data, positionData))
-}
-trackUser1()
-        </script>
-    {% endblock %}
+    <div class="fixed-cart-icon">
+        <a href="{% url "cart_:cart_detail" %}">
+            <div class="cart">
+                <i class="fa fa-shopping-cart" class="shopping-cart"></i>
+                {% with total_qty=cart|length %}
+                <span class="qty">{% if total_qty > 0 %}{{ total_qty }}{% else %}0{% endif %}</span>
+                {% endwith %}
+            </div>
+        </a>
+    </a>
     </main>
 </body>
 </html>
-<!--
-
-
-
-    background-color:#ff3;
-    CCCDC6 204 205 198
-    BBBCB6 187 188 182
-    ACADA8 172 173 168
-    746D69 116 109 105
-
-    SEAFOAM 93e9be (147,233,190,1)
-    marshmallows 1612 & 1606 & 1364(
-    grass 348c31 (52,140,49,1)
-    midnight 191970
-    sun f9d71c (249,215,28,1)
-    rose F33A6A (243,58,106,1)/B76E79 (183,110,121,1)
-    AQUA 00ffff (0,255,255,1)/86aba5 (134,171,165,1)
-    cherry D2042D-FF5733/(210,4,45,1)
-    violet 8f00ff
-
-
-redis is stored in  Stored in directory: c:\users\bright\appdata\local\pip\cache\wheels\3c\18\dc\5765b45deada4449790d77fc54b0852e996f594767
-
-Installation Directory: C:\Program Files\PostgreSQL\14
-Server Installation Directory: C:\Program Files\PostgreSQL\14
-Data Directory: C:\Program Files\PostgreSQL\14\data
-Database Port: 5432
-Database Superuser: postgres
-Operating System Account: NT AUTHORITY\NetworkService
-Database Service: postgresql-x64-14
-Command Line Tools Installation Directory: C:\Program Files\PostgreSQL\14
-pgAdmin4 Installation Directory:
-Stack Builder Installation Directory: C:\Program Files\PostgreSQL\14
-port-no  = 5432
-
-
-
-
- C:\Users\BRIGHT\AppData\Local\Programs\Microsoft VS Code
-
-
-//                  1           //
- /*
-function addLi() {
-     let txtVal = document.getElementById('txtVal').value,
-        liNode = document.createElement("LI"),
-        txtNode = document.createTextNode(txtVal);
-        liNode.appendChild(txtNode);
-        listNode.appendChild(liNode);
-*/
-
-
-//                  2           //
-/*
-success: function (data) {
-   $.each(data.data, function(k, v) {
-       /// do stuff
-   });
-}
-
-OR
-
-var container = $('#some-container')
-container.load('/processData', {foo: "this is required to force a post rather than get")
-
-OR
-
-success: function(json){
-    // Table header
-    var table = $('<table>').addClass('table table-style table-striped');
-    var thead = $('<thead>');
-    var headrow = $('<tr>');
-    var head1 = $('<th>').text('HOSTNAME');
-    var head2 = $('<th>').text('TTL');
-    var head3 = $('<th>').text('CLASS');
-    var head4 = $('<th>').text('TYPE');
-    var head5 = $('<th>').text('DETAILS');
-    $(headrow).append(head1, head2, head3, head4, head5);
-    $(thead).append(headrow);
-    $(table).append(thead);
-
-    // table body
-    var tbody = $('<tbody>');
-    num_answers = json.length
-    for (i = 0; i < num_answers; i++) {
-        var row = $('<tr>');
-        var cell1 = $('<td>').text(json[i][0]);
-        var cell2 = $('<td>').text(json[i][1]);
-        var cell3 = $('<td>').text(json[i][2]);
-        var cell4 = $('<td>').text(json[i][3]);
-        var cell5 = $('<td>').text(json[i][4]);
-        $(row).append(cell1, cell2, cell3, cell4, cell5);
-        $(tbody).append(row);
-    }
-    $(table).append(row);
-    $('#mainsection').append(table);
-}
-*/
--->

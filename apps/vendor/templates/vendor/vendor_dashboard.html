@@ -18,7 +18,7 @@
           <h1 class="">Your Store</h1>
           <div class="left">
               <div class="myBtn"><span style="margin-right:3px;">Followers</span><span style="margin-right:bold;">{% if my_followers %}({{my_followers.count}}){% else %}(0){% endif %}</span></div>
-              <span style="margin:0 10px">|</span>
+              <span class="split-line">|</span>
               <a href="{% url "message_:messages_history" request.user.which_vendor.unique_id %}">
                 <span>Message</span>
                 <i class="fa fa-envelope"></i>{% if unread_msg %} <span id="msg-no-top">{{ unread_msg }}</span> {% endif %}
@@ -65,7 +65,7 @@
                           <span>Manage Products</span>
 
                           {% if vendor.vendors_products.all %}
-                          <div class="top" style="position:relative;">
+                          <div class="top" style="display: flex;justify-self: start;position:relative;">
                               <span class="label" style="width:150px;margin-bottom:0;">Categories<i class="fa fa-caret-down" style="margin-left:10px;"></i></span>
                               <div class="side1 side2"  style="position:absolute;display:none;width:170px;">
                                 <ul class="" style="padding-top:0;">
@@ -145,14 +145,14 @@
                                 <div class="second-block">
                                     <div class="inner-box">
                                         <div class="head">
-                                            <div class="place1"><span>All</span><span style="font-size:15px;font-weight:normal;"> ({{ vendor.vendors_products.count }}) items found</span></div>
-                                            <div class="place2"><span style="font-size:15px;font-weight:normal;">1 of 3 pages</span></div>
+                                            <div class="place1"><span>All</span></div>
+                                            <div class="place2"><span style="font-size:15px;font-weight:normal;"> ({{ vendor.vendors_products.count }}) items found</span></div>
                                         </div>
                                         <div class="body">
                                             {% for i in vendor.vendors_products.all %}
                                             {% if i.is_active %}
-                                            <a href="{% url 'product_:product_detail_' i.category.slug i.slug %}" class="">
                                                 <div class="card" data-index="{{ i.id }}">
+                                            <a href="{% url 'product_:product_detail_' i.category.slug i.slug %}" class="">
                                                     <div class="card-img" style="@media screen and (max-width:391px){width:20px;}">
                                                         {% if i.vendor.unique_id == request.user.which_vendor.unique_id %}
                                                         <div class="pop" data-index="{{ i.id }}">
@@ -160,12 +160,12 @@
                                                             <i class="fa fa-trash" data-index="{{ i.id }}"></i>
                                                         </div>
                                                         {% endif %}
-                                                        
+
                                                         {% for image in i.product_images.all %}
                                                         {% if image.is_main %}
                                                         <img src="{{ image.images.url }}" alt="{{ image.images.alt_text }}">
-                                                    {% endif %}
-                                                    {% endfor %}
+                                                        {% endif %}
+                                                        {% endfor %}
                                                     </div>
                                                      <div class="card-text">
                                                         <strong class="title">{{ i.title|slice:":50" }}</strong>
@@ -183,14 +183,11 @@
                                                         <strong class="price">N{{ i.price }} </strong>
                                                         {% endif %}
                                                     </div>
-                                                </div>
                                             </a>
+                                                </div>
                                             {% endif %}
                                             {% endfor %}
                                         </div>
-                                        <!-- <footer>
-                                             <span>1 of 3 pages</span>
-                                        </footer> -->
                                     </div>
                                 </div>
                             </div>
@@ -208,13 +205,13 @@
                               <div class="block1">
                                   <a href="{% url "order_:vendor_orders" request.user.which_vendor.store_name request.user.which_vendor.unique_id %}">
                                   <div class="box1">
-                                      <span class="icon"><i class="fa fa-shopping-bag" style="font-weight:500;font-size:50px;color:var(--lightgrey)"></i></span>
+                                      <span class="icon"><i class="fa fa-shopping-bag"></i></span>
                                       <div class="text"><span>Order</span><span>View, Track, Or Buy Again</span></div>
                                   </div>
                                   </a>
                                   <a href="{% url "vendor_:add_category_" %}">
                                   <div class="box3">
-                                      <span class="icon"><i class="fa fa-lock" style="font-weight:500;font-size:50px;color:var(--lightgrey)"></i></span>
+                                      <span class="icon"><i class="fa fa-lock"></i></span>
                                       <div class="text"><span>Add Category</span><span>Upload new category to your store</span></div>
                                   </div>
                                   </a>
@@ -222,13 +219,13 @@
                               <div class="block2">
                                   <a href="{% url "vendor_:add_product_" %}">
                                   <div class="box1">
-                                      <span class="icon"><i class="fa fa-shopping-bag" style="font-weight:500;font-size:50px;color:var(--lightgrey)"></i></span>
+                                      <span class="icon"><i class="fa fa-shopping-bag"></i></span>
                                       <div class="text"><span>Add Product</span><span>Upload new product to your store</span></div>
                                   </div>
                                   </a>
                                   <a href="{% url "vendor_:edit_vendor_" %}">
                                   <div class="box1">
-                                      <span class="icon"><i class="fa fa-pencil" style="font-weight:500;font-size:50px;color:var(--lightgrey)"></i></span>
+                                      <span class="icon"><i class="fa fa-pencil"></i></span>
                                       <div class="text"><span>Your Store</span><span>Edit informations about your store</span></div>
                                   </div>
                                   </a>
@@ -362,6 +359,7 @@
 
     <!-- The Modal -->
     <div id="myModal" class="modal">
+
       <!-- Modal content -->
       <div class="modal-content">
           <div class="line1">
@@ -377,7 +375,7 @@
                     <span class="active"></span>
                     <div class="name">{{i.follower.user_name}}</div>
                   </div>
-                  <span>{{i.created_at.day}}/ {{i.created_at.month}}/ {{i.created_at.year}}</span>
+                  <span style="margin:10px;font-size:13px;">{{i.created_at.day}}/ {{i.created_at.month}}/ {{i.created_at.year}}</span>
               </div>
               {% endfor %}
               {% else %}
@@ -439,7 +437,7 @@
                             $('.block4').append(
                                   '<div class="other-stores"> \
                                       <a> \
-                                        <img class="" src="/media/' + values.fields.images + '" alt=""> \
+                                        <img class="" src="/media/' + values.fields.vendor_image + '" alt=""> \
                                       </a> \
                                        <div class="text" data-index="' + values.fields.unique_id + '"> \
                                           <div class="name">' + values.fields.store_name + 'Store</div> \
@@ -517,7 +515,7 @@
                                 block4.insertAdjacentHTML('beforeend',
                                       '<div class="other-stores"> \
                                           <a> \
-                                            <img class="" src="' + json.image + '" alt=""> \
+                                            <img class="" src="' + values.fields.vendor_image + '" alt=""> \
                                           </a> \
                                           <div class="text"> \
                                               <div class="name">' + values.fields.store_name + ' Store</div> \
@@ -570,7 +568,7 @@
                 });
             }
     )
-    
+
         // $('.follow-btn').on(
         //     {click: function(e){
         //         $('.pop-up').removeClass('head-notification-absolute')
@@ -638,26 +636,26 @@
         )
 
 
-        function window391(currentScreen){
-            if (currentScreen.matches){
-                console.log("111111111n bbbbbbbbbbbbbbbbbbb")
-                $('.second-block > .inner-box > .body > a > .card').css('background-color','red').css('width', '130px')
-                $('.card-img > img').css('width', '115px')
-            };
-        }
-        function window320(currentScreen){
-            if (currentScreen.matches){
-                console.log("22222222222 bbbbbbbbbbbbbbbbbbb")
-                $('.second-block > .inner-box > .body > a > .card').css('background-color','blue').css('width', '110px')
-                $('.card-img > img').css('width', '95px')
-            };
-        }
-        var x = window.matchMedia("(max-width:391px)")
-        var y = window.matchMedia("(max-width:320px)")
-        window391(x)
-        window320(y)
-        x.addListener(window391)
-        y.addListener(window320)
+        // function window391(currentScreen){
+        //     if (currentScreen.matches){
+        //         console.log("111111111n bbbbbbbbbbbbbbbbbbb")
+        //         $('.second-block > .inner-box > .body > a > .card').css('background-color','red').css('width', '130px')
+        //         $('.card-img > img').css('width', '100%')
+        //     };
+        // }
+        // function window320(currentScreen){
+        //     if (currentScreen.matches){
+        //         console.log("22222222222 bbbbbbbbbbbbbbbbbbb")
+        //         $('.second-block > .inner-box > .body > a > .card').css('background-color','blue').css('width', '110px')
+        //         $('.card-img > img').css('width', '95px')
+        //     };
+        // }
+        // var x = window.matchMedia("(max-width:391px)")
+        // var y = window.matchMedia("(max-width:320px)")
+        // window391(x)
+        // window320(y)
+        // x.addListener(window391)
+        // y.addListener(window320)
 
         function window1(color){
             var what_color = 'color'
