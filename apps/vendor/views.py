@@ -96,7 +96,7 @@ def vendor_admin(request, unique_id):
 
 @login_required
 def vendor_admin2(request, vendor_id, category_slug):
-    vendor = Vendor.objects.filter(unique_id=vendor_id)
+    vendor = Vendor.objects.get_object_or_404(unique_id=vendor_id)
     vendor_categories = Category.objects.filter(level=0)
     all_vendor = Vendor.objects.all().exclude(unique_id=vendor.unique_id)
     unread_msg = Messages.objects.filter(reciever_id_unique=vendor.unique_id, is_seen=False).count()

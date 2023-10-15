@@ -360,27 +360,7 @@ def search_account_AJAX(request):
 def vendor_dashboard(request):
     vendor_order=vendor_succesful_orders(request)
     return render(request, 'account/user/dashboard.html', {vendor_order:vendor_order})
-@login_required
-def edit_profile9(request):
-    user = request.user
-    print(user.user_image)
-    if request.method == "POST":
-        user_form = ProfileEditForm(request.POST, request.FILES, instance= user)
-        firstname = request.POST.get('firstname', '')
-        surname = request.POST.get('surname', '')
-        user_image = request.POST.get('user_image', '')
-        mobile = request.POST.get('mobile', '')
-        if firstname and surname and user_image and mobile:
-            user.firstname = firstname
-            user.surname = surname
-            user.user_image = 'images/uploads/profile/' + user_image
-            user.mobile = mobile
-            user.save()
-            return redirect('account_:dashboard')
-    else:
-        user_form = ProfileEditForm(instance=request.user)
 
-    return render(request, 'account/user/edit_profile.html', {'form':user_form})
 @login_required
 def edit_profile(request):
     user=request.user
