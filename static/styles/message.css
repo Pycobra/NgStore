@@ -1,0 +1,7 @@
+.messages {
+  justify-content: center;
+  display: flex;
+  padding: 20px;
+  background: var(--green);
+  margin: 0;
+}
