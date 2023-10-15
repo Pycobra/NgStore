@@ -2102,7 +2102,7 @@ footer section hr{
     #homepage .inner-container {
         display: grid;
         justify-items: center;
-        padding: 40px 30px 10px 12%;
+        padding: 40px auto 10px auto;
     }
     #homepage .inner-container p:nth-child(2){
         font-size:.8rem;
