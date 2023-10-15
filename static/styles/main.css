@@ -504,7 +504,7 @@ a, ul, li{
 #nav1 .first-nav span a{
     color:black;
     font-weight:700;
-    font-size:25px;
+    font-size:18px;
     font-style:normal;
     line-height:20px;
     letter-spacing:5px;
@@ -519,7 +519,7 @@ a, ul, li{
     left:0;
 }
 #nav1 .first-nav span a strong{
-    line-height:30px;
+    line-height:20px;
 }
 #nav1 .first-nav span:nth-child(1){
     text-transform:uppercase;
@@ -534,8 +534,8 @@ a, ul, li{
     border:2px solid var(--darkblue);
     padding:2.5px;
     position:relative;
-    top:-15px;
-    margin-left:-10px;
+    top: -12px;
+    margin-left: -12px;
 }
 #nav1 .first-nav form .field,
 #nav3 .main-nav form .field{
