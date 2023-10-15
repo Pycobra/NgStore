@@ -2052,10 +2052,10 @@ footer section hr{
         top:10.1vh;
     }
     #top-selling .box-body .card{
-        width:170px;
+        width:150px;
     }
     #top-selling .box-body .card .card-img img{
-        width:150px;
+        width:130px;
     }
     .third #slide-account ul form{
         display:flex;
@@ -2067,15 +2067,15 @@ footer section hr{
 /*==============Galaxy s5, moto G4=360px, iphone 6/7/8/x==============*/
 
 @media screen and (max-width:391px /*375 is the correct dimension*/){
-    #top-selling .box-body{
-        justify-content: center;
-    }
-    #top-selling .box-body .card{
-        width:95vw;
-    }
-    #top-selling .box-body .card .card-img img{
-        width:85vw;
-    }
+    /*#top-selling .box-body{*/
+    /*    justify-content: center;*/
+    /*}*/
+    /*#top-selling .box-body .card{*/
+    /*    width:95vw;*/
+    /*}*/
+    /*#top-selling .box-body .card .card-img img{*/
+    /*    width:85vw;*/
+    /*}*/
     #recently-viewed .box-body,
     #topmost1 .box-body{
         justify-content:space-between;
