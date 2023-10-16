@@ -61,10 +61,6 @@
     --milky-white: linear-gradient(to right, white, cornsilk);
     --grayish-milk: linear-gradient(to right, var(--default), cornsilk, var(--default));
     --button-inset-color: linear-gradient(to right, var(--mask), rgb(255, 255, 255), var(--mask));
-
-
-    font-family: "Arial", serif;
-    font-size: 16px;
 }
 /*=================================================================*/
 
@@ -122,7 +118,7 @@ body {
     margin:0px;
     padding:0px;
     overflow-x:hidden;
-    font-family: 'DM Sans', sans-serif;
+    font-family: "Arial", serif;
 }
 /* ====================FIRST====================== */
 .first{
