@@ -374,17 +374,18 @@ a{
     display: flex;
     justify-content: center;
     align-items: center;
-    height:35px;
-    width:35px;
-    border-radius:50px;
-    border:none;
-    color:var(--normalwhite);
-    background-color:var(--lightblue);
-    margin-left:2px;
-    font-size:20px;
-    position:absolute;
-    top:5px;
-    right:5px;
+    height: 30px;
+    width: 30px;
+    border-radius: 50px;
+    border: none;
+    color: var(--normalwhite);
+    background-color: var(--lightblue);
+    margin-left: 2px;
+    font-size: 20px;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    transform: rotate(45deg);
 }
 .modal .modal-content .body{
     display: flex;
