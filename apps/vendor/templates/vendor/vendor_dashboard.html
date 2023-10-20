@@ -170,11 +170,11 @@
                                                      <div class="card-text">
                                                         <strong class="title">{{ i.title|slice:":50" }}</strong>
                                                         {% if i.discount_price != 0 %}
-                                                        <span class="money" style="font-size:13px;">
+                                                        <span class="money">
                                                             <div>
                                                                 <strong class="discount">N{{ i.discount_price }} </strong>
                                                                 {% if i.price_difference != 0 %}
-                                                                <span style="font-size:13px;">save N{{ i.price_difference }}</span>
+                                                                <span>save N{{ i.price_difference }}</span>
                                                                 {% endif %}
                                                             </div>
                                                             <strike class="price" style="color:#ACADA8;">N{{ i.price }} </strike>
