@@ -119,6 +119,7 @@ body {
     padding:0px;
     overflow-x:hidden;
     font-family: "Arial", serif;
+    font-size: 16px;
 }
 /* ====================FIRST====================== */
 .first{
@@ -531,8 +532,8 @@ a, ul, li{
     border:2px solid var(--darkblue);
     padding:2.5px;
     position:relative;
-    top: -12px;
-    margin-left: -12px;
+    top:-12px;
+    margin-left:-12px;
 }
 #nav1 .first-nav form .field,
 #nav3 .main-nav form .field{
@@ -688,7 +689,6 @@ a, ul, li{
     width:25%;
 }
 #nav2 .first-nav span {
-    font-family: RoadTest;
     font-style:oblique;
     font-weight:normal;
 }
@@ -921,7 +921,6 @@ a, ul, li{
 /* #homepage .innerside-container{
 }
 #homepage .innerside-container p:nth-child(1) {
-    font-family:calibri;
     font-weight:bold;
     letter-spacing:30px;
     background-color:blue;
@@ -943,9 +942,9 @@ a, ul, li{
     font-size:40px;
     color:var(--gray);
     margin-bottom:15px;
+    font-weight: bold;
 }
 #homepage .inner-container p:nth-child(2){
-    font-family:calibri;
     font-weight:700;
     letter-spacing:30px;
     color:var(--white);
@@ -1022,15 +1021,13 @@ a, ul, li{
     width:100%;
 }
 #top-selling .box-body .card{
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    background-color:var(--normalwhite);
-    width:200px;
-    height:355px;
+    display: grid;
+    grid-template-columns: auto;
+    background-color: var(--normalwhite);
+    width: 200px;
     margin-bottom: 2rem;
-    border-radius:5px;
+    border-radius: 5px;
+    padding: 10px;
     -webkit-transition: background, 800ms ease-in-out;
     -moz-transition: background, 800ms ease-in-out;
     -ms-transition: background, 800ms ease-in-out;
@@ -1043,6 +1040,7 @@ a, ul, li{
     -o-transform: scale(1.05);
 }
 #top-selling .box-body .card-img{
+    display: grid;
     padding:0;
     overflow:hidden;
     position: relative;
@@ -1082,8 +1080,6 @@ a, ul, li{
     flex-direction:column;
     align-items:flex-start;
     color:var(--normalblack);
-    width:92%;
-    padding:0 5%;
 }
 #top-selling .box-body .card-text .title{
     font-size:15px;
@@ -1118,10 +1114,10 @@ a, ul, li{
     font-weight: 550;
     padding:2px 4px;
     color:#746D69;
+    font-size:13px;
 }
 #top-selling .box-body .card button{
     margin:0;
-    width:92%;
     height:var(--lg-btn-height);
     border-radius:var(--lg-btn-b-radius);
     font-size:var(--lg-btn-f-size);
@@ -1159,7 +1155,6 @@ a, ul, li{
     color:var(--normalblack);
     font-weight:700;
     font-size:25px;
-    font-family: RoadTest;
     line-height:20px;
     letter-spacing:5px;
     text-align:center;
@@ -1292,15 +1287,14 @@ a, ul, li{
     width:70%;
 }
 #topmost .box-body .card{
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    background-color:var(--normalwhite);
-    width:180px;
-    height:370px;
+    display: grid;
+    flex-direction: column;
+    background-color: var(--normalwhite);
+    width: 180px;
+    height: 370px;
     margin: 17px 8px;
-    border-radius:10px;
+    border-radius: 10px;
+    padding: 10px;
     box-shadow:1px 1px 5px rgba(0,0,0,0.4);
     -webkit-transition: background, 800ms ease-in-out;
     -moz-transition: background, 800ms ease-in-out;
@@ -1318,6 +1312,7 @@ a, ul, li{
     position: relative;
     z-index:1;
     border-radius:10px;
+    display: grid;
 }
 #topmost .box-body .card-img span{
     background-color:var(--normalorange);
@@ -1332,7 +1327,7 @@ a, ul, li{
 }
 #topmost .box-body .card-img img{
     object-fit:cover;
-    width:160px;
+    width: 100%;
     height:200px;
     margin:0;
     padding:0;
@@ -1351,9 +1346,7 @@ a, ul, li{
     justify-content:flex-start;
     flex-direction:column;
     align-items:flex-start;
-    padding:0 5%;
     color:var(--normalblack);
-    width:92%;
 }
 #topmost .box-body .card-text .title{
     font-size:15px;
@@ -1389,9 +1382,9 @@ a, ul, li{
     font-weight: 550;
     padding:2px 4px;
     color:#746D69;
+    font-size:13px;
 }
 #topmost .box-body .card button{
-    width:92%;
     height:40px;
     margin:0;
     border-radius:var(--lg-btn-b-radius);
@@ -1428,7 +1421,6 @@ footer .first-side .block1 .site-logo span a {
     color:black;
     font-weight:700;
     font-size:23px;
-    font-family: RoadTest;
     font-style:normal;
     line-height:20px;
     letter-spacing:5px;
@@ -1441,7 +1433,6 @@ footer .first-side .block1 .site-logo span a strong {
 }
 footer .first-side .block1 .site-logo span:nth-child(1) {
     text-transform:uppercase;
-    font-family: RoadTest;
     font-style:oblique;
     line-height:20px;
 }
@@ -2057,9 +2048,6 @@ footer section hr{
     .third #slide-account li a {
         font-size: 14px;
     }
-    .third #slide-account li i{
-        font-size:15px;
-    }
     #topmost .box-header span {
         font-size: 18px;
     }
@@ -2068,7 +2056,6 @@ footer section hr{
         height: 340px;
     }
     #topmost .box-body .card-img img {
-        width: 130px;
         height: 180px;
     }
 }
@@ -2085,10 +2072,7 @@ footer section hr{
         top:10.1vh;
     }
     #top-selling .box-body .card{
-        width:150px;
-    }
-    #top-selling .box-body .card .card-img img{
-        width:130px;
+        width:120px;
     }
     .third #slide-account ul form{
         display:flex;
@@ -2102,21 +2086,12 @@ footer section hr{
         padding: 40px auto 10px auto;
     }
     #homepage .inner-container p:nth-child(2){
-        font-size:.8rem;
+        font-size:.6rem;
     }
 }
 /*==============Galaxy s5, moto G4=360px, iphone 6/7/8/x==============*/
 
 @media screen and (max-width:391px /*375 is the correct dimension*/){
-    /*#top-selling .box-body{*/
-    /*    justify-content: center;*/
-    /*}*/
-    /*#top-selling .box-body .card{*/
-    /*    width:95vw;*/
-    /*}*/
-    /*#top-selling .box-body .card .card-img img{*/
-    /*    width:85vw;*/
-    /*}*/
     #recently-viewed .box-body,
     #topmost1 .box-body{
         justify-content:space-between;
@@ -2128,6 +2103,14 @@ footer section hr{
     #recently-viewed .box-body .card-img img,
     #topmost1 .box-body .card-img img{
         width:105px;
+    }
+    #top-selling .box-body .card-text .money,
+    #topmost .box-body .card-text .money{
+        font-size:13px;
+    }
+    #top-selling .box-body .card-text .money div span,
+    #topmost .box-body .card-text .money div span{
+        font-size:11px;
     }
 }
 /*-------------------------------------------------------*/
