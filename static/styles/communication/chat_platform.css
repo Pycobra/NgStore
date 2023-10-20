@@ -277,33 +277,36 @@ a{
     position:relative;
 }
 #main-container .main-box .box .body-row .secondbox .block2 .msg_place form textarea{
-    width:100%;
-    min-height:20px;
-    max-height:50px;
-    border-radius:30px;
-    border:1px solid #BBBCB6;
-    font-size:17px;
-    letter-spacing:1px;
-    resize:none;
-    outline:none;
-    padding:15px 30px 5px 30px;
-    overflow-y:none;
-    margin:0;
+    width: 100%;
+    min-height: 20px;
+    max-height: 50px;
+    border-radius: 30px;
+    border: 1px solid #BBBCB6;
+    font-size: 17px;
+    letter-spacing: 1px;
+    resize: none;
+    outline: none;
+    padding: 16px 50px 5px 30px;
+    overflow-y: none;
+    margin: 0;
 }
 #main-container .main-box .box .body-row .secondbox .block2 .msg_place form button{
     display: flex;
     justify-content: center;
     align-items: center;
-    height:50px;
-    width:50px;
-    border-radius:50px;
-    border:none;
-    color:var(--normalwhite);
-    background-color:var(--lightblue);
-    margin-left:2px;
+    height: 40px;
+    width: 40px;
+    border-radius: 50px;
+    border: none;
+    color: var(--normalwhite);
+    background-color: var(--lightblue);
+    margin-left: 2px;
     font-size: 25px;
-    position:absolute;
-    top: 10px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin-bottom: auto;
+    margin-top: auto;
     right: 10px;
     transform: rotate(45deg);
 }
