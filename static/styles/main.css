@@ -895,11 +895,13 @@ a, ul, li{
     display: flex;
 }
 /*===========================================================================================*/
-#section-container{
+main{
     position:relative;
     z-index:1;
     top:20.1vh;
     background-color:var(--lightgrey);
+}
+#section-container{
 }
 #container{
 }
@@ -1891,7 +1893,7 @@ footer section hr{
     #nav3{
         top:18vh;
     }
-    #section-container{
+    main{
         top:23.1vh;
     }
     .first{
@@ -1927,7 +1929,7 @@ footer section hr{
         margin-left:1.5%;
     }
 
-    #section-container{
+    main{
         top:28.1vh;
     }
 }
@@ -1999,7 +2001,7 @@ footer section hr{
         justify-content: space-between;
         align-items: center;
     }
-    #section-container{
+    main{
         top:20vh;
     }
     #homepage {
@@ -2068,7 +2070,7 @@ footer section hr{
     #nav4{
         display: none;
     }
-    #section-container{
+    main{
         top:10.1vh;
     }
     #top-selling .box-body .card{
